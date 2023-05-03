@@ -1,0 +1,74 @@
+%the !TEX root = paper.tex
+\begin{abstract}
+
+Periodic transmissions of Bluetooth Low Energy (BLE) advertisements are
+becoming popular in personal electronic devices.
+%
+These transmissions are continuous: many personal devices, including iPhones
+and FitBits, transmit at least one advertisement per second, during the
+entire time that the device is powered on.
+%
+The frequent transmission of these advertisements may make it possible for
+attackers to track the location of personal devices by passively listening
+for nearby advertisements messages.
+%
+This has not been feasible today, because BLE transmitters hide their
+identity in these advertisements by randomizing their MAC address.
+
+In this paper, we demonstrate the first physical-layer fingerprinting attack
+	that can be used to identify BLE devices.
+%
+We describe why the low-bitrate, short, transmissions, and low-power
+	transmitter designs of BLE make it particularly challenging to fingerprint,
+	and why prior fingerprinting techniques do not work. 
+%because BLE transmissions are short, low-bitrate
+%
+%Also, some BLE transmitters often use novel low-power transmitter
+	%architectures that can not be fingerprinted with WiFi-like techniques.
+We present two new fingerprinting techniques that can be combined to fingerprint all
+	types of BLE transmitters.
+%
+Then we demonstrated these techniques can be combined with ML classification
+	algorithms to identify devices maliciously in real-world settings.
+%
+We perform a controlled evaluation of this system with 40 devices of the same
+	make and model in the lab, and using real-world evaluation in public settings
+	(e.g., coffee shops) we demonstrate that targets can be identified in
+	real-world environments where they are surrounded by hundreds of other BLE devices.
+
+\end{abstract}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{comment} 
+	BLE devices use advertisements to "announce their presence to
+the world", i.e., enable detection of peripherals by BLE central devices. While
+this mechanism is low power consuming and convenient it raises potential privacy
+concerns. BLE advertisements are sent unencrypted, and typically contain the MAC
+address of the peripheral in the payload. An attacker can use this to track
+devices, and in the case of personal consumer devices (smartphones, headphones,
+smartwatches) even track an individual.
+
+To avoid blatant misuse of advertisement packets by eavesdroppers, Bluetooth
+standard provides the use of private addresses in advertising packets. These
+addresses are randomly generated and keep changing according to a defined time
+interval. This pegs back opportunistic tracking, as temporal advertisement
+packet collection cannot be attributed to a specific device.
+
+In this project, we attempt to bypass randomization by going low-level, i.e. the
+Bluetooth PHY layer. We measure properties of BLE advertisements such as the
+variation in carrier frequency offset of peripherals, to try and see if we can
+uniquely associate them to a specific device, thereby bypassing the baseband
+layer privacy protection (MAC randomization) 
+\end{comment}

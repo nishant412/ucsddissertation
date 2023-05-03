@@ -1,0 +1,88 @@
+%!TEX root = paper.tex
+\section{Validation}
+\label{sec:validation}
+
+% Aaron says we should say. The prior section shows that it is feasible detect
+% skimmers at gas stations because they do not hide.  In this section we
+% validate the accurarcy of detecting skimmers this way, by getting ground
+% truth data from law envofrcement who opens pumps at gas stations upon our
+% request to look for skimers.
+
+% We validate X suspected skimmers by returning to the Y gas stations where we
+% found suspected devices.  We determined if a skimmer is likely by seeing if
+% (a) it was still there, and (b) if the signal was strongest by the pumps.
+
+% Conclusion is: X number of suspected skimmers didn't show up a second time,
+% the breakdown is RNBT defaults are more common in that case than others...  Y
+% of skimmers did show up second time, but they were not strong signal near the
+% pumps.  The final set of Z suspected skimmers, we called out law enforcement
+% and they validated out of Z there were F found skimmers.
+
+% The one thing we don't control is that we know sometimes the repar people or
+% gas station attendets come in and open their pumps for skimmers and destroy
+% skimmers that they find before law enforocment finds out.
+
+In the previous section, we have shown that it is feasible to detect presence of commodity Bluetooth modules in internal skimmers by using specific charactersitics observed in Bluetooth scans. In this section we validate the accuracy of our detection, by confirming their signal strength strongest near the gas pumps at the identified gas stations outside of Arizona. We then obtain ground truth data from our law enforcement partners, who manually inspect each pump upon our request to look for and recover skimmers. We separately also partner with Arizona state Weights and Measures to validate whether Bluetana has any false negatives.
+
+\paragraph{Recovering the skimmers}
+Having performed the localization on site, we were able to confirm 15 skimmers across 6 gas stations in 2 different states which we reported to our law enforcement partners. They went in and thouroughly inspected all the gas pumps at all gas stations, and were able to recover the exact number of skimmers we reported. Our success rate therefore has been a 100\% so far.
+
+While our methodology has been extremely successful in detecting skimmers (0\% false positive rate), we were faced with an important question. Because law enforcement only went in to inspect when we detected something, what if we were missing something? To answer this question we incorporated the help of Arizona States Weights and Measures department
+
+\paragraph {Were there any false positives?}
+
+To figure out how successful Bluetana was in a real world investigative scenario. we partnered with the state inspectors in Arizona Weights and Measures. As mentioned before state inspectors do regular complete inspections of gas stations based on routine or complaints. We deployed 3 phones with our app to 3 different inspectors, and they were willing to use our app and run scans whenever they went in for any form of inspection to a gas station. As Arizona state publicly releases reports of every single inspection performed, we were able to correlate our dataset of detected devices with individual inspection reports
+
+
+\begin{table}
+\centering
+\scriptsize
+\resizebox{1\columnwidth}{!}{
+\begin{tabular}{r|c|c|c}
+%\cline{2-8}
+%\multicolumn{1}{c|}{} & \multicolumn{8}{c|}{\cellcolor{black}\textcolor{white}{\textbf{\# of Gas Stations}}} \\
+% A & \textbf{None} & \textbf{ModuleA\n only} & \textbf{ModuleB\n only} & \textbf{Both} & T \\
+\multicolumn{1}{c|}{} & \textbf{I$_1$} & \textbf{I$_2$} & \textbf{I$_3$} \\
+\hline
+\multicolumn{1}{r|}{\# of inspections}    &  6  &  13  &  8 \\
+\rowcolor{lightgray}
+\multicolumn{1}{r|}{Bluetana positive}   &  3  &  1  & 1   \\
+\rowcolor{lightgray}
+\multicolumn{1}{r|}{Skimmer recovered} & 1 & 1 & 0  \\
+\multicolumn{1}{r|}{Bluetana negative}   &  3  &  12  & 7   \\
+\multicolumn{1}{r|}{Skimmer recovered} & 1 & 1 & 0  \\
+\hline
+\end{tabular}
+}
+\caption{Distribution of inspections done by inspector(I$_n$). Table indicates low false positive and negative rates}
+\label{tab:arizona_falsepositive}
+\end{table}
+
+
+From the table we can see that the our false positive rate is fairly low. Only times when there was a false positive was in the case of transients, as in there was a vehicle/person at the location at that precise moment. More importantly there were only two cases of false negatives, and in those one of the cases the inspection for skimmers were done 11 days after the first time scanning was done using Bluetana. In the second case, the inspector drove past the gas station and was in the vicinity only for 6s which is not sufficient for even a single complete scan. Therefore we can conclude from real field analysis that even till date our false negative rate is very low 
+
+
+\begin{table}
+\centering
+\scriptsize
+\resizebox{1\columnwidth}{!}{
+\begin{tabular}{r|c|c}
+%\cline{2-8}
+%\multicolumn{1}{c|}{} & \multicolumn{8}{c|}{\cellcolor{black}\textcolor{white}{\textbf{\# of Gas Stations}}} \\
+% A & \textbf{None} & \textbf{ModuleA\n only} & \textbf{ModuleB\n only} & \textbf{Both} & T \\
+\textbf{City} & \textbf{Skimmers recovered} & \textbf{Population} \\
+\hline
+A  & 12 & 1,339,000  \\  
+B   & 4 & 185,038     \\
+C 	&  2  & 501,344 \\
+D & 2 & 40,224 \\
+E & 2 & 36,064 \\
+F & 1 & 4,737,270 \\
+G & 1 & 151,969 \\
+\hline
+\end{tabular}
+}
+\caption{Distribution of skimmers recovered by Bluetana by metropolitan area. Names of cities are not revealed but their populations have been mentioned.}
+\label{tab:skimmer_chest}
+\end{table}
+

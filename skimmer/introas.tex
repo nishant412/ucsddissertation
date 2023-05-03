@@ -1,0 +1,215 @@
+%!TEX root = paper.tex
+\section{Introduction}
+\label{sec:intro}
+
+% The story is can we augment slow and methodical with fast and maybe less good
+% to save lots of money. Officers, NOT consumers.
+
+% === Big picture picture ===
+Payment card skimming attacks at gas pumps have reached alarming levels.
+%
+In 2018, law enforcement officials recovered 972 skimmers from gas pumps in Florida~\cite{florida-2018} and 148 skimmers from Arizona~\cite{arizona-2018} alone.
+% 524 stations %at 11 stations %
+Based on industry estimates, a single skimmer can capture 30--100 credit cards per day~\cite{rippleshot} and each card, based on estimates from law enforcement officials, nets the criminal an estimated \$500~\cite{ussc-guidelines}, resulting in a daily loss of \$15,000--50,000 per day of operation for each skimmer.\footnote{In Section~\ref{sec:background:money}, we compare these quoted estimates to other sources, and find them to be in agreement.} Less is known about how long a skimmer remains in operation, but allowing for even one day of operation per skimmer, 2018 losses exceed \$16 million across these two states.
+
+Gas pumps are an ideal skimming target.
+%
+Gas pumps have relatively weak security: their payment circuitry can be accessed with universal keys or crowbars, and reading payment data is as easy as tapping into a ribbon cable (Section~\ref{sec:bkgd-skimhw}).
+% 
+Gas pump skimmers can be hidden inside of a gas pump enclosure, making them difficult to detect.
+% 
+As a result, inspectors have resorted to manually opening the pumps to inspect their wiring for skimmers.
+%\footnote{These inspections are infrequently triggered by complaints.}
+% 
+Gas pump skimming has become so pervasive that the Arizona Department of Agriculture, Weights and Measures Division (AZWMSD) now checks for skimmers while doing routine inspections.\footnote{For example,
+the ``Vapor Recovery Inspection Pre-Test Checklist'' has a checkbox for ``Checked for Skimmers''.}
+%
+From 2016 to 2018, the AZWMSD looked for skimmers in \azskiminspect~gas station inspections.
+%
+Inspectors found skimmers in only \azpercentskimfound~of these inspections.
+
+Unfortunately, Law Enforcement (LE) rarely catch criminals while they are collecting payment data from gas pump skimmers.
+%
+The reason is, many gas pump skimmers are equipped with Bluetooth connectivity~\cite{krebs-siphoning,krebs-pos,krebs-gang,krebs-mexico}.
+%
+This allows criminals to remain in their car while wirelessly retrieving card payment data.
+%
+While Bluetooth is a vital tool for criminals to exfiltrate data from gas
+pumps, it also could be an opportunity to make it easier to detect skimmers.
+
+% === Our solution: Study Bluetooth ==== 
+
+%that allow for operation from a safe distance
+In this paper, we evaluate the effectiveness of detecting skimmers with 
+Bluetooth scanning from a smartphone.
+%
+Indeed, if a skimmer can be detected with 
+a smartphone, then authorities can discover and remove
+skimmers passively and quickly while they visit a gas station for
+other reasons.
+% 
+We built a smartphone application to perform this study, called Bluetana.
+%
+Bluetana collects all Bluetooth scan data that is available via
+the Android Bluetooth APIs.
+%---including information that has not been considered
+%in the few Bluetooth skimmer detection tools that are available for consumers.
+%
+We equipped \numvolunteers~volunteers in six U.S. states with smartphones
+running Bluetana. 
+%
+Our volunteers have collected scans at \visitedgasstations~gas stations, where
+%
+they observed a total of \totalbtobserved~Bluetooth devices.
+%
+In these scans, Bluetana detected a total of \totalskimmers~skimmers
+installed at gas stations in Arizona, California, Nevada, and Maryland, and it
+%
+was the sole source of information
+that led law enforcement to find \totalskimmersBluetana~skimmers.
+%
+%Assuming
+%all of these skimmers were operating for at least one day, 
+%we estimate that Bluetana prevented \Bluetanafraudprevented~in fraud.
+%
+%with Bluetana was the trigger for after we detected each skimmer we informed
+%law enforcement, and they removed the skimmers and collected them as evidence.
+%
+%We estimate that the skimmers discovered by during this study stopped a
+%total of \Bluetanafraudprevented~in fraud per day they were operating.
+
+%
+% They are also one of the largest owner-operated infrastructure that is slow to
+% update to secure technology: there are $\sim$135,000 gas stations across the
+% U.S., many of which still use magnetic stripe card readers and insecure PIN
+% pads~\cite{emv2020}.
+%
+%This provides the key benefit of detecting skimmers before they have been used
+%for enough fraud to trigger authorities to perform manual inspections (if it
+%ever does).
+%
+
+%Bluetooth-based detection provides the additional benefit of revealing
+%well-hidden skimmers.
+
+% === Results ===
+
+The primary result of this study is the first comprehensive look at how 
+skimmers can appear in Bluetooth scans.
+%
+Namely, we observe that it is feasible to differentiate skimmers from other
+common Bluetooth devices that appear in Bluetooth scans at gas stations (e.g.,
+vehicle telemetry collectors).
+%
+The main differentiating factor for the skimmers we observed, is that the
+Bluetooth Class-of-Device---a parameter not collected by any consumer Bluetooth
+scanning applications that we are aware of---is ``Uncategorized''.
+%for all of
+%the skimmers we observed \noteby{JC}{for all of the skimmers}.
+%
+We also find that signal strength is a reliable way to determine if a Bluetooth
+device is located near a gas pump, and thus could be a skimmer.
+%
+%even if it does not match the characteristics of typical skimmers.
+%
+%We also inadvertently ran a natural experiment where we observed the duration
+%that skimmers can operate undetected in gas pumps: at least six months.
+
+%(2) we observe that Bluetooth scanning is an effective tool for finding skimmers,
+
+%for
+%the Bluetooth signals from skimmers is today; and how effective it
+%will be in the future.
+ 
+Our study reveals several problems with consumer Bluetooth-based skimmer
+detection applications~\cite{scaifeoakland,sparkfunapp,skimplus}:
+%
+(1) there are many legitimate products that appear at gas stations that use the
+same Bluetooth modules as known skimmers; therefore, MAC address-prefix based detection 
+may lead to false positives,
+%
+(2) there are many Bluetooth modules used in skimmers that do not comply with IEEE MAC
+assignment requirements.
+%
+We also debunk advice on how to find skimmers with Bluetooth scans from authorities~\cite{ag-mn-skimmers} and viral information from social media~\cite{snopesskimmers}.
+%
+For instance, none of the skimmers we found using Bluetooth scans 
+have a name that is a long string of letters and numbers.
+
+Performing this in-depth study brought to light several important operational
+lessons learned about the importance of detecting skimmers with Bluetooth.
+%for
+%improving skimmer inspections.
+%
+Using Bluetooth scans, officials detected skimmers while
+driving by gas stations that they otherwise would not have inspected.
+%
+We also witnessed several instances where an inspector tried to find a skimmer,
+but could not find it on their first pass looking inside a gas pump. However they persisted and found it based on the
+knowledge that a suspected skimmer had appeared in
+Bluetooth scans.
+%
+Surprisingly, we observed that there are skimmers installed in the same gas station, or
+city, that have very similar MAC addresses---indicating their source is a
+single criminal entity.
+%
+We even found skimmers installed hundreds of miles away that had surprisingly
+close MAC addresses.
+
+The rest of the paper is organized as follows: Section~2 provides background
+on internal gas pump skimming: their construction, monetary incentive, and prevalence in
+the wild. Section~3 is an overview of our large-scale Bluetooth scan collection methodology.
+%for large-scale Bluetooth skimmer measurement study.
+In Section~4, we
+present the results of our study: what the skimmers we detected look like, how they compare to skimmers recovered independently by Law Enforcement, and
+whether they are well hidden in the Bluetooth environment. In Section~5, we present
+possible counter measures to the Bluetooth detection.  In Section~6 we present the operational lessons we
+learned about skimming and criminal investigation procedure, while performing
+our large scale measurement study. Section~7 is related work, and we conclude in
+Section~8.
+
+\if 0 % extra text {{{
+
+Internal skimmers passively siphon track data, PIN keystrokes, and power, from
+the PoS terminal's circuitry that sends all of this data in plain-text inside
+the device (Section~\ref{sec:background:design}).
+
+%
+The primary advantage of Bluetooth-based detection is it can be crowdsourced:
+authorities do not have to open PoS terminals to find skimmers, they can be
+detected by anyone with a smartphone that is near a compromised PoS terminal.
+%
+
+We provide the first estimate of how much money criminals can make from
+skimming (\todo{XXX} per skimmer) through a detailed analysis of carding
+forums, combined with our own analysis of actual credit card data stored on
+skimmers that were retrieved by law enforcement.
+%
+
+
+Also unlike ATMs, gas dispensers have been slow to update to new secure
+technology because they are individually owned and operated\footnote{ATMs are
+operated by a few large companies (i.e., Diebold and Cardtronics).}.
+
+, and criminals delete the credit card numbers off of the skimmers as they
+download them. 
+
+The quintessential
+skimmer is a a false face-plate overlay attached to an ATM's card slot that
+records the card's track data, and a pinhole camera aimed at the PIN keypad to
+record the PIN entry. 
+
+ATM skimmers alone are estimated to cost over \$2 billion
+globally~\cite{cnbc-skimmers}.
+
+Upon finding a skimmer in a terminal during a manual inspection, they installed a
+camera inside it to capture images of the criminal in the act of
+retrieving the data~\cite{camera-in-pump}.
+
+As evidence of this, the payment card industry has pushed back the deadline to
+require gas stations to convert EMV chip payment technology to
+2020, and it is likely to be pushed back again.
+
+
+
+\fi %}}}

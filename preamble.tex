@@ -1,0 +1,146 @@
+\usepackage{mathptmx}
+\usepackage[NoDate]{currvita}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{ragged2e}
+\usepackage{microtype}
+%\usepackage[breaklinks=true,pdfborder={0 0 0}]{hyperref}
+\AtBeginDocument{%
+	\settowidth\cvlabelwidth{\cvlabelfont 0000--0000}%
+}
+
+% OGS recommends increasing the margins slightly.
+\increasemargins{.1in}
+
+% These are just for testing/examples, delete them
+\usepackage{trace}
+%\usepackage{showframe} % This package was just to see page margins
+\usepackage[english]{babel}
+\usepackage{blindtext}
+\overfullrule5pt
+% ---
+
+% Packages 
+%\usepackage{xcolor}
+%\usepackage{amsmath}
+\usepackage{balance}
+\usepackage[scaled=1]{inconsolata} % Use Inconsolata instead of CMTT
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage[hyphens]{url}%\urlstyle{tt}
+\usepackage{listings}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage[scaled]{helvet}
+\usepackage{rotating}
+\usepackage{xspace}{}
+\usepackage{algorithm}
+\usepackage{comment}
+%\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{array}
+\usepackage{tabu}
+\usepackage[utf8]{inputenc}
+\usepackage[table]{xcolor}
+\usepackage{diagbox}
+\usepackage{pifont}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{relsize}
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{appendix}
+
+% Clickable link colors here:
+\definecolor{linkcol}{rgb}{0,0,0}
+\definecolor{citecol}{rgb}{0,0,0}
+\definecolor{urlcol}{rgb}{0,0,0.75}
+
+\newcommand\colname[1]{\emph{#1}}
+
+
+%\usepackage{titlesec}
+% Commands
+\newcommand{\todo}[1]{\ClassWarning{NOT READY TO SUBMIT}{There is something left todo} \textcolor{blue}{[TODO: #1 ]}}
+\newcommand{\experiment}[1]{\textcolor{red}{Experiment: #1 }}
+\newcommand{\highlight}[1]{\textcolor{red}{#1 }}
+\newcommand{\goal}[1]{\textcolor{blue}{Goal: #1 }}
+\newcommand{\transition}[1]{\textcolor{purple}{Transition: #1 }}
+\newcommand{\blankfig}[0]{\framebox[3in]{\raisebox{0pt}[2in]{}}}
+
+\ifdraft
+\definecolor{notecolor}{rgb}{0.75,0,0} % A darker red
+\definecolor{donecolor}{rgb}{0,0,1} % Blue
+\newcommand{\note}[1]{{\textcolor{notecolor}{[\textit{#1}]}}}
+\newcommand{\done}[1]{{\textcolor{donecolor}{[\textit{#1}]}}}
+\else
+\newcommand{\note}[1]{}
+\newcommand{\done}[2]{}
+\fi
+
+\newcommand{\notefor}[2]{\note{\textbf{#1:} #2}}
+\newcommand{\noteby}[2]{\note{#2 ---#1}}
+\newcommand{\doneby}[2]{\done{#2 ---#1}}
+
+
+\usepackage[bookmarks=true,%
+	bookmarksnumbered=true,%
+	colorlinks=true,%
+	linkcolor=linkcol,%
+	citecolor=citecol,%
+	urlcolor=urlcol,%
+	hypertexnames=true,%
+	pdfpagelabels]{hyperref}
+
+% Kirill's dainty list environments.
+
+\newenvironment{prettylist}{
+	\begin{list}{
+		\footnotesize\raisebox{0.1mm}{\small\ding{118}}
+	}{
+		\setlength\topsep{2pt plus 1pt minus 1pt}
+		\setlength\leftmargin{2em}
+		\setlength\rightmargin{0pt}
+		\setlength\itemsep{1pt plus.1pt}
+		\setlength\parskip{0pt}
+		\setlength\parsep{0pt}
+		\setlength\itemindent{0pt}
+	}
+}{
+	\end{list}
+}
+
+% Environments
+\newenvironment{widelist}{\begin{list}{$\bullet$}{\setlength{\leftmargin}{.50cm}\setlength{\itemsep}{.1cm}}}{\end{list}}
+
+\newcommand\bluetana{Bluetana}
+\newcommand\iq{I/Q\xspace}
+
+\makeatletter
+
+\renewcommand\paragraph[1]{%
+\@startsection{paragraph}{4}{\z@}%
+{-0.75ex plus 0.05ex}{-0.5em}%
+{\normalfont\normalsize\bfseries}{#1.}}
+
+%\renewcommand\section{%
+%\@startsection{section}{1}{\z@}%
+%{-1.25ex plus -0.5ex minus -.2ex}%
+%{0.75ex plus .25ex}%
+%{\reset@font\large\bfseries}}
+%
+%\renewcommand\subsection{%
+%\@startsection{subsection}{2}{\z@}%
+%{-1.25ex\@plus -0.5ex \@minus -.2ex}%
+%{0.5ex \@plus .2ex}%
+%{\normalfont\large\bfseries}}
+%
+%\renewcommand\subsubsection{%
+%\@startsection{subsubsection}{3}{\z@}%
+%{-0.75ex\@plus -0.25ex \@minus -.25ex}%
+%{0.25ex \@plus .2ex}%
+%{\normalfont\normalsize\bfseries}}
+
+\makeatother
+\pagenumbering{gobble}

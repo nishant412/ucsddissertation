@@ -1,0 +1,156 @@
+%!TEX root = paper.tex
+\section{Current Methods of Detection are Too Slow}
+\label{sec:arizona}
+
+Our goal in this paper is to demonstrate the necessity of using Bluetooth for the detection of fuel station card
+skimmers. A primary motivation for this is that Bluetooth scanning is just as effective as manual inspection
+in finding skimmers and is an order of magnitude faster.
+
+To demonstrate how much money can be lost in a single day of undiscovered skimming, we begin in
+Section~\ref{subsec:cardval} with an estimate of the value of that can be drawn from credit and debit cards by a
+criminal. Then, in Section~\ref{sec:cardvol} we estimate the number of cards skimmed per day per skimmer.
+
+In Section~\ref{sec:skimmersinwild}, we turn to two sources of data about skimmers recovered from the field: fuel
+station inspection reports from the Arizona Department of Weights and Measures (AZWM) and statistics on skimmers from
+the San Diego office of the San Diego office of the U.S. Secret Service (USSS).
+
+\subsection{Economics of Carding}\label{subsec:cardval}
+
+Stealing and monetizing stolen credit and debit card data, called \emph{carding} by its practitioners, is a well-studied
+form of financial fraud. Here we summarize the public data available on the value attached to a stolen card by each of the
+parties involved, namely the criminal, consumer, bank, and merchant used to cash out the card. Our results are summarized
+in Table~\ref{tab:cardval}.
+
+The valuation of a skimmer derives directly from the credit card data it collects. We can estimate this as:
+%
+\[W = \underbrace{\textrm{(card value per day)}}_{P}
+\times \underbrace{\textrm{(cards per day)}}_{Q}
+\times \underbrace{\textrm{(days deployed)}}_{D}\]
+%
+In the remainder of this section, we will estimate each of these quantities, $P$, $Q$, and $D$.
+
+We find that a stolen card has a value of around \$600\footnote{If the fraud goes undetected, the cost is expected to
+grow linearly with each additional day}, a skimmer captures around 20 cards per day, leading to a value to the criminal
+per day of around \$12,000. Skimmers may be deployed for months without detection.
+
+\paragraph{Criminal revenue} A carder can extract value from stolen card data in two ways: by selling the data to another
+party, who will cash out the card, or by cashing it out himself. In order to quantify the impact of skimming, we will
+focus primarily upon the ``cashing out'' stage, as this is the cost which is inevitably transferred to the victim,
+merchant, and bank.
+
+There are two widely discussed mechanisms of converting stolen card data to money: ATM withdrawals and product resale
+\cite{krebsSkimReaper, viceInterviewWithCarder, arizonareport} For Debit cards and credit cards for which a PIN has
+been set up may be cashed out by withdrawing money from an ATM. The other common use of skimmed cards is the purchase
+of merchandise from an unwitting merchant for later resale.
+
+The value a criminal can extract from a card depends on the type of card (debit or credit, high or low withdraw limit)
+and what additional information is provided with the card (such as billing address). Online
+forums~\cite{makingFirstMoney}, tutorials~\cite{cardingNewbieGuide, howToSucceedInStore}, and
+interviews~\cite{viceInterviewWithCarder} have reported an expected value of \$400--800 per card, with
+\$500 a common estimate. The value attained from each card also depends heavily on the merchant used and
+the card issuer's fraud detection algorithm. If merchandise is purchased with the stolen card, it is usually resold
+at a lower price. For example, for example, one forum post describes reselling Iphone X's for \$400, well below
+today's list price of \$769~\cite{iphoneXSale}.
+
+\begin{table}
+    \input{tabs/cardval}
+    \caption{Stolen credit and debit card valuation. All prices in U.S. dollars.}
+    \label{tab:cardval}
+\end{table}
+
+\paragraph{Consumer loss}
+The U.S. has statutory limits on consumer liability for debit card fraud and credit card
+fraud~\cite{15usc1643,15usc1693g}. Debit has a scaling liability depending on when the fraud is reported and
+credit is limited to \$50 dollars regardless of delays in reporting. These numbers are summarized in
+Table~\ref{tab:cardval}
+
+\paragraph{Merchant and bank loss}
+If consumer loss is capped by law, the loss must necessarily fall on the merchant involved (unwittingly) in the
+cash out transaction or the issuing bank. In the case of a debit card cashed out through an ATM cash withdrawal, the
+loss is borne by the bank. For credit card transactions, the apportionment of loss depends on a number of
+factors~\cite{card-acceptance-guidelines-for-merchants}. Notably, with the introduction of chip (EMV) cards, Visa holds
+a merchant who accepts a chip card at a chip enabled terminal not liable for fraud, but does hold a merchant who
+accepts a chip card at a traditional magnetic stripe terminal liable~\cite{visa-liability-shift}.
+
+Various estimates for loss associated with a stolen credit card have been proposed by the U.S. Sentencing Comission,
+the U.S. Department of Justice, the ATM Industry Association, and the Arizona Weights and Measures. Conservatively, the
+amount of damage caused by fraud is around \$500. Estimates from these sources are included in Table~\ref{tab:cardval}.
+We have also seen skimming reports with this exact dollar amount~\cite{AZfiveHundred}.
+
+%\note{There are a lot of numbers in cases available online that we should research for camera-ready. For example,
+%in \emph{United States v. Alli} U.S. Dept. of Justice used maximum credit limit to estimate loss.
+%\url{https://www.ussc.gov/sites/default/files/pdf/training/primers/2016_Primer_Loss.pdf} has a bunch of references
+%to use as a starting point.}
+
+\subsection{Daily Card Volume}
+\label{sec:cardvol}
+
+
+
+``A single compromised pump can capture data from roughly 30--100 cards per day.''~\cite{rippleshot}
+
+\noteby{KL}{Need to revise rest of Section~\ref{sec:cardvol}.}
+
+In order to quantify the damage caused by skimming, we will need to get an estimate of the number of unique cards a
+skimmer sees each day.
+%
+Payment processor TSYS reported that in 2017 that 41\% of sales used a debit card, 34\% used a credit card, and 15\%
+used cash \textit{at the pump}. \cite{TSYS}
+%
+Estimating based upon numbers given by the EIA, EPA, Dept. of Transportation, and a census study of gas station
+infrastructure, this would mean an average of 86.49 (11.09) debit and and 71.72 (9.19) credit fuel sales per station
+per day (per pump per day).
+\footnote{Calculated from the average fuel sales of each gas station~\cite{NACS} in the united states,
+average cost of a gallon of gas~\cite{EIAgasPrices}, average number of pumps~\cite{basker2017customer},
+and the puchasing habits of the average consumer~\cite{EPAFuelEfficiency, averageDriveDeptOfTrans}.}
+During their forensics, the USSS has also estimated 20-50 tracks per day per skimmer device, and as we will see in
+the next section, we found this to be true in a case study of 10 skimmers whose memory we studied directly.
+%
+These numbers will vary depending on the environment, i.e. a more frequented station in a popular tourist destination
+may see more cards.
+
+The amount of track data stored on the skimmer at any given time is highly variable, however, depending on the behaviour
+of the criminal.
+%
+Skimmers come in two varieties: ``daily'' and ``migratory''.
+%
+In ``daily'' types, data is collected and erased from the skimmer on a daily basis, most likely by a local criminal.
+%
+In ``migratory'' types, the criminal will install the skimmer in a position and then leave it installed for a couple
+of months before coming back to collect the data, oftentimes driving long distances and hitting a wide, coastal area.
+
+
+\subsubsection{Dumps of Deployed Skimmers}
+
+In order to validate these initial hypotheses, we worked with government officials to attain information from skimmers
+after forensic analysis had been run.
+%
+The memory of 10 gas station skimmers recovered from a single station revealed several descriptive statistics.
+%
+In total, there were 251 card reads recorded by the ten devices in tandem.
+%
+Duplicate and corrupted card swipes constituted 49 of the reads, leaving 202 unique card numbers.
+%
+All of the skimmers studied were of the ``daily'' variety, and results for the number of each type of card seen are
+recorded in Table \ref{tab:skim-dump-res}.
+
+While this data is biased by the location at which the skimmers were covered, it does give a rough idea of what the
+average ``pull'' (visit to a station to get data) of a criminal will look like.
+%
+The station in question was ``average'' in customers per day;
+%
+it is likely that the values presented here could be over or underestimates depending on the location of installation.
+%
+Of the cards in question, only three explicitly appeared to be gas cards given out to fleet vehicles; the others could
+be classified as personal cards.
+%
+Determining how many personal cards were gas cards was non-trivial given only knowledge of the BIN/IIN number.
+
+
+\begin{table}
+    \centering
+    \input{tabs/skim-dump-res}
+    \caption{Summary of skimmer track statistics from ten recovered gas station skimmers.}
+    \label{tab:skim-dump-res}
+\end{table}
+

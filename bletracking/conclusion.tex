@@ -1,0 +1,41 @@
+%!TEX root = paper.tex
+\section{Conclusion}
+\label{sec:conclusion}
+
+In this work, we evaluated the feasibility of physical-layer tracking attacks
+on BLE-enabled mobile devices. We found that many popular mobile devices are
+essentially operating as tracking beacons for their users, transmitting
+hundreds of BLE beacons per second. We discovered that it is indeed feasible to
+get fingerprints of the transmitters of BLE devices, even though their signal
+modulation does not allow for discovering of these imperfections at decoding
+time. We developed a tool that automates recovering these features in
+transmitted packets.
+
+Then, we used this tool to determine what challenges an attacker would face in
+using BLE to track a target in the wild. We found that attackers can use
+low-cost SDRs to capture physical-layer fingerprints, but those identities may
+not be easy to capture due to differences in devices' transmission power, they
+may not be stable due to temperate variations, and they may be similar to other
+devices of the same make and model. Or, they may not even have certain
+identifying features if they are developed with low power radio architectures.
+By evaluating the practicality of this attack in the field, particularly in
+busy settings such as coffee shops, we found that certain devices have unique
+fingerprints, and therefore are particularly vulnerable to tracking attacks,
+others have common fingerprints, they will often be misidentified. Overall, we
+found that BLE does present a location tracking threat for mobile devices.
+However, an attackers ability to track a particular target is essentially a
+matter of luck.
+
+\begin{comment}
+In this work, we have built an RF-identification attack, which provides the ability to identify the presence of a user or multiple users, even in the wild via their smart portable electronic devices which are continously leaking their privacy through frequent BLE transmissions. In addition, fundamental differences in some BLE architectures compared with other wireless technologies was presented and novel techniques for fingerprinting and identifying all kinds of existing BLE architecture were proposed for the first time. We evaluated our attack in uncontrolled noisy environments in the wild where exists a large number of random devices, demonstrating the practicality and feasibility of our attack.
+We believe the feasibility of this attack in the wild, signifies the importance of implementing physical layer security techniques. We hope our work encourages chip vendors to hide physical layer signatures in their future designs and enable secure RF front-end design for wireless communication.
+\end{comment}
+\begin{comment}
+In this work, we have built an RF-identification attack, which provides ability to identify the presence of a user even in the wild via their smart portable electronic devices, which are continously leaking privacy via BLE transmissions. 
+In addition, fundamental differences in some BLE architectures compared with other wireless technologies was presented and a novel technique for fingerprinting and identifying all kind of existing BLE architecture was proposed. 
+An interesting observation is thast BLE devices are not just used for advertising but also used to provide continuity and synchronization across the smart devices, making this attack a more serious threat. 
+\end{comment}
+%Thus, deploying a network of receivers in different locations to show the possibility of tracking attack is a path for future research. However, this arises new challenges as receivers have hardware imperfections themselves and we should compensate for those relative imperfection to be able to use fingerprints that are profiled by different receivers. Moreover, USRP is a high-end receiver. To make the attack practical and deployable in large scale, we should evaluate the possibility of attack using  comodity receivers. Furthermore, evaluating the practicality of the attack in a real-world scenario could be an interesting future experiment. Beaconing frequently without providing physical layer security can have privacy consequences even though MAC layer security is guaranteed. In this paper, we proposed the possibility of detecting the presence of victims using physical layer signatures.
+
+
+%Our evaluations was done in a few indoor location with a week difference between profiling the device and running the identification attack and we cannot claim we will get the same accuracy at any place with any environmental conditions over a longer perios of time. However, our evaluation demonstrates the high potential of deploying such an attack in real world scenarios which can raise serious privacy concerns.

@@ -1,0 +1,71 @@
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+BLE Devices: 10970
+Classic Devices: 3470
+================================
+Miscellaneous : 60
+Computer : 250
+Phone : 434
+Network Access Point : 16
+A/V : 2261
+Peripheral : 64
+Imaging : 75
+Wearable : 17
+Toy : 0
+Health : 0
+Uncategorized : 293
+================================
+NGJCB194
+KIW
+Z813
+W. Frank Dauerer’s iPhone
+TAG-0277-PC
+Z955A
+Police survey 15
+Police survey 11
+Z958
+CHRIS
+CAR-KIT
+ALCATEL A206G
+NDCCB117
+VCalmVMS_7823_032
+IMClean-BT 005482
+NCJCB051
+NCQCB053-v12
+tmu-060116463400107
+NCUCB103
+NCJCB048-16
+NCJCB014
+NCMCA057
+NCKCB009
+NCNCB002
+NCPCB012
+NCKCB030
+NCQCB017
+AG501109
+110
+111
+IMClean-BT 003535
+SerialADT
+ASUS_Z00XS
+C-GLEMMA
+SAMSUNG-SM-G900V
+Kathy's Fire
+KMM-BT3**U      
+Alpine CD Receiver
+DUAL BT
+B780A
+BT66
+NG[� 
+NGACB095
+670-4844007994
+HDP-SIMDD27
+NCVCB056
+RMDC200-005495
+LM027126
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+No Names:  190
+Vehicle Tracker: 24
+OBD Reader: 54
+Sleep Monitoring: 9
+Car stereo/speaker: 13
+Default module name: 15

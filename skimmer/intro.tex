@@ -1,0 +1,388 @@
+%!TEX root = paper.tex
+
+% Contribution: You can't assume every skimmer module observed near a gas station is bad.
+% Contribution: Most gas stations have bluetooth modules, but not too many that look like these.
+% Contribution: There is a lot of confusion about what is real and what isn't and what to
+% look for. We resolve that.
+
+% This is an overview of the work paragraph:
+%
+% In this work, we demonstrate that smartphones can effectively detect
+% Bluetooth skimmers. We also show that the advantage of smartphone Bluetooth
+% skimming is that it significantly reduces the time inspectors need to spend
+% at gas stations to determine if there is a skim- mer from tens of minutes, to
+% tens of seconds—without significantly affecting the accuracy of skimmer
+% identifi- cation.. It also makes it possible to crowdsource skim- mer
+% detection, which can significantly reduces the time between detection of
+% skimmers.
+
+%In general, the presence Bluetooth devices at a fuel station is not an anomaly:
+%there are an estimated 10 billion Bluetooth devices in operation as of
+%2018~\cite{bluetooth-popularity}.
+
+\section{Introduction}
+\label{sec:intro}
+
+Criminals capture credit card data at the point of sale using an electronic
+device called a \emph{skimmer}. The quintessential skimmer is a battery-powered
+circuit in a false face-plate overlay attached to a card slot, and a pinhole
+camera aimed at the PIN keypad.  As users insert their card into the card
+reader, a second magnetic stripe reader head embedded into the face-plate
+``skims'' the magnetic track data off the card without the user noticing, and
+the camera records them entering their PIN number. The scammer can then monetize
+the data directly, or leverage the thriving underground ecosystem fed by credit
+card fraud. ATM skimmers alone are estimated to cost over \$2 billion
+globally~\cite{cnbc-skimmers}. Fortunatley, ATM skimming has been made more
+difficult for criminals with new countermeasures that improve card-reader
+security such as switching to EMV chip techonology~\cite{atmia-emv-migration},
+new physical skimmer detection tools~\cite{skimreaper2018}. As a result of this
+that criminals have shifted to malware-based ``jackpotting'' attacks that
+directly cause the machine to rapdily spit out all of its
+cash~\cite{vancouver-jackpotting}, rather than indirectly doing so slowly by withdrawing a
+small amount of cash from with a large number of cloned cards. \todo{clean up this transition}
+
+In recent years, a new low-hanging target for skimming has been growing in
+popularity: fuel dispensers. Unlike ATMs, fuel dispensers have been slow to
+update to new secure technology because they are individually owned and
+operated\footnote{ATMs are operated by a few large companies (i.e., Diebold and
+Cardtronics).}.
+%
+This caused the EMV pushing back the deadline to convert fuel stations to 2020~\cite{emv2020}.
+
+can be attacked with a new type of skimmer
+that can quicly be installed internally, they can not be detected physically
+with any of the tools designed for ATMs.  Internal skimmers passively siphon
+track data, PIN keystrokes, and power, from the PoS terminal's circuitry that
+sends all of this data in plain-text inside the device
+(Section~\ref{sec:background:design}).
+%
+By the nature of being internal, these skimmers evade all forms of physical
+detection short of an inspector opening the terminal and searching inside for
+skimmers.
+
+
+
+
+% Criminals capture credit card data at the point of sale using a device called a
+% \emph{skimmer}.  After some time, the scammer
+% revisits the ATM to physically collect skimmer. 
+
+Unfortunately, in addition to overlay skimmers, criminals have also been
+installing sophisticated internal skimmers inside PoS terminals.
+%
+
+%
+%These internal skimmers are quickly installed by breaking into a PoS terminal
+%and tapping into the PoS terminals wiring.
+%
+%Popular advice, even from government officials is of little help:
+%``\textit{Wiggle everything.} If you cannot see any visual differences, push
+%at different parts of the machine, especially the card
+%reader''~\cite{ag-mn-skimmers}. 
+  
+Compared to the traditional overlay skimmers, internal skimmers introduced an
+additional complication for criminals when it came to exfiltrating the stolen
+data: they had to reopen the terminal.
+%
+This gave law enforcement an opportunity to catch criminals using internal
+skimmers:
+%
+Upon finding a skimmer in a terminal during a manual inspection, they installed a
+camera inside it to capture images of the criminal in the act of
+retrieving the data~\cite{camera-in-pump}.
+
+To avoid this additional exposure, criminals turned to consumer wireless
+technology to covertly exfiltrate data from internal skimmers. Since 2010, by
+far the most popular transmitters used in skimmers are compact Bluetooth-to-Serial
+modules~\cite{krebs-siphoning,krebs-pos,krebs-gang,krebs-mexico}.
+%
+These are commercially available for as little at \$2.50, and only require
+basic soldering skills to interface with skimmer circuits
+(Section~\ref{sec:background:commodity}).
+ 
+While Bluetooth makes exfiltrating data less risky for criminals, it also
+suggests a new means of detecting skimmers.
+%
+The primary advantage of Bluetooth-based detection is it can be crowdsourced:
+authorities do not have to open PoS terminals to find skimmers, they can be
+detected by anyone with a smartphone that is near a compromised PoS terminal.
+%
+This provides the key benefit of detecting skimmers before they have been used
+for enough fraud to trigger authorities to perform manual inspections (if it
+ever does).
+%
+Bluetooth-based detection provides the additional benefit of revealing
+well-hidden skimmers.
+%
+For example, we witnessed several instances where an inspector missed a skimmer
+on their first-pass inside a PoS terminal; however, they persisted and found it based on
+the knowledge that a suspected skimmer appeared in Bluetooth scans.
+
+In this paper, we systematically investigate whether Bluetooth scans with a
+smartphone can accurately detect Bluetooth-enabled skimmers.
+%
+We focused the investigation on fuel dispensers.
+%
+Fuel dispensers are a particularly attractive target for internal skimmers,
+because they are out in the open with weak physical security; they have
+easy-to-open locks, no cameras, and easy-to-tap cables
+(Section~\ref{sec:background:install}).
+%
+In fact, the Manhattan D.A. recently completed prosecuting a case where a group
+of 13 people were indicted for \$2.1 million in fraud from Bluetooth-enabled
+skimmers~\cite{da-manhattan-skimmers}.
+ 
+The challenges in studying the effectiveness of Bluetooth scan-based skimmer
+detection at fuel stations are: (1) skimmers are likely to only be installed in
+a small fraction of fuel dispensers
+%
+and (2) verifying that a skimmer is in a fuel dispenser requires access to open
+it.
+ 
+To address the first challenge, we developed a crowdsourced Bluetooth scanning
+app for Android, called \bluetana.
+%
+Our app collects all Bluetooth scan data available via the standard Android
+API---including information that has not been considered in prior skimmer
+detection efforts~\cite{sparkfunapp,skimplus,ag-mn-skimmers}---so we can
+determine what information is important for finding skimmers.
+%
+It also instructs the user to spend more time collecting data when it detects a
+suspected skimming device.
+ 
+We deployed this app on \todo{XXX} phones, including a rideshare driver's phone,
+as well as state government inspectors.
+%
+We also augmented this data by performing a focused search of 208 fuel stations
+in Southern California with a particular model of fuel dispenser that is known
+to be targeted for skimming.
+%
+This data collection resulted in 829 fuel station visits, and 406,528
+observations of 3,373 distinct Bluetooth devices across California, Arizona,
+Maryland, North Carolina, and Illinois\footnote{Southern California and Arizona
+are locations with known elevated rates of fuel dispenser skimmers}
+(Section~\ref{sec:results}).
+
+To address the second challenge, we partnered with the United States Secret
+Service (USSS)\footnote{The Secret Service is the federal agency responsible
+for investigating financial crimes, including credit card fraud} and the
+Arizona Department of Weights and Measures (AWM).
+%
+We reported to each agency any suspect devices found using our methodology.
+Both agencies were gracious enough the share the results of their
+investigations, which we report in this paper.
+
+We found that existing ad-hoc heuristics to detect skimmers in Bluetooth scans
+are incorrect or insufficient.
+%
+Specifically, the popular advice from authorities is, ``When you are standing
+near a pump, activate your Smartphone’s Bluetooth function. If you see a long
+string of numbers trying to connect with your phone, that is a sign of a nearby
+skimmer.''~\cite{ag-mn-skimmers}.
+%
+We find that many skimmers do not use long strings of numbers, or other
+conspicuous names.
+%
+In fact, we find that many legitimate devices use names with long strings of
+numbers.
+  
+We also found there are severe limitations in the detection methodology of the
+skimmer detection apps.
+%
+These apps (e.g., SparkFun's Skimmer Scanner~\cite{sparkfunapp}), search for a
+set of Bluetooth device names and manufacturers (derived from the MAC address)
+that the developers believe uniquely identify skimmers.
+%
+We find that although some skimmers use default names, so do many legitimate
+devices, and 
+%
+although some manufacturer's modules tend to be used in skimmers, they are also
+used in many legitimate devices.
+%
+Also, we find that there are skimmers missed by all apps because some Bluetooth
+module manufacturers use squatted MAC address spaces, rather than properly
+registering with the IEEE.
+%
+We also found that Bluetooth Class-of-Device is a surprisingly reliable way of
+filtering out devices that are not skimmers, also we found that signal strength
+is a reliable way of determining if a Bluetooth device is located near fuel
+dispensers.
+
+The long-name heuristic would have falsely detected \todo{XXX} legitimate
+devices at \todo{XXX} fuel stations, and the apps would have falsely detected
+\todo{XXX} legitimate devices at \todo{XXX} fuel stations.
+
+In total, using our methodology, we identified 28 suspect devices of which
+\textbf{22 were confirmed to be skimmers by law enforcement} at \todo{XXX fuel
+stations} in the course of our study of 829 fuel stations.
+%
+This may seem like a small number, but it matches the proportion of skimmers in
+fuel stations found by manual inspections (Section~\ref{sec:motivation:few}).
+%
+Our study with only \todo{XXX} phones represented \todo{XXX} precent of the
+skimmers found in this year \todo{finish}.
+%
+Because our heuristics were, by design, very specific, only 6 of our reports
+did not turn up a skimmer at a gas station.
+
+% \footnote{According to its author, ``The app
+% scans for available Bluetooth connections looking for a device with title
+% HC-05. If found, the app will attempt to connect using the default password of
+% 1234. Once connected, the letter ?P? will be sent. If a response of ?M' then
+% there is a very high likelihood there is a skimmer in the Bluetooth range of
+% your phone (5 to 15 feet)''~\cite{sparkfunapp}.}
+
+\todo{Update this}
+
+In this paper, we make the following contributions:
+
+\begin{prettylist}
+%
+\item We describe \bluetana, and our methodology for identifying skimmers among
+  the proliferation of Bluetooth devices found in the wild.
+%
+\item We collect and analyze Bluetooth data about fuel station skimmers in five
+  U.S.  states, revealing that neither Bluetooth name nor MAC address alone is
+  sufficient to conclude that a device is a skimmer.
+%
+\item Our evaluation conclusively demonstrates that detecting internal skimmers
+  with Bluetooth is accurate.
+%
+\item We are the first to discover that some skimmers have similar MAC
+  addresses, even when they are detected hundreds of miles away---indicating
+  that a single criminal element installed them.
+%
+\item We provide the first empirical evidence that criminals are not yet going
+  to extreme lengths to avoid Bluetooth-based detection, and that only
+  Bluetooth Low Energy is densely deployed enough to provide sufficient cover.
+%
+
+\end{prettylist}
+
+The rest of the paper is organized as follows:.
+
+% Some even automatically establish Bluetooth connections to suspected skimmers
+% to check if their microcontroller responds to commands that tend to work in
+% skimmers.
+% %
+% In our discussions with law enforcement they discouraged this behavior because
+% it 
+
+
+
+\if 0 % Nishant contrib {{{
+	\item Defined a methodology for Bluetooth based skimmers in gas stations. The method uses MAC address based filtering for identifying suspect modules.
+	\item Designed the Bluetana toolkit, which implements our methodology by means of a simple Android app, plus a backend database hosted on a secure server. The app can run on any off the shelf Android phone, making it easily deployable at scale, particularly for law enforcement
+	\item Undertook a crowd-sourced survey of 225 most vulnerable gas stations in the county to characterize the Bluetooth environment at a gas station and verify our methodology. In our knowledge, this is the first large scale field study of wireless skimmers ever performed in academia
+	\item Detected and reported 12 skimmers across these gas stations. Our law enforcement partners were able to recover skimmers at all reported locations, and therefore our success rate has been 100\% till date. Our partners also inform us that our efforts have improved skimmer capture rates for the year by 32\%
+\fi %}}}
+
+\if 0 % Nishant's intro {{{
+\todo{The intro is out of date}
+
+Credit cards usage at point-of-sale (POS) terminals and ATMs is ubiquitous today. With the increase in usage, so has increased fraud opportunities for criminals. In particular skimming (the act of implanting an electronic device which can illegally record your card details) is a major problem. Projected losses from such fraud is expected to reach about \$30 billion by 2020, with the US alone accounting for 40\% of the losses \cite{nilsonreport2017}. Identifying effective methods to detect such skimmers is thus of high priority.
+
+Gas pumps have been a popular target for skimming in recent times [\todo{cite Krebs article for AZ, and two other articles from Texas and CA}]. Most gas stations operate under little to no human monitoring, and have hundreds of people each day using their credit cards at the gas dispenser. Fuel station inspection reports from state authorities \todo{cite cutools.azda.gov.in, texas dwm website} and conversation with law enforcement officials, tell us that internal skimmers are the most popular criminal tool for gas dispensers. Internal skimmers are planted inside the enclosure, sitting on the bus between card reader and POS backend and recording details of any card used to buy gas. These skimmers are very difficult to detect because of multiple reasons. Firstly, these are \textbf{invisible to the naked eye} as they sit inside the enclosure. Even manual inspection by opening the enclosure is unreliable as these are hard to spot in the maze of cabling and electronics inside the dispenser \todo{Add photo from AZ with the skimmer stuck with silicone gel under reader}. Secondly, these skimmers are fitted with \textbf{onboard storage and wireless radios}(90\% of them Bluetooth), which makes data storage and retrieval easy and inconspicuous. Criminals use common commodity Bluetooth radios, which are reliable and easily avaialable. After the inital installation, these can stay in place for months and data can be easily retrieved at a distance, and thus catching people in the act is virtually impossible. 
+
+Existing methods of skimmer detection are costly and inaccurate. They rely on manual inspections which can be grouped in two heads:
+\begin{itemize}
+	\item \textbf{Routine inspections}: Agencies like Weights and Measures perform routine inspections of gas stations. This method is very time consuming and agencies operate with a limited number of personnel. A complete manual skimmer inspection of a gas station takes about an hour, but there are far too many gas stations (Over 100,000 in the entire nation). For instance, our county alone has 875 gas stations, which translates to 875 man hours for inspection of all gas stations. Consequently each gas station is routinely inspected on an average only once a year.
+	\item \textbf{Inspections based on complaints from credit card companies and consumers}: Agencies will perform non-routine inspection of gas pumps in response to complaints from credit card companies and individual consumers. Credit card typically report if they notice fraudelent transactions from multiple customers. Additionally individual customers can also report fraud directly to the agency. However, from conversations with law enforcement agencies, we know that such reports are fairly inaccurate with about half of the reports resulting in skimmer recovery. Individuals reports are even worse, as consumers dont perform due diligence in tracing fraud source, and these rarely result in recovery. Complaint based inspections by their very nature are reactive, and skimmer detection relies on actual fraud to occur before action is taken
+\end{itemize}
+
+In this paper we present the design of Bluetana toolkit that is able to overcome the above mentioned challenges. Bluetana operates on the key insight that criminals use off the shelf commodity Bluetooth serial radios for data retrieval. These modules are inexpensive, readily available and easy to use, making data retrieval easy. Our toolkit enables detection of such modules in vicinity of gas pumps by leveraging the properties that make them useful for criminals - easy to discover and connect. With our system, the per gas station inspection time is reduced to an average of 4-5 mins, which is a factor of 12 reduction over current methods. We surveyed 225 highly vulnerable gas stations in the county, and by spending less than 20 man hours were able to detect and report 10 skimmers, which account for 25\% of all skimmers recovered in the county over the entire year.
+
+Detection of commodity off the shelf Bluetooth modules in skimmers presents a big challenge. Such modules are used in legit applications like car stereos, onboard diagnostic sensors, payment attachments etc. We address this challenge in our methodology to make our detection mechanism highly accurate. Following are the key contributions of the paper:
+\begin{itemize}
+	\item Defined a methodology for Bluetooth based skimmers in gas stations. The method uses MAC address based filtering for identifying suspect modules.
+	\item Designed the Bluetana toolkit, which implements our methodology by means of a simple Android app, plus a backend database hosted on a secure server. The app can run on any off the shelf Android phone, making it easily deployable at scale, particularly for law enforcement
+	\item Undertook a crowd-sourced survey of 225 most vulnerable gas stations in the county to characterize the Bluetooth environment at a gas station and verify our methodology. In our knowledge, this is the first large scale field study of wireless skimmers ever performed in academia
+	\item Detected and reported 12 skimmers across these gas stations. Our law enforcement partners were able to recover skimmers at all reported locations, and therefore our success rate has been 100\% till date. Our partners also inform us that our efforts have improved skimmer capture rates for the year by 32\%
+\end{itemize}
+The rest of the paper is organized as follows: Section 2 offers a background into gas stations and skimmers, and also into the Bluetooth device discovery protocol. Section 3 talks about the impact of gas station skimmers across multiple states in the US, serving as a motivation for the work. Section 4 details the design of the Bluetana toolkit in detail. In section 5 we introduce the results and analysis of the large scale survey of gas stations in our county, and in section 6 we do a detailed discussion.
+
+
+\begin{comment}
+Credit card skimming has been a big menace for law enforcement officials over the years, resulting in almost millions of dollars of financial fraud over the years. Gas stations are a soft and lucrative target for such devices. Skimmers can be planted at different points in individual gas pumps, and hundreds of people swipe their cards at these gas dispensers on any given day. 
+
+Internal skimmers (skimmers planted inside the enclosure, sitting on the bus between the card reader and point-of-sale processor) are a particularly popular way of credit card theft at gas stations. They pose a big challenge for detection as they are invisible on the outside. Current methods for detecting this particular kind of skimmer is limited to manual inspection of gas dispensers. However, with the multitude of cabling and electronics inside the dispenser, even a physical manual inspection is not foolproof, and experienced criminals have been able to conceal skimmers well.
+
+Not only are internal skimmers impossible for visual detection, catching criminals in the act of retrieving data is very difficult. From law enforcement reports, it is known most of these devices have onboard storage for credit card info, and wireless capabilities (most popular being classic Bluetooth) to ease in the process of data retrieval post installation. As a criminal, data collection is as simple as driving to the gas station, waiting for a few minutes in the parking lot upto a distance of 50 ft from the gas pump, downloading the skimmed data and driving away. With clever use of mules to collect data, it is virtually impossible for gas station employees to notice patterns for catching people in the act.
+
+Current skimmer investigation processes involve law enforcement agencies and others like state level Weights and Measures. They have a limited number of field personnel who are dispatched to various gas stations on receipt of complaints. There are a number of challenges which they face:
+ \begin{itemize}
+ 	\item \textbf{There are a lot of gas stations}: Manual inspection of a particular gas station takes anywhere from 1-3 hours. Considering there are 100,000 gas stations across the US, with around 875 in our county itself, careful inspection of all gas pumps on a regular basis by a centralized task force is very time consuming and costly. Consequently on an average, a particular gas pump is routinely inspected not more than once a year.
+ 	\item \textbf{Inaccuracy of complaints}: Based on information from our law enforcement partners, we know that agencies will perform non-routine inspection of gas pumps if a complaint is received. Credit card companies are a source of complaints, but they only reach if they notice fraudelent transactions from multiple customers, and these complaints have been found to be only 55-60\% accurate. Additionally individual customers can also report fraud directly to the agency. However, due to consumers not doing the due diligence in tracing the odd transaction, the accuracy of individual complaints are only to the tune of 10-15\%
+ \end{itemize}
+Above and beyond these problems, the fundamental issue with current methods is that they are reactive. Inspection occurs in most cases only after the fraud has occured. From our partners, we know that smart criminals can space out multiple small transactions over several credit cards over a long time frame, and consumers rarely realize that money is being stolen.
+
+In this paper, we try to tackle the problem of internal skimmers by answering two major questions:
+\begin{itemize}
+	\item Is it possible to detect presence of internal skimmers in gas pumps at a gas station?
+	\item Can we design a scalable methodology, that can proactively help in skimmer detection, without depending on fraud to occur?
+\end{itemize}
+Based on our investigation of internal skimmers and inputs from law enforcement, there are a couple of key insights that can aid us in resolving this. Firstly, criminals are known to use \textbf{commodity wireless serial modules, predominately classic Bluetooth} (almost 80\% of skimmers recovered from the field). These can be easily identified and connected to for downloading data using a criminal in the field. This is an opportunity as the same mechanisms may be leveraged by us to detect these skimmers, and the problem statement then reduces to discovering presence of commodity Bluetooth serial modules in vicinity of gas pumps. Secondly, as mentioned above a centralized task force discovering skimmers in a large geographic area has not been effective. A distributed approach using crowdsourcing might help in achieving greater coverage across gas stations.
+
+Taking these insights into account, we design the Bluetana toolkit for enabling a scalable, crowdsourced detection mechanism for internal Bluetooth skimmers in gas stations. The key contributions of this paper are :
+\begin{itemize}
+	\item Defined a methodology for Bluetooth based skimmers in gas stations. The method uses MAC address based filtering for identifying suspect modules.
+	\item Designed the Bluetana toolkit, which implements our methodology by means of a simple Android app, plus a backend database hosted on a secure server. The app can run on any off the shelf Android phone, making it easily deployable at scale, particularly for law enforcement
+	\item Undertook a crowd-sourced survey of 225 most vulnerable gas stations in the county to characterize the Bluetooth environment at a gas station and verify our methodology. In our knowledge, this is the first large scale field study of wireless skimmers ever performed in academia
+	\item Detected and reported 12 skimmers across these gas stations. Our law enforcement partners were able to recover skimmers at all reported locations, and therefore our success rate has been 100\% till date. Our partners also inform us that our efforts have improved skimmer capture rates for the year by 32\%
+\end{itemize}
+
+There are multiple challenges associated with designing a system for Bluetooth based skimmer detection. There are a number and wide variety of Bluetooth based devices at gas stations, and we must have proper methods to filter out legit devices from skimmers. Also, commodity Bluetooth modules typically store last connected MAC address. This is an important piece of forensic evidence for investigators. Consequently our we are not allowed to connect to any Bluetooth device in the field, thereby restricting what we are allowed to monitor. We look to address these challenges and others in the following sections. The paper is organized as follows: Section 2 offers a background into gas stations and skimmers, and also into the Bluetooth device discovery protocol. Section 3 talks about the impact of gas station skimmers across multiple states in the US, serving as a motivation for the work. Section 4 details the design of the Bluetana toolkit in detail. In section 5 we introduce the results and analysis of the large scale survey of gas stations in our county, and in section 6 we do a detailed discussion.
+\end{comment}
+\begin{comment}
+The traditional notion of a credit card skimmer is that of the
+superficial variety; a small electronic device, affixed to the
+face-plate of an ATM, mimicking the traditional mag-stripe reader and
+pilfering the data from swiped cards. The more interesting form of
+skimmer, and the one which tends to persist for longer at its
+installation point is of the non-superficial variety -- that which is
+embedded within the device that is serving as a medium for the credit
+card transaction. Such devices include gas pumps and parking pay
+stations. In previous research, these internal skimmers have been
+written off as "uncommon", however, in the course of studying a
+metropolitan area, we found the gas station variety of these devices
+to be present in 2\% of at-risk gas stations (update this later). Not
+only are the devices not completely uncommon, but they are also
+impactful: studies done in Arizona have placed estimates of the
+monetary cost of just four such devices in the range of
+500,000 (check this) to 4,000,000 (check this) dollars.
+
+Finding these devices at a large scale is equivalent to finding a
+needle in a hay stack, as they operate under conventional
+methodologies, including Bluetooth and WiFi, and are not malicious in
+behavior. The devices stream data and operate over their desired
+protocol in the same standard fashion as other consumer electronics.
+This does not mean that there are not heuristic methods for finding
+embedded skimmer devices.  By cataloging the wireless environment of
+over 200 gas stations via a smart phone application we were able to
+develop a highly accurate metric analysis technique to both accurately
+catalog and discover embedded wireless skimmers in a non-biased
+fashion.  By narrowing down the number of suspect devices using these
+heuristic methods, we were able to reduce the search space of over
+10,000 unique bluetooth devices to a search space of 11, five of which
+were actual skimmers. This narrowing is depicted in figure one.
+
+Finally, over the course of discovering 5 such embedded Bluetooth
+skimmers, we developed an embedded system capable of honeypotting
+these devices. By spoofing the MAC address, name, and other device
+information associated with a found skimmer, we were able to
+masquerade as a skimmer in hope of catching the criminals which
+embedded the device. This embedded honeypot was set up with wireless
+connectivity, and we were notified whenever an individual attempted to
+pair with the honeypot.
+
+Thus the contributions of the research outlined by this paper are the
+elucidation of common misconceptions when it comes to the prevalence
+and type of skimmer in the wild, the development of a novel,
+crowdsourced approach to the discovery of anomolous devices in noisy
+environment, a discussion of the various trade-offs and techniques
+that are involved with such large-scale data collection, a novel
+method of skimmer mitigation, and the practical impact of the system
+itself, which is actively deployed and responsible for the discovery
+and removal of skimming devices.
+\end{comment}
+\fi %}}}

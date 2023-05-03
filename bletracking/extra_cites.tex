@@ -1,0 +1,32 @@
+%!TEX root = paper.tex
+\section{Extra_stuff}
+\label{sec:extra_stuff}
+
+Freudiger et al.~\cite{sn1}~ observed that probe requests from random MAC addresses can be linked using sequence numbers. Also, devices send actual MAC address in authentication requests
+
+Vanhoef et al.~\cite{infelem1}~analyzed WiFi IEs of APs in Sapienza dataset and found that most (93.8\%) dont change over time, and can be used as a fingerprint.
+
+Martin et al.~\cite{infelem3}~performed a 2 year probe request data collection from multiple phones. They used IEEE company identifiers to identify the manufacturer and then used sequence numbers to identify individual devices.
+
+Spill et al.~\cite{spill2007bluesniff} were able to reverse engineer Bluetooth packets to extract MAC address and clock bits, following which they could follow the hopping pattern of devices
+
+Ryan et al.~\cite{ryanble} extended the above for BLE, and also observed that the hopping pattern in BLE is just fixed increments.
+
+Becker et al.~\cite{Iphonetracking_becker} observed that that most consumer devices beacon. The bluetooth address randomizes asynchronously with the advertisement payload, allowing the possibility of continual tracking.
+
+Martin et al.~\cite{MACRandomizationfail_Martin}~analyzed Apple Continuity Protocol and realized devices are always transmitting. They found several features in different packets that can be used to track devices and reveal user info. Additionally these BLE radios suffer from similar sequence number vuln as WiFi
+
+
+Jana et al.~\cite{clockskew1} used 802.11 probe response's TSF timestamp to perform clock skew based identification. They observed that APs have predictible skew values and thus rogue AP detection could be done. 
+
+Arakaparambil et al~\cite{clockskew2} improved the accuracy of the same by using TSF timer on receive side as welll.
+
+Huang et al~\cite{clockskew3} used constraints of Bluetooth baseband to derive skew from receive time of packets. The advantage over previous approaches -- no need for knowing transmit time
+
+Franklin et al.~\cite{ifat1} fingerprinted WiFi driver,OS pairs using frequency of inter-probe arrival times.
+
+Corbett et al.~\cite{rateswitching2} performed similar analysis but by frequency domain analysis
+
+Loh et al.~\cite{devicediscovery1} observed similar devices require very high resolution measurements on inter-arrival time, and instead proposed inter-probe burst arrival time
+
+In BLE world, Fawaz et al. were able to quantify absolute time instants when particular devices would advertise. They used this information to jam precisely advertisements until authorized user requests for them

@@ -1,0 +1,67 @@
+%!TEX root = paper.tex
+\section{Future Work and Conclusion}
+\label{sec:conclusion}
+
+As new skimmer detection tools gain popularity, criminals will adapt skimming designs to evade detection.
+%
+We expect future skimmers will use techniques such those described in Section \ref{sec:hiding}.
+%
+Similar to Bluetana, future work in this area should emphasize designing easy-to-deploy systems for detecting
+skimmers, and evaluating their effectiveness with large-scale studies.
+
+Push-back from banks and card issuers has led to wide-scale adoption of EMV in
+retail PoS systems. 
+%
+However, EMV adoption in gas stations across the U.S. has been slow due to high
+costs.
+%
+Therefore, Visa and Mastercard have pushed the EMV adoption deadline for gas
+stations from 2017 to October 2020~\cite{emv2020}. 
+%
+As gas stations begin migrating to EMV, skimmers targeting EMV will become more
+common. 
+%
+Future research should focus on the detection of EMV ``shimmers'' that are
+gaining in popularity.
+
+Finally, we believe gas pump skimming is the harbinger of an era of attacks
+using wireless implants. 
+%
+For example, there is an internal Bluetooth-based implant for unlocking door
+access control systems~\cite{blekey}. 
+%
+Future work should also identify other
+systems that are vulnerable to using such implants.
+
+In this paper, we presented results of a 19-month long measurement study of
+Bluetooth scanning as a mechanism to detect internal gas pump skimmers. 
+%
+Our evaluation showed that Bluetooth characteristics of some internal skimmers
+can be distinguished from other Bluetooth devices commonly seen at gas
+stations. 
+%
+We detected, and LE recovered, \totalskimmers~skimmers at 34 gas
+stations across four states in the U.S. 
+%
+For \totalskimmersBluetana~of the detected skimmers, Bluetana was the only
+source of information that prompted investigators to conduct an inspection.
+%
+In conclusion, crowdsourced Bluetooth scanning is an effective way to detect
+Bluetooth-based internal gas pump skimmers.
+
+\begin{comment}
+This paper presented Bluetana, a empirical measurement study of Bluetooth's ability to detect internal
+card skimmers. Bluetooth makes it possible to quickly and accurately detect skimmers within gas dispensers.
+Our evaluation has shown that Bluetooth is a promising method of skimmer detection, capable of
+detecting ~\totalskimmers~ skimmers for a \emph{daily} monetary impact of ~\Bluetanafraudprevented~ dollars in a study of ~\visitedgasstations~ stations.
+\end{comment}
+
+%
+\begin{comment}
+However, gas stations have not adapted.
+%
+We randomly sampled 0.5\% of all gas stations in the US and classified pump payment technology.
+%
+Google Street View images of the dispensers revealed that as of the current date only 13.8\% of gas stations have
+retrofitted EMV readers and only 1.6\% have installed EMV based dispensers.
+\end{comment}

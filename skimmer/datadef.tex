@@ -1,0 +1,316 @@
+%!TEX root = paper.tex
+%%% datadef.tex - Macros for various results used in tables and text.
+
+\newcommand\pctmatchskimmer{3.98\%} % Percentage of classic bluetooth devices seen at gas stations that match the profile of skimmers
+
+\newcommand\visitedgasstations{1,185} %Total number of gas stations visited in our study
+%\newcommand\inspectedgasstationsAZ{757} %Total number of inspections by bluetana
+\newcommand\inspectedgasstationsAZ{757} %Total number of gas stations visited in AZ in our study
+\newcommand\visitedgasstationsAZ{491} %Total number of gas stations visited in AZ in our study
+\newcommand\totaluncatstation{143} % Total number of gas stations where uncategorized BT devices were seen
+\newcommand\visitedstationsMACCoDfiltered{79} % Number of gas stations visited where BT devices matching suspicious MAC + CoD were seen
+
+\newcommand\totalskimmersBluetana{33}
+\newcommand\Bluetanafraudprevented{\$495,000} % Total monetary fraud prevented by Bluetana assuming skimmers operated for one day. Will be the product of totalskimmersBluetana X 15,000
+
+\newcommand\totalskimmers{64} %Total skimmers found in the field in our study
+\newcommand\totalskimmersLE{23} %Total skimmers given to us by LE
+\newcommand\totalskimmersseen{87} %Total skimmers ever detected by Bluetana. This is sum of found in field + obtained from LE
+\newcommand\averageclassicBTperstation{2.2} %Average classic BT devices seen per gas station
+\newcommand\stdevclassicBTperstation{2.05} % Std deviation of classic BT devices seen per gas station
+
+
+%Following two macros are AZ specific and can be merged if we go through with AZ analysis
+\newcommand\azskiminspect{7,325} %Total skimmer inspections done in Arizona 2016-2018.
+\newcommand\azpercentskimfound{1.5\%} %Percentage of inspections Arizona 2016-2018 in which skimmers were found 
+%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand\totalbtobserved{2,214} %Total number of BT devices observed across all visited gas stations
+\newcommand\percentbtuncategorized{8.4\%} % Percent of total BT devices at visited gas stations that had uncategorized BT CoD
+\newcommand\numberbtuncategorized{187} % Number of total BT devices at visited gas stations that had uncategorized BT CoD
+\newcommand\numberBTMACCoDfiltered{102} % Number of total BT devices at visited gas stations that had suspect MAC + CoD
+\newcommand\totalskimmersfirstvisit{42} % Total skimmers that were found in the visit to gas station (not including those found during a second visit to the gas station)
+
+
+\newcommand\numvolunteers{44} %Total number of data collectors we had across US
+\newcommand\skimmerfraudXVIIIUSA{\$17.43 million} % Total potential fraud in one day of operation of skimmers installed across SD,AZ,FL in 2018. Will be product of skimmers recovered X 15000
+
+\newcommand\Bluetanaskimmerfield{33} %Skimmers found in the field without us 4 involved (Basically all of AZ, SDWM,LVPD)
+
+\newcommand\Bluetanaskimstations{34} % Number of gas stations in which Bluetana saw a skimmer and it was recovered, US-wide
+
+\newcommand\skimmeroneminutepercent{80\%} %Percent fraction of skimmers detected within one minute of arriving at a gas station
+
+\newcommand\skimmerdetectiontimemedian{3} %Median time in seconds after entering 150 ft of gas station, when Bluetana can detect a skimmer 
+\newcommand\skimmerdetectiontimemean{33} %mean time in seconds after entering 150 ft of gas station, when Bluetana can detect a skimmer 
+\newcommand\skimmerdetectiontimestd{60} %mean time in seconds after entering 150 ft of gas station, when Bluetana can detect a skimmer 
+
+%\newcommand\usssfyXVIIIincidents{13}
+%\newcommand\usssfyXVIIIsksta{11}
+%\newcommand\usssfyXVIIIstarisk{1.26\%}
+%\newcommand\usssfyXVIIIrptsksta{2}
+%\newcommand\usssfyXVIIIskimmers{42}
+%\newcommand\usssfyXVIIIskperinc{3.2}
+%
+\newcommand\sdfyXVIIIskimmers{42}
+\newcommand\azXVIskimmers{88}
+\newcommand\azXVIIskimmers{57}
+\newcommand\azXVIIIskimmers{148}
+\newcommand\azALLskimmers{293}
+\newcommand\flXVIskimmers{207}
+\newcommand\flXVIIskimmers{650}
+\newcommand\flXVIIIskimmers{972}
+\newcommand\flALLskimmers{1,829}
+
+\newcommand\sdfyXVIIIsksta{11}
+\newcommand\azXVIsksta{54}
+\newcommand\azXVIIsksta{46}
+\newcommand\azXVIIIsksta{86}
+\newcommand\azALLsksta{134}
+\newcommand\flXVIsksta{162}
+\newcommand\flXVIIsksta{432}
+\newcommand\flXVIIIsksta{524}
+\newcommand\flALLsksta{1,029}
+
+\newcommand\sdfyXVIIIskperinc{3.2}
+\newcommand\azXVIskperinc{1.6}
+\newcommand\azXVIIskperinc{1.2}
+\newcommand\azXVIIIskperinc{1.7}
+\newcommand\azALLskperinc{2.2}
+\newcommand\flXVIskperinc{1.3}
+\newcommand\flXVIIskperinc{1.5}
+\newcommand\flXVIIIskperinc{1.8}
+\newcommand\flALLskperinc{1.7}
+
+\newcommand\sdfyXVIIIskpercap{11.9} % 42 / (3.338m + 183k)
+\newcommand\azXVIskpercap{4.3} % 88 / (20.66m)
+\newcommand\azXVIIskpercap{2.7} % 57 / (20.98m)
+\newcommand\azXVIIIskpercap{6.9} % 148 / (21.31m)
+\newcommand\azALLskpercap{14.0} % 293 / (20.98m)
+\newcommand\flXVIskpercap{10.0} % 207 /20.6m
+\newcommand\flXVIIskpercap{31.1} % 650 / 20.9m
+\newcommand\flXVIIIskpercap{45.6} % 972 / 21.3m
+\newcommand\flALLskpercap{87.4} % 1829 / 20.93
+
+\newcommand\fyXVIIIstart{October 1, 2017}
+\newcommand\fyXVIIIend{September 30, 2018}
+
+%\newcommand\azALLinspects{6,828}
+%%\newcommand\azALLinspects{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azALL}}_{\texttt{\phantom{\textbackslash}inspects}}$}
+%\newcommand\azXVIinspects{2,447}
+%%\newcommand\azXVIinspects{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azXVI}}_{\texttt{\phantom{\textbackslash}inspects}}$}
+%\newcommand\azXVIIinspects{1,857}
+%%\newcommand\azXVIIinspects{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azXVII}}_{\texttt{\phantom{\textbackslash}inspects}}$}
+%\newcommand\azXVIIIinspects{2,524}
+%%\newcommand\azXVIIIinspects{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azXVIII}}_{\texttt{\phantom{\textbackslash}inspects}}$}
+%
+%\newcommand\azALLskinsp{2,894}
+%%\newcommand\azALLskinsp{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azALL}}_{\texttt{\phantom{\textbackslash}skinsp}}$}
+%\newcommand\azXVIskinsp{939}
+%%\newcommand\azXVIskinsp{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azXVI}}_{\texttt{\phantom{\textbackslash}skinsp}}$}
+%\newcommand\azXVIIskinsp{753}
+%%\newcommand\azXVIIskinsp{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azXVII}}_{\texttt{\phantom{\textbackslash}skinsp}}$}
+%\newcommand\azXVIIIskinsp{1,202}
+%%\newcommand\azXVIIIskinsp{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azXVIII}}_{\texttt{\phantom{\textbackslash}skinsp}}$}
+%
+%\newcommand\azALLreginsp{3,934}
+%%\newcommand\azALLreginsp{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azALL}}_{\texttt{\phantom{\textbackslash}reginsp}}$}
+%\newcommand\azXVIreginsp{1,508}
+%%\newcommand\azXVIreginsp{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azXVI}}_{\texttt{\phantom{\textbackslash}reginsp}}$}
+%\newcommand\azXVIIreginsp{1,104}
+%%\newcommand\azXVIIreginsp{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azXVII}}_{\texttt{\phantom{\textbackslash}reginsp}}$}
+%\newcommand\azXVIIIreginsp{1,322}
+%%\newcommand\azXVIIIreginsp{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azXVIII}}_{\texttt{\phantom{\textbackslash}reginsp}}$}
+%
+%\newcommand\azALLskinsppct{42.4\%} % 2894/6828
+%%\newcommand\azALLskinsppct{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azALL}}_{\texttt{\phantom{\textbackslash}skinsppct}}$}
+%\newcommand\azXVIskinsppct{49.4\%} % 939/2447
+%%\newcommand\azXVIskinsppct{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azXVI}}_{\texttt{\phantom{\textbackslash}skinsppct}}$}
+%%\newcommand\azXVIIskinsppct{}
+%\newcommand\azXVIIskinsppct{40.4\%}
+%%\newcommand\azXVIIIskinsppct{}
+%\newcommand\azXVIIIskinsppct{36.9\%}
+%
+%%\newcommand\azALLreginsppct{}
+%\newcommand\azALLreginsppct{57.6\%}
+%%\newcommand\azXVIreginsppct{}
+%\newcommand\azXVIreginsppct{50.6\%}
+%%\newcommand\azXVIIreginsppct{}
+%\newcommand\azXVIIreginsppct{59.6\%}
+%%\newcommand\azXVIIIreginsppct{}
+%\newcommand\azXVIIIreginsppct{63.1\%}
+%
+%%\newcommand\azALLincidents{}
+%\newcommand\azALLincidents{232}
+%%\newcommand\azXVIincidents{}
+%\newcommand\azXVIincidents{61}
+%%\newcommand\azXVIIincidents{}
+%\newcommand\azXVIIincidents{54}
+%%\newcommand\azXVIIIincidents{}
+%\newcommand\azXVIIIincidents{117}
+%
+%%\newcommand\azALLskinc{}
+%\newcommand\azALLskinc{7.3\%}
+%%\newcommand\azXVIskinc{}
+%\newcommand\azXVIskinc{3.3\%}
+%%\newcommand\azXVIIskinc{}
+%\newcommand\azXVIIskinc{5.5\%}
+%%\newcommand\azXVIIIskinc{}
+%\newcommand\azXVIIIskinc{10.2\%}
+%
+%%\newcommand\azALLreginc{}
+%\newcommand\azALLreginc{92.7\%}
+%%\newcommand\azXVIreginc{}
+%\newcommand\azXVIreginc{96.7\%}
+%%\newcommand\azXVIIreginc{}
+%\newcommand\azXVIIreginc{94.5\%}
+%%\newcommand\azXVIIIreginc{}
+%\newcommand\azXVIIIreginc{89.8\%}
+%
+%%\newcommand\azALLinsphr{}
+%\newcommand\azALLinsphr{8.0\%}
+%%\newcommand\azXVIinsphr{}
+%\newcommand\azXVIinsphr{5.1\%}
+%%\newcommand\azXVIIinsphr{}
+%\newcommand\azXVIIinsphr{7.2\%}
+%%\newcommand\azXVIIIinsphr{}
+%\newcommand\azXVIIIinsphr{12.5\%}
+%
+%%\newcommand\azALLskinsphr{}
+%\newcommand\azALLskinsphr{6.1\%}
+%%\newcommand\azXVIskinsphr{}
+%\newcommand\azXVIskinsphr{2.6\%}
+%%\newcommand\azXVIIskinsphr{}
+%\newcommand\azXVIIskinsphr{3.9\%}
+%%\newcommand\azXVIIIskinsphr{}
+%\newcommand\azXVIIIskinsphr{9.1\%}
+%
+%%\newcommand\azALLreginsphr{}
+%\newcommand\azALLreginsphr{8.2\%}
+%%\newcommand\azXVIreginsphr{}
+%\newcommand\azXVIreginsphr{5.2\%}
+%%\newcommand\azXVIIreginsphr{}
+%\newcommand\azXVIIreginsphr{7.6\%}
+%%\newcommand\azXVIIIreginsphr{}
+%\newcommand\azXVIIIreginsphr{13.1\%}
+%
+%\newcommand\azXVIadvantage{49.2\%}
+%\newcommand\azXVIIadvantage{37.1\%}
+%\newcommand\azXVIIIadvantage{17.9\%}
+%\newcommand\azALLadvantage{30.6\%}
+%
+%\newcommand\azXVIencoreIII{6.5\%}
+%\newcommand\azXVIIencoreIII{14.7\%}
+%\newcommand\azXVIIIencoreIII{24.8\%}
+%\newcommand\azALLencoreIII{17.6\%}
+%
+%\newcommand\azXVIencoreV{34.4\%}
+%\newcommand\azXVIIencoreV{7.4\%}
+%\newcommand\azXVIIIencoreV{51.3\%}
+%\newcommand\azALLencoreV{36.6\%}
+%
+%\newcommand\azXVIvista{3.4\%}
+%\newcommand\azXVIIvista{3.7\%}
+%\newcommand\azXVIIIvista{2.6\%}
+%\newcommand\azALLvista{3.1\%}
+%
+%\newcommand\azXVIovation{6.5\%}
+%\newcommand\azXVIIovation{37.1\%}
+%\newcommand\azXVIIIovation{3.4\%}
+%\newcommand\azALLovation{12.1\%}
+%
+%%\newcommand\azALLsksta{}
+%\newcommand\azALLsksta{172}
+%%\newcommand\azXVIsksta{}
+%\newcommand\azXVIsksta{54}
+%%\newcommand\azXVIIsksta{}
+%\newcommand\azXVIIsksta{42}
+%%\newcommand\azXVIIIsksta{}
+%\newcommand\azXVIIIsksta{76}
+%
+%%\newcommand\azALLstarisk{}
+%\newcommand\azALLstarisk{8.7\%}
+%%\newcommand\azXVIstarisk{}
+%\newcommand\azXVIstarisk{2.8\%}
+%%\newcommand\azXVIIstarisk{}
+%\newcommand\azXVIIstarisk{2.1\%}
+%%\newcommand\azXVIIIstarisk{}
+%\newcommand\azXVIIIstarisk{3.8\%}
+%
+%%\newcommand\azALLskimmers{}
+%\newcommand\azALLskimmers{299}
+%%\newcommand\azXVIskimmers{}
+%\newcommand\azXVIskimmers{85}
+%%\newcommand\azXVIIskimmers{}
+%\newcommand\azXVIIskimmers{63}
+%%\newcommand\azXVIIIskimmers{}
+%\newcommand\azXVIIIskimmers{151}
+%
+%%\newcommand\azALLstreet{}
+%\newcommand\azALLstreet{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azALL}}_{\texttt{\phantom{\textbackslash}street}}$}
+%%\newcommand\azXVIstreet{}
+%\newcommand\azXVIstreet{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azXVI}}_{\texttt{\phantom{\textbackslash}street}}$}
+%%\newcommand\azXVIIstreet{}
+%\newcommand\azXVIIstreet{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azXVII}}_{\texttt{\phantom{\textbackslash}street}}$}
+%%\newcommand\azXVIIIstreet{}
+%\newcommand\azXVIIIstreet{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azXVIII}}_{\texttt{\phantom{\textbackslash}street}}$}
+%
+%%\newcommand\azALLstore{}
+%\newcommand\azALLstore{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azALL}}_{\texttt{\phantom{\textbackslash}store}}$}
+%%\newcommand\azXVIstore{}
+%\newcommand\azXVIstore{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azXVI}}_{\texttt{\phantom{\textbackslash}store}}$}
+%%\newcommand\azXVIIstore{}
+%\newcommand\azXVIIstore{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azXVII}}_{\texttt{\phantom{\textbackslash}store}}$}
+%%\newcommand\azXVIIIstore{}
+%\newcommand\azXVIIIstore{\smaller[3]\bfseries${}^{\texttt{{\textbackslash}azXVIII}}_{\texttt{\phantom{\textbackslash}store}}$}
+%
+%%\newcommand\azALLskperinc{}
+%\newcommand\azALLskperinc{1.3}
+%%\newcommand\azXVIskperinc{}
+%\newcommand\azXVIskperinc{1.4}
+%%\newcommand\azXVIIskperinc{}
+%\newcommand\azXVIIskperinc{1.2}
+%%\newcommand\azXVIIIskperinc{}
+%\newcommand\azXVIIIskperinc{1.3}
+%
+%%\newcommand\azALLskperskinc{}
+%\newcommand\azALLskperskinc{1.5}
+%%\newcommand\azXVIskperskinc{}
+%\newcommand\azXVIskperskinc{2.5}
+%%\newcommand\azXVIIskperskinc{}
+%\newcommand\azXVIIskperskinc{1.3}
+%%\newcommand\azXVIIIskperskinc{}
+%\newcommand\azXVIIIskperskinc{1.5}
+%
+%%\newcommand\azALLskperreginc{}
+%\newcommand\azALLskperreginc{1.2}
+%%\newcommand\azXVIskperreginc{}
+%\newcommand\azXVIskperreginc{1.3}
+%%\newcommand\azXVIIskperreginc{}
+%\newcommand\azXVIIskperreginc{1.2}
+%%\newcommand\azXVIIIskperreginc{}
+%\newcommand\azXVIIIskperreginc{1.3}
+%
+%
+%%\newcommand\azALL{}
+%%\newcommand\azXVI{}
+%%\newcommand\azXVII{}
+%%\newcommand\azXVIII{}
+%
+%
+%%%% TABLE usss-results
+%% Note: FY18 encoded using Roman numerals as fyXVII.
+%
+%\newcommand\usssfyXVIIIstart{October 1, 2017}
+%\newcommand\usssfyXVIIIend{September 30, 2018}
+%\newcommand\usssfyXVIIIincidents{13}
+%\newcommand\usssfyXVIIIsksta{11}
+%\newcommand\usssfyXVIIIstarisk{1.26\%}
+%\newcommand\usssfyXVIIIrptsksta{2}
+%\newcommand\usssfyXVIIIskimmers{42}
+%\newcommand\usssfyXVIIIskperinc{3.2}
+%
+%%%% TABLE skimcost
+%
+%

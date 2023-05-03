@@ -1,0 +1,194 @@
+%and !TEX root = paper.tex
+\section{Introduction}
+\label{sec:intro}
+
+Passively listening to wireless transmission from portable electronic devices like  
+smartphones and smartwatches can reveal location of the user and pose significant privacy concerns.   
+% introduce a
+%significant privacy threat: an attacker can track a user's
+%location~\cite{locpriv-pervasive}.  For instance, a malicious application can
+%actively share a device's identity and GPS coordinates with a third party.
+This is feasible because many transmissions from portable devices have limited
+range; receiving a transmission implies the transmitting device must be nearby.
+One such communication technology is Bluetooth Low Energy
+(BLE), which devices manufacturers have integrated into many popular portable devices, 
+such as smart phones and laptops.% To an extent recently COVID-19 contact 
+%tracing leverages BLE in variety of forms: employee badges and so on~\cite{}. 
+
+
+Unfortunately, BLE has the potential of being significantly easier for an 
+attacker to track it. One of BLE's primary features is continuous transmission 
+of ``advertisement'' beacon messages. Beacons indicate the presence of the device 
+to nearby devices to help locate a missing
+device, and to provide seamless handoff between devices (e.g., Apple's
+continuity protocol). BLE advertisements require negligible energy to transmit,
+so they can be sent frequently (e.g., once a second) and continuously (i.e.,
+the entire time a device is powered on). Even COVID contact tracing apps rely on the BLE
+ advertisements as they provide continuous transmission mechanism on smartphones. 
+
+% Fortunately, these attacks are difficult to execute in practice: protocols on
+% portable devices like WiFi only communicate intermittently in
+% order to preserve battery life~\cite{}. Therefore, devices can only be tracked 
+% opportunistically with WiFi: namely, when the device happens to communicate. In addition,
+% these wireless protocols often hide the identity of the transmitter by randomizing
+% MAC addresses and encrypting payloads.
+
+
+Fortunately, the BLE protocol includes privacy protections that hide the identity of
+the device in advertisements. Namely, the BLE protocol randomizes the MAC address of the
+device every 10--15~minutes. Several attacks have been attempted on MAC addresses, which
+can be fixed with software changes and/or required continuous tracking of the
+devices~\cite{Iphonetracking_becker,MACRandomizationfail_Martin}. Thus, the simple protection of MAC randomization 
+still has prevented attackers from using BLE's continuous transmissions to track devices. 
+
+
+% no physical layer signature exists for ble... it's simple and easy modulation 
+% no rf finger print that can seperate 
+
+In this work, we present a new attack on BLE devices that can uniquely
+identify a device based on a physical-layer fingerprint existing in each user device 
+BLE transmitter's hardware. 
+%
+%Our attack uses a low-cost SDR, which one can carry around in their pocket to capture BLE. %with battery power to 
+%passively sense the entire 2.4 GHz channel~\cite{sparsdr}, so that even frequency hopping can 
+%be easily tracked. 
+%
+%This attack is very effective, an attacker needs to place an SDR in proximity of a 
+%target device once to builds a physical-layer fingerprinting model for the target device and 
+%then it can track the target device in the field any time later, and requires no continuous tracking of the device. 
+%
+% We also establish a field experiment methodology with defining clear goal of minimizing the
+%  false positive and false negative, which would serve as a benchmark for all future work. \todo{improve previous sentence}
+%
+Furthermore, since our attack models the transceiver hardware, one would need to change the hardware to mitigate the 
+attack. 
+%Finally, we provide discussion on stratigies to mitigate such attacks in the future.
+%
+%Radio Frequency (RF) fingerprinting techniques extract hardware 
+%impairments of the transmitter chain from the physical layer signal. 
+%Such techniques have been studied as a defense mechanism (like authentication, 
+%rogue device identification) for over a decade~\cite{}. Furthermore, these physical-layer
+%fingerprinting techniques mostly have been demonstrated on protocols that use dense high-speed 
+%modulation techniques, such as WiFi~\cite{??}.
+%
+%A natural question is, if there are unique physical-layer fingerprints for BLE transceivers,
+% which can be used for RF fingerprinting. 
+%
+%A key observation that makes this attack possible most of Smartphone 
+%and Smartwatches have a combo chip WiFi+BLE chip, i.e. a single chip which
+%does both BLE and WiFi, saving chip-area by sharing the core transcevier 
+%compoenents except for the modem. 
+%
+We observe that BLE radios often share a chip with the WiFi. Therefore, the well-studied unique physical-layer fingerprints for WiFi~\cite{
+vohuuusrp,
+Brik_radiometric,
+deviceID_kose}.
+can be used to track BLE devices as well. We show with extensive experimentation that the carrier frequency 
+ offset and IQ imperfections (IQ offset and IQ imbalance), features that are 
+ known to be distinguishable for WiFi, work for BLE as well and can be estimated accurately. 
+
+%If these features are extracted for BLE, could be used for hardware phsyical layer identification. 
+However, the extraction of these physical-layer fingerprints of a BLE device is much more 
+challenging than WiFi.
+%
+Specifically, BLE signals are shorter in time, narrow bandwidth, less dense, and more naive than WiFi signals; therefore, they provide significantly less information for an attacker to fingerprint the physical layer characteristics of the transmitter.
+%
+In contrast, WiFi in particular, lends itself to an accurate estimation of transmitter's physical layer characteristics like CFO and IQ offset, as part of decoding process i.e., the preamble of WiFi has signal features like LTF (Long Training Field) and multiple subcarriers to enable extraction of the physical layer fingerprints.
+In contrast, BLE has short preamble (the known bit sequence at the beginning of the
+packet), low bitrates (1~Mbps), and simple
+Frequency Shift Keying (FSK) modulation scheme give an attacker much less information to profile 
+physical layer features of a transmitter (See Section [ref] for details). In fact, no prior work
+ has demonstrated that it is possible to obtain accurate and identifiable estimates of hardware
+  imperfections for BLE transmitters. Having a fine-grained and accurate hardware imperfection 
+  estimation is of a significant importance when we want to be able to identify a particular 
+  device among a huge set of other devices, potentially with hardware imperfections close to our device. 
+We develop a novel techniques that helps us to combat the simple nature of BLE signals (low bandwidth and FSK transmission) and provide accurate and fine-grained estimates of hardware imperfections of the transmitter detailed in Section 3. We found that this method significantly reduces the standard deviation of our estimation and provides a 10x accuracy improvement compared to the existing methods for estimating these imperfections.
+
+
+% One of the main challenges is that the preamble which is the known part of the signal and in many RF fingerprinting schemes is used to estimate the fingerprints, is very short (8 microseconds) for BLE, which impedes the estimation of transmitter impairments. We cannot augment the bandwidth, but we potentially aim to mitigate short preable time-window. Our insight is that we can decode the BLE message, then reconstruct an ideal
+% version of the signal from the decoded bits, then we have a longer known signal
+% than the preamble to compare with to find imperfections. This technique is particularly more effective for BLE signals as their imperfections don't affect the decoding process unlike WiFi.
+
+% Next, extracing the CFO and IQ imbalance simultaneously with an FSK signal is challenging, as \todo{...}
+% We model this insight as an optimization problem over the whole packet by mathematically modeling the imperfect signal, and find the primary imperfections---CFO and IQ imperfections---using a gradient descent based non-convex optimization technique. 
+
+%Although this signal is not complex enough to estimate two different imperfections independently, we demonstrate it is possible to jointly estimate the two primary imperfections---CFO and IQ imbalance---using a gradient descent based non-convex optimization technique. We found that this provides a 10x accuracy improvement compared to independently estimating CFO and IQ imbalance.
+
+% \todo{not sure what to do with the next part, suggestion is to delete:
+% We also are the first to describe the impairments introduced by the low-power
+% BLE architectures.
+% %
+% These transmitters save energy by using analog components (rather than digital
+% signal processing) to generate the FSK signal.  Specifically, they use
+% an analog oscillator (called a PLL) that can deviate its generated frequency by
+% positive deviation ($+f_d$) to represent a one, and by a negative deviation
+% ($-f_d$) to represent a zero.
+% %
+% We examine these frequency deviation patterns for a set of 20 devices that are
+% the same make and model, and we observed that there are patterns in the
+% histogram of the frequency deviation, namely how the device represents a one
+% and a zero.
+% %
+% Therefore, we demonstrate that one can fingerprint the unique transmitter
+% characteristics of low-power devices by using a histogram of these frequency
+% deviations.
+% }
+
+%profile the hardware impairments of the loop filter, we can characterize all
+%kind of BLE devices. Furthermore, the loop filter are necessity for an BLE
+%chip, hence it enables us to achieve universal RF signature. A natural
+%question, is how can we learn the loop filter characteristics. O We build a new RF signature based on this observation, specifically,
+
+
+%no more uses the IQ architecture for RF transmission, instead use digital PLL
+%with are fed directly with a digital signal. A consequence of these
+%architectures therefore is that we can no more have fixed hardware impairments
+%as carrier frequency offset and IQ imbalance. The new chipsets have a large
+%market where they are using for fitness trackers to reduce the radio power
+%consumptions. This requires us to identify a new signature to classify these
+%devices. 
+%introducing
+%a new technique that profiles the 
+%
+%Finally, we demonstrate that awe can combine 
+
+%large packet size and mutli-carrier modulation, which require
+%estimation of the hardware impairments like CFO and IQ imbalance as part of
+%standard decoding scheme. A natural question is how can we extract these
+%parameters (CFO and IQ imbalance) from BLE transmission as accurate as WiFi
+%transmissions.
+%
+%Most techniques employ signal processing algorithms as well as classical
+%machine learning and new deep learning architectures to extract and classify
+%hardware impairments.
+
+%Furthermore, we make an interesting observation that most smartphones use a
+%combo-chip for BLE and WiFi devices, therefore if such signatures can be
+%detected using BLE, we would achieve and ubiquitous~\todo{use different word}
+%attack scheme which can track user everywhere and continuously. 
+%%
+%We profile multiple different BLE chips, and learn that there are multiple chip
+%design architectures. We build an universal RF signature scheme, which allows
+%to create a unique signature across different chip architecture and build a
+%robust attack. 
+
+%By leveraging the non-linear optimization using gradient descent, we can
+%identify devices which use combo-chip for WiFi and BLE where they share similar
+%hardware architecture for RF front-end, and therefore can use RF signature
+%based on CFO and IQ imbalance. However, turns out that in order to further
+%reduce the power consumption there are new architecture for BLE devices which
+
+% \todo{four principle of writing, what is the problem? why is it hard? naive solutions and your amazing solution?}
+Finally, we conduct extensive experiments to demonstrate the feasibility of our 
+RF fingerprinting attack in multiple situations from lab to the wild. We first devise a methodology 
+that is accurate enough to distinguish devices from the same make and model with 95-100 percent accuracy in a 
+controlled lab environment at different SNR levels. Then we collect packets from a large set of 
+devices observed in the field---in coffee shops and library---to evaluate
+ how well this method works in an uncontrolled setting.%, and to gain insights about how much 
+ %distinguishable the actual devices in-use are.
+ We find the hardware 
+ imperfection features of these devices collected in a completely uncontrolled environment
+ are distinguishable with an average False Positive Rate (FPR) of 1.21 percent and False Negative 
+ Rate (FNR) of 2.53 percent. We then deploy and evaluate our attack in typical scenarios that an attacker might do. Moreover, we test the effects of temperature on the robustness of RF fingerprints to evaluate practicality of BLE fingerprinting.
+
+ %However, we also demonstrate that not all devices are as distinguishable as others and the ability to identify them depends on how distinguishable or common their hardware imperfection features are. We then profile the imperfections of a set of 17 target devices and try to idenftify them in a new place a few days later. We show that we can identify these targets with FPR of 3.5 percent and FNR of 3.21 percent. Finally, we deploy an attack scenario study in which we profile a volunteer individual and track their presnece at their home over time. The person moves inside and outside of the home and we are succesfully able to detect their presence over time. This experiments demonstrates a realistic scenario in which RF fingerprinting attack can threaten the privacy of the person. Moreover, we experiment the effects of environmental conditions such as temperature on the robustness of RF fingerprints to evaluate practicality and limitations of RF fingerprinting in the real world. To the best of our knowledge, this is the first paper that provides evidence and evaluations on practicality of RF fingerprinting in the real world setting and also conducts experiments to demonstrate the limitations.

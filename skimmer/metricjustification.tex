@@ -1,0 +1,169 @@
+\section{Metric Justification}
+\label{sec: metricjustification}
+
+Considering our six metrics, there may be some disagreement on whether or not
+such methods are capable of finding credit card skimmers, or have too high
+of a false negative rate. The following section provides some justification
+of the six metrics in order to best explain why they are effective in finding
+skimmers. To address the potential criticism that these metrics ``may not be
+enough'', we also address what a potential smart criminal may need to do to
+circumvent our measures. This stated, from our experience in discussing with
+both secret service and weights and measures staff during our tri-state study,
+it is highly unlikely that any criminals are actively taking such actions, given
+the skimmers which have thus far been found via ocular analysis of gas pump
+ribbon wires. Additionally, the organizational structure of skimming
+operations, as highlighted in earlier sections, leads to difficulty when a
+criminal would like to implement these countermeasures. These organizational
+roadblocks are noted when pertinent to the metric justification at hand.
+
+\subsection{Filtering Out Classic Instead of BLE Devices}
+
+Using the data collected of over 300 unique gas stations in a tri-state area, we
+were able to qualitatively describe the Bluetooth environment of various locations
+pervading day-to-day existence, including university cafeterias, research labs, and
+most notably, gas stations. This allowed us to perform a latitudinal study which cataloged
+what was normal or abnormal for various environments. It can be seen from a CDF of unique
+classic vs ble MAC addresses observed at each of the gas stations that there is a much higher
+probability of seeing at least one BLE device than there is of seeing a single classic device.
+\todo{Ugh, try to get some actual statistics in here}
+This suggests that classic devices are much more abnormal within the gasstation environment
+than low energy devices. By flagging these devices as abnormal, we have a higher probability of
+addressing one of these devices as being a skimmer.
+
+Additionally, there is an incentive on the part of the criminal to build a skimmer using a
+Classic instead of a BLE module. First, since the ribbon wire within the pump can provide
+the skimmer with power, so energy usage is not a concern. Secondly, according to Bluetooth
+SIG, BLE has an over-the-air transfer rate of around 0.25 Kbit/s, which Classic has a transfer
+rate of up to 1Mbit/s. \todo{Citation Needed} Due to the desire to stay off of camera, and the avaliability of
+Classic modules, there is more benefit to developing the skimmer with classic bluetooth. This
+is confounded with the fact that there are no real trade-offs in using a Classic device, since
+it's configurability is equivalent to a low energy module, unless criminals were deliberately
+trying to circumvent our methods, or appear a normal part of the Bluetooth environment, which
+does not currently seem to be a concern for them according to governmental sources.
+
+\subsection{The Distinction between Unclassified and Classified Devices}
+
+In the bluetooth communication protocol for both Classic and BLE devices, there is specification
+allowing for a Bluetooth Device Class, used to identify to the user what the device might be
+this is practical in most consumer applications, allowing users to determine whether the
+device is a Bluetooth speaker vs. smart watch vs. any other Bluetooth electronic. It is also
+used for interoperability in more complex systems. The Bluetooth device class is often
+implemented as a stage of the consumer production process, and is not set by the manufacturer of
+the chip itself. For freshly produced chips, it is typical to set the default response for
+device class on the chip to be 0x1F00, which, according to specification \todo{citation},
+indicates an unclassified device. The Android OS defaults to this value rather than null when
+a response from an enquery scan is partially recieved \todo{citation, I think this is true.}.
+Once unclassified modules enter production, such as in the ``Tile'' object-finding fobs, they
+are given a device class, in this case 0x0000, for miscellaneous consumer electronic. Other
+such classes include 0xYYYY, which is used for A/V handsfree devices. In figure X, we have
+included a CDF of classic devices, near gas stations, with the Unclassified(0x1F00) and
+Classified(any other two byte) device classes. The existence of an Unclassified device is
+far more unlikely than that of a classic device than within a Classified class.
+
+From the criminal perspective it requires far greater technical skill to modify the device
+class for purposes of obsfucation, including modification of the chip's firmware and function,
+and has no practical benefit for recovery, since this a superficial trait of device function.
+It is unlikely that a criminal would take the measures neccessary to modify the device class
+of the chip, and they typically do not, and thus this remains a valuable metric in finding
+anomalous devices.
+
+\subsection{A Hitlist}
+
+The list of manufacturer-alotted MAC address ranges for the production of Bluetooth modules,
+which we use to flag potential skimmers is, at first glance, one of the more questionable
+metrics, and has the greatest chance of selection bias, of leading to false negatives.
+However, there is some consideration which has gone into the selection of devices of devices
+which are included on the hitlist. The initial hitlist has consisted of all those module
+manuafacturers who readily, over the internet, have bulk amounts of Bluetooth Classic modules
+for sale. This was arrived at through a scraping of SparkFun ... and other hardware
+manufacturing websites. Additional entries can be added on the fly, in the case wherein a
+skimmer is discovered using a new manufacturer which was previously unknown. When this happens,
+our metrics will bring any missed entries up in ranking. It acts as an accompaniment to the
+other metrics by reducing the range of manufacturers considered significantly.
+
+There are some disagreements which can arise in regards to MAC randomization and obsfucation, as
+a criminal could ostensibly perform these changes at a  low cost. While we have not yet been
+informed of skimmers which have done so, this would also make credit card data recovery more
+difficult for the criminal, as they would need to note what the original MAC address of the
+device is, or flag it in some other way, using a name, or a pre-paired device to reconnect. Both
+of these options have tradeoffs which any prospective criminal would need to consider. At the
+current time such measures do not seem to be widely undertaken. In the event that criminals do
+begin resorting to MAC address randomization, a different approach would need to be taken, one
+such possibility is discussed later within this paper.
+
+\subsection{Odd Name Clustering}
+
+Aside from a hitlist of potentially dangerous devices, the next portion of the Bluetooth enquery
+response packet which could be reasonably used to detect anomalous devices is the device name
+field. In the case where the person retrieving the data is not the same as the person which
+implanted the data, a device name can be an easily communicable feature, and reduce error during
+the harvesting process. Additionally, the default names assigned by the manufacturers to
+bluetooth chips commonly used in skimmers appear odd to the human observer, and stand out like a
+sore thumb within the gas station environment. To illustrate this, imagine a day of seeing either
+unnamed devices or devices named ``Michelle's IPhone'', and then seeing a device named
+``RNBT-Q7XT'' (a common skimmer module name). The RNBT module immediately appears suspicious to
+the observer, but it would be better to quantify this automatically. In order to accomplish
+such a task, we implemented edit distance clustering based anomaly detection, based upon
+the unsupervised nature of the data, as well as an intuition on the nature of device names
+within the environment in order to better isolate those devices for which the default
+manufacturer name was left unmodified.
+
+For the distance metric, it was natural to use either hamming distance or Jaro Winkler, since
+JW measures strings with the same prefix as more similar, the regular Levenshtein
+edit distance metric would not account for this, and the bluetooth environment contains
+many names that begin with the same string, e.g. ``Samsung TV...''.  Additionally
+, Levenshtein would often confuse more complex device names like \"S02525b5df3834566R
+\" and \"S277d67fe6263c208C\", because while these strings seem close to the human
+eye, they are far in edit distance. Hamming distance, performed decently, since a
+lot of the device names have the same letters in the same positions, but a manual
+analysis of the dataset found Jaro Winkler to be more robust for this task.
+
+There were three main approaches considered when clustering, we chose to do hierarchical
+clustering, which made since, since it seemed that device names came in ``types''
+. There are several possible approaches to this, One would be simply integrating
+the nearest points into each-other in a cluster, or determining the centroid, and clustering
+from that, but that which makes the most sense is ward's algorithm, which joins clusters to
+create the minimum variance cluster. After clustering was performed, a somewhat arbitrary cutoff
+point was defined, such that each cluster has no greater a cophenetic distance (
+a measure of how closely the dendrogram preserves the distances between the
+original points) than 1.0. If the points were in a cluster with fewer than fifty other names,
+they were considered odd , which tended, from visual analysis, to have a pretty high false
+positive rate, which was preferred in the case of this metric, since a well defined,
+generally applicable model for the environment would be quite complex and the remaining
+set of points was small enough to be visually verified by the experimenters. \todo{This
+  doesn't seem scientific enough?} Of course, such a model can always be improved, and we
+continue to do so as time progresses.
+
+Of course, criminals have several courses of action when responding to such analysis; they could 
+leave the device unnamed, or name it something inconspicuous, along the lines of ``Tile''. In
+practice, this does not seem to be the case. Criminals often name the devices, according to
+government officials, along the lines of ``Police Scanner 13'', which is classified as odd under
+our metrics. Additionally, while a single metric may not hit, as the earlier analysis suggests,
+several others have a high likelihood of doing so, and the device, as we have seen in practice,
+will remain flagged. Ignoring this metric, despite the potential flaws, would be a mistake.
+
+\subsection{Near Gasstation}
+
+The feature of being near a gas station should make implicit sense. Non-superficial skimmers can,
+in fact, be installed in locations other than gas pumps, such as parking pay stations, but
+this work has focused on gas pumps as these are a prime target for skimmer installation, and
+serve indicative of the general environment of skimmers in the wild. The techniques for finding
+skimmers in gas pumps can certainly be applied more generally, but with the scope of this
+study, being near a gasstation is a significant flag for an interesting device. Given our
+crowd-sourced approach to detection, some method of limiting the scope of observation was
+neccessary. One could imagine applying such scoping when addressing the issue of parking pay
+station skimmers. If we did not limit the geolocation scope of skimmer observation to areas in
+which skimmers could reliably be discovered, it may have been impossible to sort out the amount
+of noise, and to develop accurate measurements of the environment.
+
+\subsection{Seeing Double (Seen Twice)}
+
+This final metric is perhaps the simplest. A skimmer is a static, unmoving device, but our
+observer base is not. Additionally, the environment of a gas station has a high degree of flux;
+individuals with bluetooth enabled devices come to the pumps and leave them constantly. Thus,
+if a device is seen twice at the same location, it is a important flag; this device is ruled out
+from being transient, and has a much higher probability of being a skimmer when paired with the
+other metrics presented here. The difficulty of determining this metric when a criminal
+implements MAC randomization is addressed in a later section. For this metric, we chose to flag
+devices which were seen in the same location with greater than an hour between measurements.
+

@@ -1,0 +1,125 @@
+%!TEX root = paper.tex
+\section{Introduction}
+\label{sec:intro}
+
+Wireless personal devices such as mobile phones, fitness trackers, personal medical devices etc. are widely used in today's world. 
+%
+To provide a seamless experience to the end user, these devices continuously send wireless transmissions containing several pieces of information. 
+%
+These transmissions can be either for indicating their presence to other wireless devices, or to send data to specific devices.
+%
+For instance, continuous WiFi probe requests (upto 2000 probes an hour~\cite{sn1}) ensures your mobile devices are always connected to the highest strength access point, Apple devices continuously transmit Bluetooth Low Energy (BLE) advertisements (200 times a minute~\cite{sn2}) to enable the Continuity protocol etc. 
+%
+
+Unfortunately this convenient experience comes at a cost. 
+%
+These wireless packets can be sniffed/eavesdropped by a completely passive observer, and various features can be extracted from them to uniquely identify your wireless device.
+%
+Moreover, device identity leakage is only the first step, as the adversary can then perform more egregious privacy violation like tracking the device owner, both physically and behaviorally.
+%
+In essence, our wireless personal devices are homing beacons, that have put a target on our backs for all types of adversarial privacy leakage.
+%
+
+These privacy concerns are hard to resolve at the wireless protocol level, due to the fundamental nature of wireless communication. 
+%
+Encryption standards protect post-authentication data payloads, but the link layer headers still contain unique MAC addresses for identification. 
+%
+Furthermore, at the pre-authentication stage, wireless devices transmit information in device discovery packets in the clear, simply to enable detection by other wireless devices. 
+%
+In recent times, this problem is compounded by the use of these unencrypted discovery packets to transmit data (e.g., Bluetooth Low Energy advertisements in Apple devices). While MAC address randomization can protect this unique identifier, the other pieces of information in these packets have been exploited by several papers to create different types of identifiers. 
+%
+This problem is worse at the physical layer, wherein features identifying the transmitter can be derived, by the mere presence of a transmission.
+%
+
+In today's world, passive eavesdropping based device identification and user tracking is not just a cautionary tale, but a reality.
+%
+Large scale passive wireless data collection efforts have been undertaken by research groups, which have resulted in huge databases, some of which are available to the public~\cite{sigcomm2004,sapienza2013,wigle}. 
+%
+While these databases are partly anonymized, they still reveal personal user information. For instance, I can run a search to see all households using a Bluetooth CPAP machine, indicating there is a sleep apnea patient in the house.
+%
+Several industry players have been also found to passively collect wireless traffic secretly with the aim of identifying and tracking users, primarily for targeted marketing~\cite{londontraintracking,nytimesstoretracking,googlewifi,googleble}~. 
+%
+Understanding in depth how your device can be identified and tracked, is therefore of immediate importance.
+
+\begin{comment}
+Standards organizations have understood the potential privacy leakage and incorporated measures to protect privacy. Encryption techniques exist to protect information in active data connections. Unfortunately these security mechanisms only protect information in layer 3 and above. Link layer headers are still transmitted in the clear. More than that, there is a whole class of transmission - device discovery mechanisms that devices use to find each other and are therefore needed to be transmitted in the clear. 
+
+To protect MAC address transmission in clear, MAC randomization methods were introduced. However, a number of papers have still managed to create identfying features from the various fields available in these device discovery packets. In the case of physical layer, just the mere presence of transmissions is enough to extract features for identifying these devices.
+\end{comment}
+In this survey, I present several different techniques in research literature for wireless device identification at the link and physical layer through passive eavesdropping of packets. 
+%
+I only consider papers identifying WiFi and Bluetooth (both classic and Low Energy) transmitters, as these are the most popular wireless protocols for personal devices. 
+%
+These techniques have their own pros and cons, and no one technique can be used in all situations. 
+%
+However, broadly these techniques can apply to almost all existing wireless protocols.
+
+For an adversary, the choice of a device identification technique is a tradeoff decision, based on the pros and cons. 
+%
+Depending on the use case and intended goal, one or several techniques may be used. 
+%
+For instance, analyzing device discovery packet contents can be done using commodity off-the-shelf wireless radios, but the identifier may change with a software update. 
+%
+On the other hand, transmitter imperfections are immune to changes in software, but require the use of special software radios for data collection and analysis.  
+%
+To compare the techniques, I use a set of heuristics that broadly fall in three categories -- universality, stability and practicality -- following the definitions in~\cite{csurprivacymetrics}. 
+
+An adversary who has successfully identified your device, is well on their way to achieving their ultimate goal of tracking the device user. 
+%
+In fact, physical and link layer information used for identification is more than sufficient to track and monitor the users -- physical location, user behavior or even body movement. 
+%
+I will present several papers, which showcase the extent of this privacy leakage. 
+%
+Majority of these papers rely on unique MAC addresses as a device identifier. While address randomization is available, the device identification techniques I will discuss show that it is not a deterrent to privacy violation.
+%
+
+The rest of the paper is organized as follows: Section~\ref{sec:threatmodel}~provides a formal definition of the passive wireless eavesdropping threat model. 
+%
+In Section~\ref{sec:device_identify}~I define the various sources of information that are available at the link and physical layer for wireless device identification. 
+%
+I also define the taxonomy for classifying the papers in device identification, as a set of key questions that need to answered to understand the tradeoffs between the techniques. 
+%
+In Section~\ref{sec:survey}~I present the various papers grouped according to techniques in physical and link layer, and present a comparison based on the taxonomy. 
+%
+In Section~\ref{sec:user_metadata}, I look at the consequences of successful device identification, by presenting several papers aiming to performing user tracking in several ways. 
+%
+Section~\ref{sec:future_research}~identifies future research in the area from several viewpoints, and we conclude in Section~\ref{sec:conclusion}.
+\begin{comment}
+In the last few years, we have seen a huge increase in the number of wireless IoT devices. This growth is primarily due to the profileration of consumer devices such as smartphones, fitness trackers, wireless medical devices etc. We refer to these products as \textbf{wireless personal devices}, i.e. individually owned consumer devices that use one or more wireless transmitters to interact with other devices. These devices have made our lives easier, providing us with a lot of convenience.
+
+Among the wide variety of existing wireless communication standards, WiFi and Bluetooth are the most popular for wireless personal devices. The main reason for this has been the proper integration of these standards onto smartphones. blah blah
+
+To provide a seamless experience, these devices continuously transmit wireless data or control packets. For instance, continuous WiFi probe requests (10 times a second [cite]) ensures your mobile devices are always connected to the highest strength access point, Apple devices continuously transmit beacons [200 times a minute [cite]) to enable the Continuity protocol etc. 
+
+However, this continuous emission of wireless traffic can have privacy implications. A number of these wireless packet types (probe/advertisement/beacon) contained the MAC address of the wireless radio, which can uniquely identify transmissions from that device. It is possible to passively eavesdrop all the wireless packets, and use that information to gain insights about the wireless devices and the users of these devices.
+
+A number of entities -- corporate, research and individual
+
+The WiFi and Bluetooth standards organizations realized this privacy violation, and introduced the concept of MAC address randomization. The idea of randomization was to periodically change the MAC address, as tranmitted in wireless packets. A passively sniffing adversary won't be able to distinguish then, if the packets are being transmitted by one device or multiple. Consequently, all major OSs/wireless radio firmware started featuring the ability to randomize their MAC address
+
+Unfortunately, MAC address randomization proved to be less than effective in resolving the privacy issue because of two reasons. Firstly, a lot of existing wireless infrastructure such as hotspots/gateways has relies on the unique MAC address identifier to maintain smooth connectivity/services. Therefore, a frequently changing MAC address can have adverse effects on service guarentees, and consequently many wireless manufactueres choose to use less frequent randomization (if at all they use randomization).
+
+More importantly, these wireless transmissions (probes, advertisements, beacons, data packets) contain a large number of unique features in the form of other information fields and wireless signal properties. Therefore, an adversary aiming to identify a wireless device can still create a unique fingerprint using these features, and isolate packets from that device. 
+
+A simple counter to passive eavesdropping can be encrypting the wireless packets. In fact both WiFi and Bluetooth standards provide mechanisms to encrypt data packets for connected devices. However, these security mechanisms only protect information at layer-3 and above. Information in the link and physical layers are still available in the clear for an adversary, and represents the minimum information always at the eavesdropper's disposal.
+
+Further on, succesfully identifying the devices from which the packets originate is only the first step. The adversary can further use the available features to identify specific usage and personality traits of the device user, which makes it an extremely egregious privacy violation. This becomes even more of a concern in today's age, with BLE personal fitness trackers and personal medical devices leaking information about physical activities.
+
+\end{comment}
+
+\begin{comment}
+Number of IoT devices is growing. 
+
+Each of these IoT devices uses specific wireless interfaces to communicate with gateways and the internet. The most popular devices in the years to come will be WiFi, BT. Show the graph
+
+With the large number of devices and wireless messages being exchanged, there is a growing concern for messages being intercepted by an adversary. There are a wide variety of documented attacks on various IoT devices, but passive eavesdropping takes the cake.
+
+Definition of eavesdropping attack - Any attack in which a listener can passively listen to data packets transmitted by a transmitter, without the transmitter having any knowledge that such a passive listener exists in the environment. These transmission may either be directed to a specific receiver or be a broadcast message. In the specific case of Bluetooth and WiFi device discovery, these can also be a default behaviour of the transmitter in which it responds to a broadcast ping from the eavesdropper.
+
+Eavesdropping can reveal a wide variety of information about the transmitter. This can either be direct information about the transmission itself (physical characteristics of the transmitter, contents of the data packet etc), or even indirect inferences about the environment/user associated with the transmitter (data rate of BLE fitness bands is known to be proportional to the level of activity of the user wearing the band). This survey intends
+
+
+\cite{userphysical1}
+https://www.wired.com/2012/05/google-wifi-fcc-investigation/
+https://arstechnica.com/tech-policy/2011/04/judge-was-wifi-packet-sniffing-by-google-street-view-spying/
+\end{comment}

@@ -1,0 +1,67 @@
+\newif\ifdraft
+\drafttrue
+
+\documentclass[12pt]{ucsddissertation}
+% mathptmx is a Times Roman look-alike (don't use the times package)
+% It isn't clear if Times is required. The OGS manual lists several
+% "standard fonts" but never says they need to be used.
+
+\input{preamble.tex}
+% Required information
+\input{title.tex}
+
+% Start the document
+\begin{document}
+% Begin with frontmatter and so forth
+\frontmatter
+\maketitle
+\makecopyright
+\makesignature
+% Optional
+\input{dedication.tex}
+% Optional
+\input{epigraph.tex}
+
+% Next comes the table of contents, list of figures, list of tables,
+% etc. If you have code listings, you can use \listoflistings (or
+% \lstlistoflistings) to have it be produced here as well. Same with
+% \listofalgorithms.
+\tableofcontents
+\listoffigures
+\listoftables
+
+% Preface
+\input{preface.tex}
+
+% Your fancy acks here. Keep in mind you need to ack each paper you
+% use. See the examples here. In addition, each chapter ack needs to
+% be repeated at the end of the relevant chapter.
+\input{acknowledgements.tex}
+
+% Stupid vita goes next
+\input{vita.tex}
+
+% Put your maximum 350 word abstract here.
+\input{abstract.tex}
+
+% This is where the main body of your dissertation goes!
+\mainmatter
+
+% Optional Introduction
+\input{introduction.tex}
+
+\chapter{Discovering illegitimate Bluetooth devices}
+\input{skimmer/paper.tex}
+
+\chapter{BLE Physical-Layer tracking of Mobile devices}
+\input{bletracking/paper.tex}
+
+\appendix
+%\Blinddocument
+
+% Stuff at the end of the dissertation goes in the back matter
+\backmatter
+\bibliographystyle{plain} % Or whatever style you want like plainnat
+\bibliography{confs_long,skimmer,bletracking}
+
+\end{document}

@@ -1,0 +1,240 @@
+\begin{comment}
+    \todo{ move to related work, takSeveral attacks have demonstrated that a device can
+    be tracked across MAC
+    changes~\cite{Iphonetracking_becker,MACRandomizationfail_Martin}, but they
+    require an attacker to persistently track the device to fingerprint its
+    identity, therefore they do not provide long-term tracking capability.
+    }
+    
+    There are many prior approaches for fingerprinting wireless transmitters that
+    inspire the techniques we developed for BLE.
+    %
+    These techniques can be grouped into -- physical layer fingerprinting (e.g., CFO) developed for high-speed
+    wireless protocols (e.g., WiFi) or short-range protocols (e.g., RFID), and link layer fingerprinting (e.g., packet timing). 
+    %
+    Fundamentally link layer techniques are dependent on firmware/drivers, and therefore are useful only in the short term. In comparison physical layer techniques are more stable. We will now desribe these prior techniques and analyze if they provide a RF fingeprint that is sufficient for our attack model.
+    \end{comment}
+    \begin{comment}
+    . Also,
+    prior work has describe link-layer fingerprinting techniques (e.g., packet
+    timing) that can provide short-term tracking ability. However, these are
+    limited in their effectiveness because many are based on bugs in protocol
+    implementations that manufacturers can fix, or they require an attacker that is
+    persistently tracking its target.
+    %
+    
+    We will describe how none of these prior techniques can provide RF fingerprint of
+    Bluetooth Low Energy devices that is sufficient to perform a passive attack to
+    track a device over multiple locations and multiple days.
+    \end{comment}
+    \begin{comment}
+    \subsubsection{Physical-layer}
+    
+    Physical-layer identification techniques have been developed for various
+    wireless protocols using different properties of wireless signals.
+    %
+    Primarily, these properties are of two kinds:  hardware
+    imperfections (by analyzing transient or steady state signal), and signal propagation (by analyzing signal strength or channel state).
+    
+    \noindent\textbf{Hardware imperfection:}
+    %
+    This attack builds on a substantial body of prior work that demonstrated it is
+    feasible to extract stable wireless fingerprints of devices from their hardware
+    imperfections.
+    %
+    There are several imperfections that researchers have fingerprinted: (1) the transient portion of
+    the signal as the transmitter is warming up~\cite{Intrusion_hall,oscillator_azamehr,tximperfections_polak,steadystate_kennedy,femtocell_kennedy},
+    carrier frequency offset (CFO)~\cite{deviceID_kose,RFID_portability,compressedsensing_zhao}, \mbox{I/Q} imbalance~\cite{RFID_portability}, \mbox{I/Q} offset \cite{deviceID_kose},
+    magnitude and phase
+    error~\cite{deviceID_kose}, 
+    non-linearities in modulation and amplification hardware~\cite{roguewifi_liu,deeplearning_merchant,rfidphysical_danev}. 
+    
+    %signal processing algorithms or high-end receivers (e.g. vector signal analyzer
+    %in \cite{deviceID_kose}) or employ deep learning to extract these slight
+    %imperfections from the physical layer signal. Hardware imperfections that are
+    %previously used include 
+    
+    %To extract these important characteristics, various techniques from signal
+    %processing to deep learning have been proposed. 
+    %
+    %Danev et al.\cite{rfidphysical_danev} proposes using Hilbert transform to
+    %capture modulation shape features for OOK modulation and similar to
+    %\cite{Kennedy_rfsteadystate,femtocell_kennedy}, they propose fast Fourier
+    %transform (FFT) to capture spectral features for RFID devices.
+    %
+    %The disadvantage of using FFT for our problem is explained in section 4.1.
+    %Rehman et al. \cite{RFID_portability} extract Power Spectral Density (PSD)
+    %coefficients from preamble and use multi layer perceptron (MLP) as classifier. 
+    %
+    %To extract transient features, several techniques using phase, amplitude,
+    %frequency, spectral features (FFT and STFT), compressed sensing, and statistics
+    %(e.g. mean, variance and skewness) of transient portion of the signal have been
+    %proposed
+    %\cite{Intrusion_hall,oscillator_azamehr,tximperfections_polak,steadystate_kennedy,femtocell_kennedy,denoising_yu}. 
+     
+    As far as transients in BLE are concnerned , they are extremely short in duration (<4
+    $\mu$s), as are preambles (8 $\mu$s). Therefore such techniques are not
+    reliable and also result in lower measurement resolution. In contrast, our
+    technique utilizes the complete packet, providing better resolution.
+    %
+    Among aforementioned hardware imperfections, CFO and IQ imperfections have been shown to be the most distinguishing characteristics of the transmitter's harware by several researchers.
+    Liu et al. \cite{RFID_portability} extract CFO and IQ imbalance from CSI by
+    using nonlinear phase errors of different subcarriers. Brik et al.
+    \cite{Brik_radiometric} fingerprint WiFi devices by utilizing CFO, IQ origin offset, magnitude and phase
+    error and SYNC correlation reported by a vector signal analyzer. 
+    
+    However, fine grained measurement of CFO and IQ imperfections for BLE signals is much more challenging than WiFi signals. In fact, fine grained estimation and compensation of CFO and IQ imperfections are unavoidable steps in proper decoding of WiFi signals since the symbols are modulated in IQ data (CFO will rotate the IQ samples by time and IQ imperfection will move or change the shape of IQ constellation). As a result, WiFi lends itself to such accurate estimation, due to signal features like LTF and multiple subcarriers. In contrast, fine grained estimation and compensation of CFO and IQ imperfections is not needed for decoding BLE GFSK signal at all since symbols are not modulated as IQ constellation and also GFSK modulation can tolerate even several KHz o CFO. Consequently, unlike WiFi there is no specific signal feature in BLE signal which makes it possible to estimate CFO and IQ imperfections accurately. In fact, BLE signal has an 8 bit (8 microseconds) preamble, they are extremely short (advertisements are in the order of a very few hundreds of microseconds), each packet uses 1 subcarrier, and it uses a simple GFSK modulation. This simple nature of BLE signal makes it extremely harder than WiFi and some other technologies to fingerprint. Techniques that can be used for WiFi signal to estimate CFO and IQ imperfections either can not be applied or result in a poor resolution and accuracy for BLE signals. In addition, techniques that are specifically designed for measuring CFO for Bluetooth/BLE signal does not provide fine grained and accurate estimation as will be discussed in Section~\ref{sec:methodology}. Consequently, we need to develop a new technique for fine grained CFO and IQ imperfection estimation to enable fingerprinting BLE signals.
+    
+    Moreover, as we will show in later sections, not all BLE devices have distinct I/Q chains so I/Q imperfections do not exist for the devices.
+    %
+    Further on, magnitude and phase error do not exist in GFSK
+    modulation. The only hardware impairment from prior work that can be useful to fingerprint this kind of BLE devices is CFO. As we later found out, that even CFO is not sufficient when the number of devices become large even when we designed a new algorithm to etimate very fine grained CFO. Therefore, we need to find new hardware impairments to enable the attack.
+    
+    In recent times, a number of papers have also used deep learning techniques for RF identification. However, they were only able to distinguish a very few number of devices (e.g. 5 or 7 devices) even in a controlled lab setting.
+    Prior work has used CNNs~\cite{deeplearning_merchant,lora_robyns,gopalakrishnan2019robust} to identify WiFi, Zigbee and LoRa devices. For instance, Yu et
+    al. ,~\cite{denoising_yu} uses Denoising Autoencoders on I/Q samples of
+    semi steady state and steady state of the preamble. These techniques mostly train neural networks on preamble or transient part of the signal and their results are limitted to only a very few number of devices. The reason is preamble and transient are very short portions of the signal providing insufficient information for distinguishing large number of device or in a noisy environment in which test SNR may be different than training. This even gets worse for BLE signals as the preamble is extremely short. On the other hand, training on whole packet may result in overfitting the pattern of the bits instead of learning hardware imperfections as they are slight variations in the signal. This problem is even more significant in BLE signals as the advertisement packets are mostly fixed during a MAC address liftime (or at most a few different packet) and they change after MAC address randomization. Our second technique resolves both problems before feeding the input vector to CNNs, and is therefore robust to these concerns. 
+    
+    %For our attack scenario, using prior work is not straightforward. If we train on only preamble, it does not yield good results if test SNR changes, or there are a large number of devices (Two situations which will definitely happen in a public place) On the other hand, training on whole packet may result in overfitting. Our technique resolves both problems before feeding the input vector to CNNs, and is therefore robust to these concerns.
+    \end{comment}
+    \begin{comment}
+    However, the underlying problem of devices continuously transmitting Bluetooth
+    advertisements, does lead to another adversarial attack surface -- analyzing
+    the wireless signal properties of these transmissions. 
+    %
+    RF properties that particularly identify specific transmitter hardware
+    imperfections, can be used to derive a device signature, that can be used by an
+    adversary to potentially track target users.
+    %
+    The scary part -- such device fingeprints are unique to the transmitter
+    hardware, and as long as devices continue transmitting, no software/firmware
+    patch can resolve this tracking vulnerability.\noteby{NB}{Better phrasing}
+    \end{comment}
+    
+    \noindent\textbf{Signal propagation:} Researchers have proposed several
+    techniques that rely on the propagation of a target's signal to track it.
+    %
+    These techniques essentially estimate the physical location of a device by
+    observing all nearby device's signal propagation metrics, including signal
+    strength (i.e., RSSI)~\cite{rssi1,rssi4,rssi3} and
+    %
+    channel state information~\cite{csi2,csi3}. These techniques make it possible only
+    to track a target that has a unique physical location. For instance,
+    if no device is supposed to be in a particular location in the building, and we find using RSSI, we consider it rogue~\cite{rssi1}.
+    %
+    Our attack scenario on the other hand, requires precisely pointing out 1 moving BLE transmitter (e.g. a person holding a device and walking in their home or office). Signal propagation methods are by no means suitable to that task and so we don't consider them.
+    
+    \noindent\textbf{Summary:} BLE personal devices are beaconing all the time, and therefore there is a lot of merit as well as privacy concerns in fingeprinting them using hardware impairments. While there are existing methods for extracting hardware impairments from physical layer signals, they can't be directly used for BLE devices. In fact, the narrowband, short duration, simple modulation nature of BLE advertisements makes them challenging for designing physical layer attacks. In addition, no prior work in our knowledge has shown these methods to work outside lab environments, something which we must do for our attack scenario. This has been a big motivation in designing the techniques we present in this paper. In fact, we design techniques for fingerprinting BLE signals which are the hardest to fingerprint, in a real world environment and using these techniques, we enable the mentioned physical layer attack on BLE transmitters.
+    
+    
+    \begin{comment}
+    a device compared to other devices.
+    Mainly, these attacks assume that an attacker 
+    
+     However, signal
+    propagation techniques are unstable to changes in channel conditions, and
+    therefore hasn't been shown to reliably work outside lab settings. In
+    comparison, our technique operates independent of varying environments in
+    public spaces, making it a stronger attack space.
+    
+    Techniques have been designed to fingerprint radios of various protocols.
+    
+    An adversary can succesfully only exploit BLE advertisements for tracking, if
+    they can be reliably fingeprinted in any public environment. 
+    
+    
+    Existing research in RF fingerprinting have demonstrated varying degrees of
+    success, but in laboratory or controlled indoor environments.
+    
+    This is primarily due to short packet duration ($\le1ms$) of these
+    advertisements, as well as the narrowband nature of Bluetooth transmissions.
+    \end{comment}
+    
+    
+    \subsubsection{Link Layer}
+    \todo{Hadi: I think we should make this subsection very bried and just mention a few works and say that these attacks need persistent tracking and does not work for our purpose and also are solvable by firmware/software. then just explain a few ble/bluetooth specific papers like BlueID and say why our attack is better}
+    While our work is closely related to physical layer tracking, there are techniques that have been used for device identification at the link layer that we must also analyze for the sake of completeness.
+    These techniques are broadly grouped into either link layer packet contents (e.g.identifying persistent fields in probes) based or packet timing analysis (clock skew) based
+    
+    \noindent\textbf{Packet contents:}
+    Packet content methods are aimed at observing fields in the advertisement/probe response packets to develop an identifier
+    
+    Freudiger et al.\cite{sn1} observed that probe requests from random MAC
+    addresses can be linked using sequence numbers. Also, devices send actual MAC
+    address in authentication requests
+    %
+    Further on several pieces of work~\cite{infelem1,infelem3}~analyzed WiFi IEs of APs in Sapienza dataset. Since most of them didnt change over time, it was a reliable fingeprint in conjunction with IEEE company identifiers for device model identification.
+    %
+    
+    For Bluetooth devices Spill et al.~\cite{spill2007bluesniff} were able to reverse engineer Bluetooth
+    packets to extract MAC address and clock bits, at which point they were literally able to passively sniff hopping pattern of any device.
+    %
+    Ryan et al.~\cite{ryanble} extended the above for BLE, and also observed that
+    the hopping pattern in BLE is just fixed increments.
+    %
+    
+    Finally more recently,
+    Becker et al.~\cite{Iphonetracking_becker} observed that the bluetooth address randomizes asynchronously with the
+    advertisement payload, allowing the possibility of continual tracking.
+    %
+    Also, Martin et al.~\cite{MACRandomizationfail_Martin}~analyzed Apple Continuity
+    Protocol as the culprit for this continuous transmission. They found several
+    features in different packets that can be used to track devices and reveal user
+    information.
+    
+    These link layer methods unfortunately don't work for our attack model because they usually require constant listening to the transmitter which simply means if the attacker does not receive packets from a device for a while, it is no longer able to identify or track the device. Furthermore, by virtue of being a link layer packet contents analysis based attack,
+    such an attack can be potentially (and probably already ) resolved by modifying
+    the firmware.
+    %These link layer methods unfortunately don't work for our persistent tracking requirements, primarily because they depend on software/firmware. However, being able to read the instantaneuous advertising address has been something we have used to group packets together.
+    
+    \noindent\textbf{Packet timing:}
+    Packet timing methods such as clock skew and inter packet arrival time have also been used for link layer identification.
+    
+    Clock skew based identification ~\cite{clockskew1,clockskew2,clockskew3} has varied primarily in the source of clock measurement both at receiver and transmitter.~\cite{clockskew3} is worthy of mention because they used Bluetooth properties without needing any transmit time information.
+    
+    A lot of work has also gone into looking at WiFi probe request timing analysis~\cite{ifat1,rateswitching2,devicediscovery1} which mainly aims at identifying the OS , drivers, NICs etc. As with packet contents, these methods are not useful for us because they can change due to a firmware update.
+    
+    \begin{comment} % Extra text {{{
+    
+    To remedy this potential privacy concern, Bluetooth SIG introduced the concept
+    of Bluetooth address randomization, which has been widely adopted.
+    %
+    According to this, devices use a randomly generated and periodically changing
+    advertising address, therefore alleviating the potential of long term device
+    tracking. In recent times, researchers have exploited gaps in the
+    implementation of these beacons to show the possibility of tracking. 
+    %
+    These attacks involve analyzing a combination of advertising address and
+    payload, to enable continuous tracking of users. 
+    %
+    These vulnerabilities have since been disclosed, and can be potentially fixed
+    through software/firmware patches.
+    %
+    
+    
+    
+    These devices are transmitting BLE advertisements all the time irrespective of
+        the scenario. This beaconing is at an OS level and not due to any particular
+        . Most OSs are equal offendors, whether it be iOS, MacOS or Windows 10. In
+        fact unless the user turns off the Bluetooth from Settings menu or the device
+        goes to sleep, these devices continue to beacon (In certain devices, even
+        turning off may not be a permanent fix as the Bluetooth is known to turn back
+        on automatically after a while).
+    
+    
+    
+    The manufacturers were aware of potential privacy concerns, and so these
+        advertisement do use private non connectable random addresses, which cycle in
+        acertain duration of time. Unforntunately, weaknesses in the manner of this
+        randomization has been exploited at the link layer already for persistent
+        user tracking. Becker et al and Martin et al demonstrated various attacks by
+        analyzing the packet contents of these advertisements. 
+    
+    However by virtue of being a link layer packet contents analysis based attack,
+    such an attack can be potentially (and probably already ) resolved by modifying
+    the firmware. Such defenses can be thwarted at the physical layer though, by
+    analyzing the physical signal properties of these BLE transmissions. In fact
+    the constant availability of such packets makes it a very lucrative attack
+    surface.
+    
+    \end{comment}

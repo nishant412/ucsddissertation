@@ -1,0 +1,53 @@
+\section{The Nature of Skimmers}
+\label{sec:skimmernature}
+Card Skimmers and Shimmers (those which read from the chip
+rather than the mag stipe) have been a blossoming field of
+research in recent time. Previous research has been done
+to detect the superficial variety of skimmers, by detecting
+a double read of the mag stripe as it is used within a machine.
+[1]. The forms of skimmers have advanced more rapidly than research
+has alluded, however, and varieties have evolved for the purpose of
+infecting potential environments.  Bluetooth and GSM enabled chips are
+now readily built and deployed, as was noted in our discussions with
+police and government officials in states which have high automotive
+usage[2]. Bluetooth based skimmers, in particular, have become prevalent
+in states such as Arizona, due to cheaply available hardware and ease
+of connection with consumer electronics [3]; these skimmers, which
+typically are inaccessible by physical retrieval and interface only
+through wireless interfaces are referred to as ``deep-insert''.
+
+In the gas pump environment, these skimmers are attached onto the ribbon wire
+between the mag reader on the pump and the POS system which mediates the
+transaction. The device typically consists of a microcontroller, embedded
+memory, and a bluetooth transciever or GSM chip. The device draws power from
+the pump itself, and stores information which it intercepts as it travels
+across the wire. At an undetermined point in time, a client desiring to
+retrieve data from the device may connect to it via bluetooth, establish
+an RFCOMM serial data transfer socket, and pull data from memory. In this
+fashion, criminals are able to collect credit card data from various victims
+by installing the device in a frequently-used gas pump, download it at a
+later time, and then make use of this data to perform illicit purchases.
+
+There are two downsides to such an approach: difficulty in installation 
+and difficulty of retrieval. Installation requires access to the internals
+of the device being skimmed itself. In the case of gas pumps, this difficulty
+is variable depending upon the pump type. For older Gilbarco Brand pumps, for
+instance which constituted roughly 31\% of one metropolitan area in which we
+surveyed, there exists a single master key, and the ribbon wire to which the
+device must be attached is accessible in the frontmost compartment accessible
+by the key. Newer pumps are not as accessible, and thus require either more
+expensive hardware such that a deep insert skimmer may be installed
+directly via the card slot or through a time intesive process. Retrieval
+requires the use of a specialized application which can interface to the
+device; in the case of GSM, such an interface might be tracable if the
+skimmer is discovered, and in the case of Bluetooth, someone must visit the
+pump for the data to be retrieved. Bluetooth, in particular, is vulnerable to
+honeypotting, a mitigation strategy which we have performed and which is
+discussed in a later section.
+
+The obvious benefit on behalf of do-gooders to a device using Bluetooth is
+the existence of an interface by which the device may be discovered, however,
+doing so is non-trivial, and is the focus of this paper. Detection of these
+malicious devices involves hunting for abnormal signal strength patterns,
+geofencing, fingerprinting of inquiry scan response data, and crowdsourced
+data colleciton.

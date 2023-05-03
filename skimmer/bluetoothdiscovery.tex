@@ -1,0 +1,58 @@
+\section{Bluetooth Discovery Process}
+\label{sec:bluetoothdiscovery}
+
+The Bluetooth pairing process is most likely familiar due
+to its prevalence in consumer electronics. Delving into
+greater technical detail, however, it follows the following
+sequence.
+
+The process begins with a stage called inquiry; this is the
+primary discovery stage for bluetooth enabled worker devices by
+a master device. The process is set up in a specific manner to
+reduce conflict between device scanning, and speed up discovery
+so that piconets with a master-worker dynamic can be quickly set
+up. In inquiry cycles where the master device is not looking to connect
+to devices for a specific purpose or service, the master device, known
+as the inquirer, hops among 32 of Bluetooth's 79 1 MHz frequency channels,
+according to a psuedo-random pattern seeded by a General Inquiry Access
+Code (GAIC) defined within the standard. On each frequency, the device sends
+out an initial inquiry packet consisting of the GAIC, a 28-bit CLK for
+syncronization purposes, and a unique 48 bit address corresponding to the
+master device. 625 microseconds after sending a pcket on frequency $x$, the
+master device will listen on frequency $(x + 32) mod 79$ for a response from
+a possible listening device. Meanwhile, the listening devices, known as scanners,
+will listen given frequencies in 1.28 second ``scan windows'', before hopping
+frequency in a predetermined manner in order to account for the pseudorandom
+hopping of the inquirer device. Upon recieval of the initial inquiry packet from
+the inquirer device, the scanner device will begin a backoff based upon a uniformly
+distributed number of scan slots between 0 and 1,023, meaning between 0 and (roughly)
+640 ms. Once it returns from this backoff state, the scanner device will begin
+scanning again, and wait for a second inquiry packet from the master device. Once this
+is recieved, the device will send out a Frequency Hopping Syncronization (FHS) packet,
+in which the inquirer will learn the critical details of the device, such as
+unique address. At this point, the inquirer device will finish its inquiry process, followed
+by an initiation of paging with the worker device. It is during this initial paging
+process that the bluetooth device name and other details will be exchanged. But notably,
+device discovery itself takes around 10.24 seconds in official measurements, and only 5.12
+seconds to discover 99\% of devices, according to more advanced analysis detailed in
+[Peterson, Baldwin...].
+
+In order to perform the bluetooth device discovery detailed within our studies of gas station
+environments, we used the Android operating system's BluetoothAdapter interface to operating
+system services. A BluetoothAdapter device discovery cycle typically consists of 12 seconds
+of inquiry scanning followed by paging of those devices discovered in order to record device
+names and details. There is a tradeoff present within following the default scan interval;
+while allowing inquiry to complete ensures that various environmental factors
+do not interfere with discovery and information is not lost, in a crowd-sourced application
+where localization is a primary concern (in the case of skimmers, ensuring that the device
+observed is within a pump), a larger number of datapoints for any given device is of larger
+concern. Thus, we offered participants a variable setting for sane defaults between a 5
+second scan and the android default scan time. By restricting the inquiry period to five
+seconds, more datapoints were retrieved for each device. Additionally, because paging is handled
+seperately by the system service, this still allowed us to retrieve device names. It is possible
+that this led us to miss out on the discovery of some devices, and eager inquiry scanning to
+increase the amount of localization points did interfere with paging, however, it roughly
+doubled the number of geolocation points for each observed for each device, allowing for a
+more fine-grained discovery of skimmers via the concentric ring based techniques discussed
+in a later section.
+

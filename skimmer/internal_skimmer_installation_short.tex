@@ -1,0 +1,42 @@
+% Also that cellular skimmers are a thing http://newjersey.news12.com/story/38809657/consumer-alert-gas-station-gas-pump-credit-card-skimmers
+
+% Also this is only going to get worse as the bluetooth shimmer is now a thing https://www.sparkfun.com/sparkx/blog/2673
+
+% "FICO, a credit scoring and analytics firm, noted that during the first half of 2017"
+
+% https://www.muni.cz/en/research/publications/1073227
+% https://www.muni.cz/en/research/publications/1362671
+%
+%European Financial Systems 2016, Proceedings of the 13th Internatonal Scientific Conference, year: 2016
+
+%!TEX root = paper.tex
+\subsection{Internal Skimmer Installation}
+\label{sec:bkgd-install}
+
+To install an internal skimmer, the perpetrator must open the fuel dispenser to access the internal PoS terminal wiring.
+%
+Unfortunately, during the night time, a fuel station may have a single attendant, and in some cases, may be completely
+unattended.
+%
+Skimmer installers use a vehicle to block an attendant's view of a pump and distracting the attendant in order
+to allow another perpetrator to install a skimmer without being seen~\cite{skimmerinstall1,skimmerinstall2}.
+
+\paragraph{Fuel dispenser security} Because fuel dispensers have not, historically, contained anything of value, their physical
+security was limited to using special ``security'' screws to prevent casual vandalism~\cite{ny-fuel-paymentdoor-access}.
+%
+Only slightly harder to open are dispensers such as the Gilbarco Advantage, Gilbarco Encore 300 and Gilbarco 500s that
+use a single master key easily purchased on eBay.
+%
+ Fuel stations, especially those in areas where skimmers are common, are also starting to use tamper-evidence seals on
+their dispensers.
+%
+These seals are not difficult to come by, and criminals have been known to purchase rolls online.~\cite{sealsForSale}
+%
+An alternative to preventing access to PoS terminal internals is to secure magnetic stripe data before it leaves the
+card reader itself, however, this requires a costly upgrade to the PoS terminal.
+
+\paragraph{EMV} EMV cards, colloquially called \emph{chip cards}, are another potential mitigation.
+%
+However, criminals in countries with EMV standardization have already begun to develop \emph{shimmers} capable
+of skimming chip cards~\cite{krebshimmer}.
+

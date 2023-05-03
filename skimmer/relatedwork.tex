@@ -1,0 +1,106 @@
+%!TEX root = paper.tex
+\section{Related Work}
+\label{sec:relatedwork}
+\paragraph{Skimmer Detection and Prevention}
+
+In recent work, Scaife et al. surveyed gas pump skimmer detection and
+prevention mechanisms~\cite{scaifeoakland}.
+%
+They found that several popular Bluetooth-based skimmer detection applications
+use a only MAC prefix or device name matching.
+%
+The results of our study show how the Bluetooth profile of skimmers in these
+applications can be improved to detect more skimmers, and to flag fewer
+legitimate devices as skimmers.
+%
+We also find that Bluetooth-based scanning is an effective way to augment
+manual gas pump inspections.
+%
+Scaife et al. also introduced SkimReaper~\cite{skimreaper2018}, an effective
+tool for detecting external skimmers.
+%
+SkimReaper is a credit-card shaped device that an official can swipe in a card
+reader to detect if the reader has an additional read head: indicating that the
+reader has an external skimmer attached to it.
+%
+%This tool detects the presence of a second read head capturing card data in a
+%card reader.
+%
+%Physical contact makes it possible to build a circuit which reveals the
+%presence of a second read head.
+%
+However, SkimReaper can not detect internal skimmers because they do not
+add an additional read head.
+%
+Additionally, the PCI Security Standards Council have released guidelines for
+preventing external skimming~\cite{skimmingprevention}.
+%
+Criminals may start using Bluetooth to retrieve card data
+from external skimmer. If they do, we
+demonstrate that Bluetooth scanning can augment
+these existing external skimmer detection and prevention methods.
+%
+%Wireless scanning makes the discovery internal skimmers possible without
+%manual inspection.
+%
+%
+%Bluetana presents an intermediate stopgap to internal skimming; however, more
+%work on preventative measures is needed.
+
+\paragraph{Bluetooth}
+
+Prior work has evaluated the effectiveness of Bluetooth scanning for detecting
+and localizing Bluetooth devices.
+%
+They found that Bluetooth signal strength (measured by an Android smartphone)
+is effective for localizing Bluetooth
+devices~\cite{liu2014face,wang2013bluetooth}.
+%
+This work inspired us to use signal strength to detect if a Bluetooth device
+appears to be installed inside of a gas pump.
+%
+Previous studies also examined how long it takes to detect a Bluetooth
+device from stationary observers and moving vehicles.
+%
+They found that Bluetooth devices are often detected in less time than the
+Bluetooth standard suggests~\cite{murphy2002using,
+peterson2006bluetooth,haartsen1998bluetooth}.
+%
+This work supports our findings that skimmers are often discovered within the
+first few seconds of passing by a gas station.
+%
+%It also demonstrates the usefulness of drive-by scanning in Bluetooth skimmer
+%discovery.
+
+\paragraph{Inventory Attacks}
+
+Prior work has demonstrated that user privacy can be violated by inspecting the
+characteristics of a user's device~\cite{ziegeldorf2014privacy}.
+%
+These so called \emph{inventory attacks} have been demonstrated for Bluetooth
+Low-Energy, RFID, and even web browsers~\cite{van201050,
+vastel18fp,fawaz2016protecting}.
+%
+Our work demonstrates a Bluetooth-based inventory attack against malicious
+devices, can be used to protect the privacy of consumers.
+
+%\paragraph{Payment Processing Security} Credit card spoofing and transaction
+%fraud is a common area of research; while criminals currently rely on the
+%trivial vulnerabilities of magnetic strips \cite{magspoof}, it is conceivable
+%that newer systems (such as Chip-and-PIN) will prevent magnetic strip based
+%attacks. Card issuers feel that removing sensitive data from the magnetic strip
+%on cards will help to solve the problem \cite{pcidss}. However, newer literature
+%has demonstrated attacks on chip, NFC, and tokenized payment systems
+%\cite{bar2005known} \cite{bond2014chip} \cite{roland2013cloning}
+%\cite{bai2017picking}. In response to the growing popularity of chip-based
+%systems, criminals have begun to develop shimmers: chip-based deep-insert
+%Bluetooth-enabled skimmers powered by the EMV reader itself
+%\cite{krebshimmer}. The nature of shimmers (Bluetooth) indicates that wireless
+%data exfiltration will continue to be an issue. Criminals will always be
+%motivated to integrate wireless exfiltration mechanisms as physical retrieval
+%involves a risk of being caught. It follows that work on wireless-based
+%detection mechanisms like Bluetana will continue to be relevant as vendors
+%transition to newer payment mechanisms.  \footnote{This discussion disregards
+%the use of vendor-specific payment apps, such as those which have been devised
+%by Shell \cite{shellapp}, as these network-based mechanisms come with a host of
+%other problems which are outside the scope of this paper.}

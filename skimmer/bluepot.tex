@@ -1,0 +1,24 @@
+%!TEX root = paper.tex
+
+\section{Bluepot}
+\label{sec:bluepot}
+
+One of the biggest difficulties in current criminal investigation process for skimmers is getting evidence of the people/devices that had connected to the skimmer. While some Bluetooth serial modules store the last connected Bluetooth address, that is not a common feature across the myriad of modules. Additionally there is no way to retrieve information about the time when someone last connected to the recovered skimmer. Camera footage at gas stations is generally stored for a short amount of time (few days or maybe a week) and as such it is difficult to pinpoint the perpetrators of such a crime without any real time notification of connection events. Additionally, the person who installed the skimmer might actually send a mule to collect the data
+
+From our law enforcement partners, we are aware that in majority of cases, gas station employees are not involved in the skimming operation. The only mechanism by which the actual criminals figure out that the skimmers have been removed from the gas pumps is during their preiodic data retrieval runs. They attempt to connect to the device and if they arent able to and addtionally unable to discover the device, then the skimmer device is no longer in the gas station. Takin this MO into account, we designed the Bluepot tool.
+
+The Bluepot spoofs the Blueototh address and name of the recovered skimmer (This information is available to us from Bluetana) and sits at the location where the skimmer was retrieved from. The Bluepot records different HCI Level Events alongwith Bluetooth addresses of the devices attempting pairing and connection with itself, and notifies in real time when any such event occurs.
+
+As discussed in [\todo{cite background}], multiple HCI events are generated during the pairing and connection events. If the device is set to use Simple Secure Pairing, it relies on the I/O capabilities of the device to define the connection mechanism as defined in the Core Spec. With the I/O capabilities of the slave set to No Input No Output, the device will accept all incoming connections without the need for a PIN or passkey. On completion of pairing in this mode, an HCI Layer Event for User Connection Notification is generated. On pairing completion, or with a device previously paired, on connection attempt a HCI Link Key Notification Event is generated. The Event message payload also includes the Bluetooth address of the device which caused the event.
+
+We implemented the Bluepot by designing a setup consisting of the Texas Instruments MSP432P401R microcontroller as host and CC2564 as the Bluetooth controller. The MSP432 is connected over serial to a Particle Electron board for providing a reliable LTE connection for real time notifications. We used the Blutopia stack from TI to run on the MSP432 host. The stack provides access to all layers at the host (HCI, RFCOMM, Application), plus ability to configure the baseband layer on the controller using Vendor specific commands. We configure the device address and Bluetooth name to match the skimmer, and set SSP mode pairing. The controller is set up to implement the Bluetooth Serial Profile server accepting Serial client connections, effectively mimicking the behaviour of a Bluetooth serial module. Whenever User Connection Notification or Link Key Notification events are generated, a message is sent to the Particle board to publish a message onto our webserver. 
+
+From the sequence of events received at the webserver, we can identify properties of the device attempting connection. There are the following cases:
+\begin{enumerate}
+	\item \textbf{User Connection Notification Event received only:} The device has never paired or connected to the skimmer, and is attempting pairing to Bluepot. This is mostly likely a random person
+	\item \textbf{User Connection Notification Event followed by Link Key Request Event :} The device never paired or connected to the skimmer, but is attempting to pair and setup a serial Bluetooth link to the Bluepot. This is a suspicious case
+	\item \textbf{Link Key Notification Event only: } The device has previously paired with the skimmer and is now attempting to connect to Bluepot to download data. This is a hightly suspicious case
+
+\end{enumerate}
+
+\todo {Present analysis of likelihood of random people connecting and show examples with Slack images of what happens when criminal connects}

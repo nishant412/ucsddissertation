@@ -1,0 +1,50 @@
+%the !TEX root = paper.tex
+\begin{abstract}
+
+Bluetooth Low Energy (BLE) applications, such as digital contact tracing,
+  have resulted in mobile devices continuously transmitting BLE beacons.
+%
+%Furthermore, these transmissions are becomining continuous: many personal
+  %devices, including iPhones and FitBits, transmit at least one advertisement
+  %per second, during the entire time that the device is powered on.
+This frequent transmission of these beacons posses a significant location
+  privacy concern: attackers can determine if a mobile device is nearby by
+  passively listening for its beacons.
+%
+Although BLE devices randomize their MAC address, we show BLE radios have a uniquely
+  identifiable physical-layer fingerprint.
+  %
+However, BLE is fundamentally difficult to fingerprint because of its low-bitrate, narrow-band,
+  short, transmissions.
+%  and present novel non-convex optimization based
+%  techniques which can extract the rf-fingerprints with just the BLE
+%  transmission. 
+%
+ In this paper, we demonstrate the first
+  physical-layer fingerprinting attack that can be used to identify BLE devices.
+  %We first present that BLE transmitters have uniquely
+  %identifiable RF fingerprints.  
+%why prior fingerprinting techniques do not work.  because BLE transmissions
+  %are short, low-bitrate
+%
+%Also, some BLE transmitters often use novel low-power transmitter
+  %architectures that can not be fingerprinted with WiFi-like tec
+We also evaluate the effectiveness of this attack in real world settings with hundreds of BLE devices.
+%
+%\todo{fix last sentence with key results and evaluation} We perform a
+  %controlled evaluation of this system with \todo{check}160 devices of the same
+  %make and model in the lab, and using real-world evaluation in public settings
+  %(e.g., coffee shops) we demonstrate that targets can be identified in
+  %real-world environments where they are surrounded by hundreds of other BLE
+ %devices.
+
+\end{abstract}
+
+
+
+
+
+
+
+
+

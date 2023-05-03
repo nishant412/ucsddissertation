@@ -1,0 +1,53 @@
+%!TEX root = paper.tex
+
+\section{Additional Text}
+\label{sec:additionaltext}
+
+\subsubsection*{Limitations of the study}
+\label{sec:limitations}
+
+While our large scale study has been successful in finding \totalskimmers~across 4 states, there are certain limitations to our study which we address below.
+\newline
+
+\textbf{Type of skimmer}. Our study has been designed with the aim of looking for specific types of skimmers. These skimmers use classic Bluetooth modules for exfiltration, and always respond to device discovery scans. While this may appear limited, we know that this skimmer is commonly deployed in the geographic regions we surveyed. For example, in 2019 alone in Arizona, we know that atleast 60\% of skimmers recovered in the field were classic, discoverable BT modules.
+\newline
+
+\textbf{Geographic area}. Our study is restricted to the states of CA,AZ,NV and MD which represents a significant population (17\% of all people in the US). While our LE sources inform us that Bluetooth skimmers are a common problem across the US, we don't have data from other areas, and it is possible that different skimmers may be popular in other states.
+\newline
+
+The skimmer landscape is continuously evolving, and there are a number of different designs that may exist. In Section \ref{sec:hiding}, we discuss some of these modified designs in the form of countermeasures for evading detection from Bluetana, and the cost to attackers to implement these designs.
+
+\subsubsection*{False negatives}
+\label{sec:falsenegative}
+
+To understand if we are missing skimmers, we analyze the false negative rates from Bluetana usage in Arizona in the 6 month duration in which Bluetana has been in use (7 October 2018 - 7 May 2019). During this time, inspectors also performed a scan using Bluetana in 27 inspections. 42 skimmers were recovered during these inspections, of which Bluetana was able to identify 36 (6 skimmers were not flagged), resulting in a false negative rate of 14.3\%
+
+Skimmers recovered by AZDWM are sent to law enforcement for further investigation. Because we don't have information about the investigation themselves, we can't point out exactly why we missed some skimmers. However, based on conversations with several LE agencies, there are certain possible reasons :
+\begin{itemize}
+	\item \textbf{Incorrect installation} There have been several instances in which skimmers have been recovered that were incorrectly installed, because of which they are unpowered. These skimmers are non-operational and can't respond to device discovery scans.
+	\item \textbf{Skimmers not using Bluetooth or any wireless medium} There exist skimmer designs which utilize SMS based exflitration, or in certain cases no wireless radios at all \cite{scaifeoakland}\cite{skimreaper2018}. While these designs are less common, Bluetooth scanning can't detect such skimmers.
+\end{itemize}
+
+\subsubsection*{False positives}
+\label{sec:falsepositive}
+
+RN and HC popular modules used in a variety of legitimate products as well. Some of these products, such as road speed indicators, OBD scanners and fleet tracking systems, can be seen in and around gas stations. Most of these applications use Bluetooth device names that identify the product or brand name, or use a different class-of-device. We have identified a number of such products and added them to our known product list. In some cases though, products retain the default RN or HC device names, causing Bluetana to flag them as possible skimmers \cite{rnbteletrac}\cite{rnbtweathersensor}\cite{rnbtscale}
+
+\subsubsection*{Future Work}
+\label{sec:futurework}
+
+As new tools such as Bluetana come to the fore, criminals will adapt skimming designs to evade detection. Techniques such as ones we have shown in the Section \ref{sec:hiding}, are the next logical steps in newer skimmers. Future work in this area should be towards designing easy-to-deploy systems to detect and prevent such skimmers. Of particular interest are non-discoverable Bluetooth skimmers, as that presents a significant technical challenge. Additionally, we believe gas pump skimming is the harbinger of an era of system attacks using wireless implants. For example, \cite{blekey} describes a remote attack on door access control systems using a Bluetooth implant. Future work should also be targeted towards identifying other vulnerable systems attacked using such implants, and defenses around these.
+
+\subsubsection*{Existing methods for finding skimmers}
+\label{sec:existingskimmerdetection}
+
+Existing methods of skimmer detection rely on manual inspection of gas pumps. These inspections may be triggered due to the following reasons:
+\begin{itemize}
+	\item \textbf{Inspections based on complaints}: Agencies will perform a gas station inspection in response to complaints of fraudulent activity. These complaints can be from different sources. Banks or individual consumers issue complaints if fraudulent activity is detected on credit/debit cards. Additionally, complaints are also received if gas station employees or other law enforcement agencies find a skimmer at a location.
+	\item \textbf{Routine inspections}: Weights and Measures agencies also perform routine inspections at gas stations. These inspections are typically a routine a fuel dispensing inspection, during which inspectors may discover installed skimmers. 
+\end{itemize}
+
+From Arizona public data we know that in 2018 skimmers were discovered in 3.4\% of inspections. Considering that 75\% of these inspections are based on complaints, this is a very low success rate of the manual inspection process. Conversations with AZDWM reveal that the inspections when a skimmers were discovered by location staff are the only reliable inspection trigger. This is a big problem when we considehttps://stackoverflow.com/questions/34971181/creating-custom-equality-operator-for-postgresql-type-point-for-distinct-calr the time it takes to perform such inspections.
+
+
+

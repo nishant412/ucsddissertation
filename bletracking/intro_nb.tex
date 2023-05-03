@@ -1,0 +1,22 @@
+%!TEX root = paper.tex
+\section{Introduction}
+\label{sec:intro}
+BLE beacons were utilized as a means of knowing when people are around. They began getting co-opted into interaction tracking for product ecosystems. Consequently, in today’s world they became extremely important, as we co-opted this powerful tool into our public health infrastructure. Today, with contact tracing in place 
+So much so that today every single wireless personal device is using BLE beacons for one or multiple purposes. 
+
+With widespread usage came the threat of user privacy. BLE beacons contained the Bluetooth address, which can be used by sniffers to track users. To protect against this in 2014, Bluetooth SIG introduced Bluetooth address randomization scheme. Consequently, attack research focussed on looking at minor elements of payload [2015Jeremy,2019popetsjeremy] or the asynchronous rotations in payload or address[2019BU] to derive identifying elements, but all of these were minor efforts really. In fact exposure notifications for contact tracing addressed all of these, and these things seem fairly privacy preserving now.
+
+However, all of these attacks and defenses focus on the information contained in the beacon packet, but not on the information contained in the physical wireless beacon signal. If an attacker can measure the radio properties due to hardware impairments in transmitter components, they can fingerprint individual Bluetooth personal devices. These impairments are due to manufacturing variations are random, and theoretically can be used to derive unique identifiers. Furthermore, if such an attack is successful, the only potential defense is to redesign the hardware. This leaves every single personal wireless device permanently vulnerable to tracking.
+
+
+However, there's many a slip 'twixt the cup and the lip. While a lot of work has been done in RF fingerprinting, most of it has been focussed on complex modulation schemes such as used in WiFi, Zigbee etc. 
+%
+Nothing similar has been demonstrated to work for BLE.
+%
+Consequently, while we have a good understanding of the hardware impairments that need to be measured, we have no evidence to believe that an attacker can measure those properties with any degree of accuracy for a simple modulation scheme like BLE.
+%
+
+
+\begin{comment}
+It is known that the physical properties of radio hardware impacts the wireless signal. Particularly the manufacturing defects in the radio hardware results in certain variations in signal properties. The area of RF fingerprinting has been extensively studied in literature particularly for complex radios such as WiFi. This begs the question, which is the goal of this paper - Can an attacker utilize RF fingerprinting to actually
+\end{comment}

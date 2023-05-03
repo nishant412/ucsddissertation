@@ -1,0 +1,155 @@
+%!TEX root = paper.tex
+\section{Motivation and Prior Work}
+
+\label{sec:motivation}
+
+In this section we describe how BLE advertisements create a location privacy
+threat for portable devices, then we describe our model of how an attacker can
+detect the presennce of a device at a desired location. Finally, we describe prior
+wireless fingerprinting techniques and why they do not work for BLE
+advertisements.
+
+\subsection{Motivation}
+
+\subsubsection*{Everything is beaconing}
+
+
+Today, Bluetooth Low Energy (BLE) radios are built into most personal
+electronic devices, including: laptops, mobile phones, fitness trackers,
+headphones, and personal medical devices. 
+%
+According to Bluetooth SIG, in 2018, an estimated $\sim$3.5 billion personal
+devices were shipped that contained Bluetooth chipsets, and more than 75\% of
+these chipsets were either BLE-only or were combo chips that included BLE
+capability~\cite{BTSIG_shipped_2019}.
+
+Security researchers recently found that many of these BLE-enabled popular
+portable devices are continuously transmitting BLE
+advertisements~\cite{Iphonetracking_becker,MACRandomizationfail_Martin}. 
+%
+This is quite surprising, because advertisements were originally intended to be
+sent infrequently to announce a device's presence.
+%
+Portable devices are now using BLE beacons (a subtype of BLE advertisements)
+%there has a been a shift in how these advertisements are used. 
+%%
+as a low-latency control channel to provide a seamless user experience across
+devices in the same ecosystem (e.g., Apple's Continuity Protocol, Microsoft's
+Universal Windows Platform etc.). Moreover, recent applications of BLE such as contact tracing, require our portable devices to constantly broadcast packets to be received by neraby devices.
+%
+The problem is, unlike other Bluetooth packets, BLE advertisements contain a
+full 6-byte MAC address that is unique to the advertising device.
+%
+In essence, BLE beacons have turned the wireless personal devices that we carry
+with us all the time into locator beacons that continuously indicate the
+device's location to passive listeners.
+%
+However, in this prior work they did not investigate how often these packets
+are transmitted from these devices.
+
+\begin{table}
+    \centering\small
+    %\begin{minipage}{\textwidth}
+    \input{tables/beacon_rate}
+    \caption{Many popular devices transmit hundreds of BLE advertisement packets every minute.}
+    \label{tab:beacon_rate}
+    %\end{minipage}
+\end{table}
+
+To evaluate how often devices are transmitting BLE advertisement packets, we
+isolated six popular personal devices, and observed the rate that they transmit
+advertisements across all three advertisement channels. 
+%
+Table~\ref{tab:beacon_rate} shows the average number of total advertisements we
+observed per minute from each device.
+%
+Even though these devices were in an idle state (screen off, disconnected),
+they were still transmitting hundreds of beacons per second.
+%
+The rate of packet transmission is high enough that devices are effectively
+continuously transmitting.
+%
+%Also, an attacker may only need to sniff the devices for few seconds to have enough information to fingerprint them.
+
+\subsubsection*{MAC addres randomization hides the identity}
+
+Fortunately, prior work also found (and we confirmed) that manufacturers are
+using BLE's privacy protection mechanism to prevent device
+tracking~\cite{Iphonetracking_becker,MACRandomizationfail_Martin}.
+%
+Namely, they found devices are following the BLE specification and periodically (every 10--15 minutes) randomizing
+their MAC addresses~\cite{BTsigprivacy}.
+%
+However, they also found that an attacker persistently following the target
+device can track a device across MAC address changes by observing other fields
+in the BLE beacon packet that were not reset properly after the MAC was
+randomized.
+%
+However, this attack is extremely limited, it requires an attacker to
+persistently follow a target to track it; therefore, if the attacker misses a
+MAC randomization cycle it can no longer identify the target.
+%
+In this work, we seek to answer this question: \textit{Is it still possible to identify a device at a desired location across days, even if they
+have not been continuously tracking them?}
+
+\subsubsection*{Physical layer signal may reveal the identity}
+
+Harware impermaints in the transmitter chain which are caused by manufacturing imperfections and tolerance, can make slight changes to the ideal signal that should be sent by the device. Since these impairments are caused by manufacturing imperfections, they are different even for the devices from the same make and model. As a result, these hardware impairments can leave a unique signature or figerprint in the physical layer signal, that can be considered as an indentity for the device. Therefore, even though the MAC address changes after a while, physical layer or radio frequency (RF) figerprints remain the same for a device which provides the attacker an opportunity to sniff the RF fingerprints and identify the target at any time. Consseequently, frequent transmision of BLE packets can still cause a privacy threat even if MAC address randomization is properly done. In this work, we aim to explore how practical this attack could potentially be.
+
+\subsubsection*{BLE RF fingerprinting is challenging}
+Super frequent and continuous transmission of BLE beacons by most personal devices, makes this attack more important for BLE technology compared to other wireless technologies such as Wi-Fi. However, there are several challenges that may make BLE RF fingerprinting impossible. First, as described in the Section~\ref{sec:intro}, BLE signals are too short, narrowband and have a simple packet structure and modulation. Therefore, they provide significantly less information for an attacker to fingerprint the physical layer characteristics of the transmitter. Second, we found out that not all BLE transmitters use the same hardware architecture (Section~\ref{sec:background}). Hence, we may need to take advantage of different hardware impairments depending on the underlting analog hardware architecture of the transmitter. Third, environmental conditions such as thermal conditions of the device (which depends on both ambient temperature and device activity) may affect these RF fingerprints and change the identity of the device. In this work, we try to overcome these challenges as much as possible to figure out how practical and important this attack could be.
+
+
+
+\subsubsection*{Attack Model}
+
+We consider our attacker to be a fully passive observer. Namely, the attacker
+simply sniffs for BLE advertisements from nearby devices to try to identify them.
+%
+The attacker is equipped with a radio receiver capable of recording raw signal
+samples of all BLE advertisement packets transmitted by nearby devices on one
+or more of the three BLE advertising channels (e.g., a low-cost software
+defined radio such as Lime SDR). The attacker also has the
+ability to store these captures to process them offline to extract the RF
+fingerprint from the signals.
+
+The attacker is interested in detecting the presence of a high value target at one or a few locations (e.g. home, office). To fingerprint a particular target, the attacker must bring their sniffer close
+to the target at one given location. This will allow them to briefly isolate
+that device's BLE advertisement packets in order to model that device's RF
+fingerprint.  Once the attacker receives enough packets from that device to
+produce a fingerprint, they can leave their receiver at one or more desired locations and identify the target device whenever it appears. In Section~\ref{sec:results:field} we demonstrate this
+can be done with only 100 packets which can be received in about one minute from most portable devices.  
+
+This attack can be considered as an stalking attack in which the stalker isolates the victim for about one minute to profile their device and stalk the person at any desired location any time after that. Complete isolation of the victim may not be always possible. Howeeverr, profiling a number of devices among which the vitim's device exist is relatively easy. For instance, if the stalker installs the receiver near the house or office of the victim, it will receive signals from a very few devices inside the house or office, icluding the victim's device. After that, observing the profile of one of those devices at other locations, could most likely indicate the presence of the victim at that location. To this front, we evaluate how feasible this attack could be if we don't have a unique profile for the target device, and instead, we have the profile of a very few device among which the target device exists.
+
+
+
+%Alternatively, an attacker can also build a model
+%of a device's RF fingerprint without getting close to the device if they have
+%prior knowledge of a few of the device's locations. This will allow them to
+%isolate devices that were found at all of these locations, and if there is only
+%one device, that device is the target.
+
+\todo{Hadi: Add specific attack scenarios and stories}
+
+The final goal of this paper, is to show that once the attackers have profiled the physical layer characteristics of the target BLE transmitters, they can potentially identify the presence of the targets at a desired place at any time later. We hope demonstrating this vulnerability can encourage embedded RF chip designers to provide physical layer security in their designs, preventing physical layer signatures to be sniffed and misused.
+
+%Having fingerprinted the target's device, the attacker should then be able to
+%uniquely identify the target's device anywhere (whether it be a public place or
+%isolated location). Formally, this means that the tracking process should be
+%accurate enough to be independent of environmental conditions, as long as the
+%SNR is high enough that the receiver can receive some packets without bit
+%errors.
+
+
+\color{blue} {We consider the attacker to be a passive observer; they only listen for BLE advertisements from nearby devices, but never transmit messages to the target. The attacker uses a low-cost receiver (such as LimeSDR USB) to record raw signal samples of all BLE advertisements. These raw samples can be stored locally, and processed offline to extract the RF fingerprint. (new para)The attacker uses the unique RF fingerprint from a personal device (such as a mobile phone) for tracking a high value target. To obtain the target's device fingerprint, the attacker needs to initially isolate the advertisements from that device. This can be done by getting close to the target for a certain duration of time, thus capturing raw samples with high signal strength. Thus, the MAC address with the highest SNR can be attributed to the target device. This will allow them to briefly isolate that device's BLE advertisement packets in order to model that device's RF fingerprint. We show that only 100 packets are sufficient to obtain the RF fingerprint. Therefore, the attacker needs to be close to target for less than a minute (Table x). Finally, the attacker places receivers in one or more locations, continually tracking presence of the target at the locations whenever it appears any time later.
+
+This attack can be considered as an stalking attack in which the stalker isolates the victim for about one minute to profile their device and stalk the person at any desired location any time after that. Complete isolation of the victim may not be always possible. Howeeverr, profiling a number of devices among which the victim's device exists, is relatively easy. For instance, if the stalker installs the receiver near the house or office of the victim, it will receive signals from a very few devices inside the house or office, icluding the victim's device. After that, observing the profile of one of those devices at other locations, could most likely indicate the presence of the victim at that location. To this front, we evaluate how feasible this attack could be if we don't have a unique profile for the target device, and instead, we have the profile of a very few device among which the target device exists.}
+
+\color{black}
+\noteby{NB} {We consider the attacker to be a passive observer; they only listen for BLE advertisements from nearby devices, but never transmit messages to the target. The attacker uses a low-cost receiver (such as LimeSDR USB) to record raw signal samples of all BLE advertisements. These raw samples can be stored locally, and processed offline to extract the RF fingerprint. (new para)The attacker uses the unique RF fingerprint from a personal device (such as a mobile phone) for tracking a high value target. To obtain the target's device fingerprint, the attacker needs to initially isolate the advertisements from that device. This can be done by getting close to the target for a certain duration of time, thus capturing raw samples with high signal strength. We show that only 100 packets are sufficient to obtain the RF fingerprint. Therefore, the attacker needs to be close to target for less than a minute (Table x). Finally, the attacker places receivers in one or more locations, continually tracking presence of the target at the locations.
+}
+
+
+
+%}}}
