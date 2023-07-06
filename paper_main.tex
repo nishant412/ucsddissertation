@@ -48,20 +48,26 @@
 \mainmatter
 
 % Optional Introduction
+\chapter{Introduction}
 \input{introduction.tex}
 
-\chapter{Discovering illegitimate Bluetooth devices}
+\chapter{Background and Related Work}
+\input{research_exam/paper.tex}
+
+\chapter{Evaluating Link-layer Bluetooth Scanning for Detecting Gas Pump Skimmers}
 \input{skimmer/paper.tex}
 
 \chapter{BLE Physical-Layer tracking of Mobile devices}
 \input{bletracking/paper.tex}
 
+\chapter{Fast Bluetooth scanner for urban-scale wireless audits}
+\input{hyperscanner/paper.tex}
 \appendix
 %\Blinddocument
 
 % Stuff at the end of the dissertation goes in the back matter
 \backmatter
 \bibliographystyle{plain} % Or whatever style you want like plainnat
-\bibliography{confs_long,skimmer,bletracking}
+\bibliography{confs_long,research_exam,skimmer,bletracking}
 
 \end{document}

@@ -1,38 +1,43 @@
-%the !TEX root = paper.tex
-\begin{abstract}
+%!TEX root = paper.tex
 
 Gas pump skimming is one of the most pervasive forms of payment card attacks in
 	the U.S. today.
 %
-Gas pump skimmers are easy to install and difficult to detect: criminals can open gas pump enclosures
-	and hide a skimmer in internal payment wiring.
+Criminals can easily bypass physical security (e.g. pump locks, cameras) at gas stations to install a skimmer on the internal payment circuitry of a gas pump.
+%
+Furthermore, many gas pump skimmers have Bluetooth access links; these allow criminals to exfiltrate stolen payment card data conveniently from the safety of their cars. 
+%
+
+For victims and investigators alike, these skimmers are hard to detect. 
+%
+They are hard to visually identify from outside with the pump door closed, and blend into the wiring even when the pump door is open.
+%
+These are also hard to identify in smartphone Bluetooth scans -- there are a lot of Bluetooth devices at gas stations (e.g. phones, fitness bands, OBD readers, car stereos, streetlights), and Bluetooth skimmers appear like any benign devices.
+%
+This
+%Gas pump skimmers are easy to install : criminals can open gas pump enclosures
+%	and hide a skimmer in internal payment wiring.
 %
 %Internal gas pump skimmers are also difficult to detect: they are not visible
 %	from outside of the pump, and they blend into the wiring inside the pump.
 %
-As a result, officials have resorted to detecting skimmers by performing
-	laborious manual inspections of the wiring inside gas pumps.
+%whAs a result, officials have resorted to detecting skimmers by performing
+%	laborious manual inspections of the wiring inside gas pumps.
 % 
-In addition, criminals can also avoid being caught using skimmers: many gas
-	pump skimmers have Bluetooth connectivity, allowing criminals to collect
-	payment data safely from inside their car.
- 
-In this work, we evaluate if the use of Bluetooth in skimmers also creates an opportunity
-	for officials to detect them without opening gas pumps.
+%In addition, criminals can also avoid being caught using skimmers: many gas
+%	pump skimmers have Bluetooth connectivity, allowing criminals to collect
+%	payment data safely from inside their car.
+%	These skimmers are 
+
+In this chapter, I present a real-world empirical study aimed at understanding whether smartphone Bluetooth scans provide sufficient information to uniquely distinguish Bluetooth skimmers from the myriad of Bluetooth devices at a gas station.
 %
-%officials can scan detect skimmers by scanning for Bluetooth devices inside
-	%gas pumps.
+In this 19-month measurement study, we collected Bluetooth scans at \visitedgasstations~gas stations across six states in the US, detecting \totalskimmers~Bluetooth-based skimmers among thousands of other Bluetooth devices at the stations. 
 %
-We performed a large-scale study where we collected Bluetooth scans at
-	\visitedgasstations~gas stations in six states. We detected a total of
-	\totalskimmers~Bluetooth-based skimmers across four U.S. states---all of which were
-	recovered by law enforcement.
+
+We observed that indeed Bluetooth links in skimmers can be differentiated from other legitimate devices using Bluetooth scan data.
 %
-We discovered that these skimmers were clearly distinguishable from legitimate
-	devices in Bluetooth scans at gas stations.
+However, legitimate devices may also utilize the same Bluetooth modules as skimmers and that is a common source of confusion.
 %
-We also observed the nature of gas station skimming: skimmers can be installed
-	for months without detection, and MAC addresses of skimmers may reveal the
-	criminal entity installing or manufacturing them.
-  
-\end{abstract}
+In this study, we perform a comprehensive analysis of how su
+
+
