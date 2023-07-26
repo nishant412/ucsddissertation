@@ -14,7 +14,9 @@
 \label{sec:background}
 
 \begin{figure}
-    \includegraphics[width=0.95\linewidth]{skimmer/fig/wrapped-skimmer}
+    \centering
+    \includegraphics[width=0.8\textwidth]{skimmer/fig/wrapped-skimmer}
+    \captionsetup{justification=centering}
     \caption{An internal Bluetooth-based skimmer wrapped in grey tubing to blend in with the cabling inside the fuel pump. This skimmer
     was detected by \bluetana\ in Tempe, AZ.
 %\noteby{NB}{Should we maybe put like a bigger picture with the entrails of the gas pump also visible?}}
@@ -46,7 +48,8 @@ smartphone, and without leaving their vehicle, connect to the skimmer using Blue
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.95\linewidth]{skimmer/fig/skimmer-example}
+    \includegraphics[width=0.8\linewidth]{skimmer/fig/skimmer-example}
+    \captionsetup{justification=centering}
     \caption{Parts of a typical internal Bluetooth-based fuel pump skimmer. This skimmer
     was detected by \bluetana.}
     \label{fig:skimmer-example}
@@ -120,14 +123,17 @@ Of these, we found published estimates for only the first two quantities, and ve
 
 \paragraph{Card value} To monetize stolen credit card data, skimmer installers have two options: sell the data on the black market, or cash out the cards on themselves. Based on our survey of sites selling stolen card data, black market prices for stolen cards fall in the \$10--220 range, depending on whether the card is a debit or credit card, and whether it comes with a PIN (for debit) or billing ZIP code (for credit). Table~\ref{tab:cardval} provides a summary of these prices with references. 
 
-\begin{table}
+
+
+Criminals can also cash out the cards themselves. Debit cards with a PIN are often cashed out by withdrawing money from an ATM, while credit cards are often cashed out by purchasing high-value merchandise (e.g. iPhones) and re-selling them. Reported cash-out values for debit and credit cards range between \$400 and \$1,000, depending on credit limit associated with the card.
+%
+\begin{table}[!h]
+    \centering
+    \captionsetup{justification=centering}
 \caption{Value of stolen credit and debit cards.}
 \input{skimmer/tabs/cardval}
 \label{tab:cardval}
 \end{table}
-
-Criminals can also cash out the cards themselves. Debit cards with a PIN are often cashed out by withdrawing money from an ATM, while credit cards are often cashed out by purchasing high-value merchandise (e.g. iPhones) and re-selling them. Reported cash-out values for debit and credit cards range between \$400 and \$1,000, depending on credit limit associated with the card.
-%
 We also conducted a survey of cash-out values reported in court documents involving skimmers.\footnote{We surveyed only documents available without fee from Court Listener.} Several cases reported specific cash-out values, rather than ranges. The debit card cash-out values were \$1132~\cite{hristov}, \$444~\cite{cristea} \$665~\cite{alisuretove}, \$1354~\cite{mekhakian}. The credit card cash-out values were \$362~\cite{aqel} and \$400~\cite{estrada}.
 
 Losses due to credit and debit card fraud are borne largely by banks and merchants. This is likely because consumer liability for fraud in the U.S. is limited to \$50 for credit cards, and \$50 or more for debit cards (depending on how quickly the consumer reports the fraud).  Industry estimates for losses per-card incurred by banks are \$650 for debit cards and, \$1,003 for credit cards~\cite{arizonareport,ATMIA}. The U.S. Sentencing Commission estimates per-card losses at \$500 or more.
@@ -182,9 +188,10 @@ We compare this with a separate estimate obtained from information in court docu
 
 \begin{table}
 \centering
-\small
-\input{skimmer/tabs/wildskims}
+\captionsetup{justification=centering}
 \caption{Prevalence of skimming in three regions of the U.S.}
+\input{skimmer/tabs/wildskims}
+
 \label{tab:wildskims}
 \end{table}
 

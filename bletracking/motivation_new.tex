@@ -1,50 +1,50 @@
 %!TEX root = paper_main.tex
-\section{BLE Device Tracking Threat Model}
+\section{Background}
 
 \label{sec:threatmodel}
 
-In this section we describe the threat model of location privacy attacks on
-BLE-enabled mobile devices. Then, we demonstrate how location privacy attacks
-are a significant threat today because popular mobile devices 
-continuously, and frequently, transmit BLE advertisements.
+In this section, we define the threat model for a tracking attack on a BLE based mobile device. 
+%
+Following that we provide details on how extensive the threat is by exploring how all popular personal mobile devices are continuously and frequently transmitting BLE beacons.
+
+%In this section we describe the threat model of location privacy attacks on
+%BLE-enabled mobile devices. Then, we demonstrate how location privacy attacks
+%are a significant threat today because popular mobile devices 
+%continuously, and frequently, transmit BLE advertisements.
 
 %Then, we explain why it may be possible to defeat BLE's built in anonymization
 %techniques by physical-layer identity in the transmissions, that can defeat
 %BLE's built-in anonymization techniques.
 
-\subsection{Threat model: Passively fingerprinting BLE transmissions}
+\subsection{Threat model: Passive fingerprinting of BLE mobile devices}
 %
-An attacker wants to detect when their target---a user with a mobile
-device---is present at a specific location (e.g., a room in a building).  To do
-so, first the attacker must isolate the target to \emph{capture a fingerprint} of
-its wireless transmissions. Then it must find features that uniquely
-identify the target, namely the unique physical-layer features of the 
-device's BLE transmitter hardware.
+We consider an attacker that intends to detect when the target -- a particular user possessing the target mobile device --- is at a specific location (e.g. a room in a building or a crowded public place).
 %
-Then, the attacker sets up a receiver in the location where they want to see if
-the transmitter is there and \emph{passively sniffs} for the target's BLE
-transmissions. They will know when the target device is near the receiver when
-it captures one or more packets that matches the target's physical layer
-fingerprint.
+The attacker must possess a software-defined radio (SDR) to capture the raw \iq data of the BLE beacons transmitted by nearby mobile devices.
+%
+Even though a lot of SDR tools are expensive, we show in Section~\ref{sec:hadi:sdr} that a modest hobbyist-level SDR ($\sim$\$150) is sufficient for the attacker.
+%
+
+The attacker first captures a fingerprint of their target's mobile device.
+%
+They do so by getting close to them and capturing BLE beacons from their mobile device.
+%
+Then they use these BLE beacons to estimate unique physical-layer properties of the BLE transmitter hardware, such as CFO and \iq offset -- these define the fingerprint of the target mobile device.
+%
+
+Armed with the fingerprint of their target, the attacker sets up the receiver at the eventual attack location where they want to track the target.
+%
+The attacker captures beacon packets from all mobile devices at the location, estimates the physical-layer properties and compares it to the target fingerprint.
+%
+If the fingerprint matches, the attacker knows that the target is at the location.
 %
 The more frequently the BLE device transmits, the more likely the attacker is
 to receive a transmission if a user passes by.  Also, the more accurate the
 fingerprinting technique is, the better the attacker can differentiate the
 target from other nearby devices.
 %
-Fingerprinting bypasses MAC address
-randomization~\cite{bluetoothprivacy,MACRandomizationfail_Martin}, BLE's existing
-defense against tracking.
-
-To perform a physical-layer fingerprinting attack, the attacker must be
-equipped with a Software Defined Radio sniffer: a radio receiver capable of
-recording raw I/Q radio signals.
-%
-Although, as we show in Section~\ref{sec:hadi:sdr}, it is sufficient to use a
-modest hobbyist-level SDR ($\sim$\$150).
 
 \subsection{Extent of threat: Popular mobile devices are vulnerable} %{{{
-
 
 Increasingly,  mobile devices are adding BLE beacons to
 provide new features.
@@ -82,30 +82,35 @@ continuously, and how frequently they transmit if they do.
 %
 Specifically, we isolated six popular devices in a Faraday
 cage---ensuring they were the source of the transmissions---and we used an SDR sniffer
-to collect all BLE advertisements (i.e., BLE beacons) transmitted on any of the three advertising channels.
+to collect all BLE advertisements (i.e., BLE beacons) transmitted on any of the three advertising channels. 
+%
+We observed the following:
 
 \begin{table}
     \centering\small
     %\begin{minipage}{\textwidth}
+      \captionsetup{justification=centering}
+      \caption{BLE beaconing behavior of popular mobile devices.}
     \input{bletracking/tables/beacon_rate}
-    \caption{BLE beaconing behavior of popular mobile devices.}
+    
     \label{tab:beacon_rate}
     %\end{minipage}
 \end{table}
 
-\subsubsection*{Mobile devices send BLE beacons continuously}
+\begin{enumerate}
+\item \textbf{Mobile devices send BLE beacons continuously: }
 %
 We observed continuous BLE beaconing from all the six mobile devices shown in Table~\ref{tab:beacon_rate}.
 %
 %Mobile devices that transmit BLE beacons do so continuously, regardless
 %of the user's activity on the device.
 %
-Even when all of these mobile devices have their screens off (e.g., they are in their user's pocket) they all 
-continuously transmit BLE beacons. Indeed, this is a feature that is necessary for the proper function of the BLE-based applications on these devices (e.g., contact tracing).
+Even when all of these mobile devices have their screens off (e.g., they are in their user's pocket), they
+continuously transmit BLE beacons. Indeed, this is a feature that is necessary for the proper function of the beacon applications such as contact tracing.
 %
 Continuous beaconing is a significant new threat compared to the behavior of other protocols on mobile devices that only transmit intermittently (e.g., periodic WiFi scanning).
 
-\subsubsection*{Mobile devices send hundreds of BLE beacons per minute}
+\item \textbf{Mobile devices send hundreds of BLE beacons per minute:}
 
 Table~\ref{tab:beacon_rate} also shows the average number of BLE beacons (i.e.,
 BLE advertisements) we observed per minute from each device.
@@ -126,7 +131,7 @@ the sniffer for a few seconds (Section~\ref{sec:results}).
 
 %Also, an attacker may only need to sniff the devices for few seconds to have enough information to fingerprint them.
 %}}}
-
+\end{enumerate}
 
 
 % Extra text {{{

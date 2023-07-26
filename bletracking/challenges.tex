@@ -1,12 +1,19 @@
-\section{Challenges}
+\section{Real-world challenges to physical-layer identification}
 \label{sec:results2}
-
+Using our high-precision fingerprint technqiue, we perform an empirical analysis in lab conditions to understand the limitations of this physical layer identification.
+%
 There are five primary challenges that limit the effectiveness of tracking
-BLE devices based on their physical-layer fingerprint. For each challenge, we
+BLE devices based on their physical-layer fingerprint. 
+%
+For each challenge, we
 perform controlled experiments or theoretical analysis to investigate how significantly they affect
-fingerprinting accuracy in practice. We found that BLE tracking attacks are
-likely to be feasible in practice. However, the attacker's ability to track a
-specific device will vary depending on several factors that are out of
+fingerprinting accuracy in practice, and in turn the ability of an attacker to uniqely identify their target. 
+%
+We found that BLE tracking attacks are
+likely to be feasible in practice. 
+%
+However, the attacker's ability to identify a
+specific device reliably will vary depending on several factors that are out of
 their control.
 
 \subsection{Uniqueness of BLE fingerprints} %{{{
@@ -14,7 +21,8 @@ their control.
 
 \begin{figure}
     \centering
-    \includegraphics[width = \linewidth]{bletracking/plots/cfoiq_iphone_esp_ti2.pdf} 
+    \captionsetup{justification=centering}
+    \includegraphics[width = 0.6\linewidth]{bletracking/plots/cfoiq_iphone_esp_ti2.pdf} 
     \caption{Comparing the fingerprints of 48 BLE chipsets}
 \label{fig:cfoiq}
 \end{figure}
@@ -47,7 +55,8 @@ high-performance WiFi+BLE combo chipsets used in iPhones.
 
 \begin{figure}
     \centering
-    \includegraphics[width = 0.8\linewidth]{bletracking/plots/dpll.pdf} 
+    \captionsetup{justification=centering}
+    \includegraphics[width = 0.6\linewidth]{bletracking/plots/dpll.pdf} 
     \caption{TI's BLE-only transmitter. This is not an \iq modulator.}
     \label{fig:dpll}
 \end{figure}
@@ -136,20 +145,34 @@ We only present the temperature sensor data that most closely correlated with th
 CFO, which was the Power Management Integrated Circuit's temperature sensor.
 
 \begin{figure}
-    \centering
-    \includegraphics[width = \linewidth]{bletracking/plots/gameplay_temp_cfoiq.pdf} 
-    \caption{Metric stability while playing a GPU-intensive game}
-    \label{fig:exert_cfo}
+\begin{subfigure}{0.48\textwidth}
+    %\centering
+    %\captionsetup{justification=centering}
+    \includegraphics[width = \textwidth]{bletracking/plots/gameplay_temp_cfoiq.pdf} 
+    \caption{}
+    %\caption{Metric stability while playing a GPU-intensive game}
+    %\label{fig:exert_cfo}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.48\textwidth}
+    %\centering
+    %\captionsetup{justification=centering}
+    \includegraphics[width = \textwidth]{bletracking/plots/idle_temp_cfoiq.pdf} 
+    \caption{}
+    %\caption{Metric stability while putting the phone in a pocket}
+    %\label{fig:idle_cfo}
+\end{subfigure}
+\captionsetup{justification=centering}
+\caption{Stability of CFO and \iq offset when (a) playing a GPU-intensive game and (b) putting the phone in a pocket}
+\label{fig:stability_cfo_temp}
 \end{figure}
 
-
-
-Figures~\ref{fig:exert_cfo} and~\ref{fig:idle_cfo} show the per-packet
+Figure~\ref{fig:stability_cfo_temp} shows the per-packet
 variation in CFO and IQ offset during the 15-minute tests. We do not show the
 variation in I/Q imbalance as it as we found it has a similar relationship to
 temperature as I/Q offset. 
 %
-For the game experiment (Figure~\ref{fig:exert_cfo}), we observe that the CFO
+For the game experiment, we observe that the CFO
 has a linear relationship to the changes in
 temperature. When the game begins, the CFO increases, and when the game ends, it decreases.
 At the peak internal temperature (+10\textdegree C above baseline),
@@ -158,13 +181,13 @@ we observe a significant CFO deviation (7~kHz).
 %Finally, when the user stops playing the game, the temperature as well as CFO
 %slowly taper off towards their initial values.
 %
-For the in-pocket experiment (Figure~\ref{fig:idle_cfo}), the peak change in CFO is much
+For the in-pocket experiment, the peak change in CFO is much
 less than the game experiment (2~kHz). However, it is
 still significant enough to introduce confusion with other devices that have
 similar I/Q metrics (Figure~\ref{fig:cfoiq}).
-Finally, figures~\ref{fig:exert_cfo} and~\ref{fig:idle_cfo} both show that I/Q offset
+Finally, figure~\ref{fig:stability_cfo_temp} show that I/Q offset
 (and I/Q imbalance which is not shown) does not correlate with
-temperature.
+temperature in both the cases.
 
 \subsubsection*{Summary} 
 Device temperature changes significantly change the CFO
@@ -181,13 +204,6 @@ the user's pocket.
 %}}}
 
 \subsection{Differences in BLE transmitter power} %{{{
-
-    \begin{figure}
-        \centering
-        \includegraphics[width = \linewidth]{bletracking/plots/idle_temp_cfoiq.pdf} 
-        \caption{Metric stability while putting the phone in a pocket}
-        \label{fig:idle_cfo}
-    \end{figure}
 
 BLE transmit power affects how far away an attacker can track a target.  If
 some devices have lower transmit power, it is more difficult for an
@@ -226,7 +242,8 @@ iPhones from a farther distance than Android devices.
 
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{bletracking/plots/phone_power_barplot}
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.6\textwidth]{bletracking/plots/phone_power_barplot}
     \caption{SNR of COVID contact tracing beacons across devices}
     \label{fig:txpwr}
     \end{figure}
@@ -298,14 +315,11 @@ motion of the target (e.g., walking vs. driving).
 \subsubsection*{Physical environment} A change in the physical location of the
 target can alter the received signal's SNR due to changes
 multipath conditions. However, we observed that this appears to have 
-an insignificant impact on BLE fingerprinting metrics. In
-Section~\ref{sec:results:case1}, we will demonstrate that we can accurately identify
-17 target devices across different locations.
-Furthermore,
+an insignificant impact on BLE fingerprinting metrics. 
 %
-Figures~\ref{fig:esp_test} and~\ref{fig:esp_train} show the that above a
+We have observed through experiments that above a
 certain minimum SNR ($\sim$10 dB), changes in SNR do not impact
-identification accuracy
+identification accuracy.
 
 \subsubsection*{Speed of Motion} A moving BLE device may experience a
 velocity-dependent frequency offset due to the Doppler

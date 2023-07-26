@@ -16,30 +16,37 @@
 % Q6 - E2E: Does tracking a real target work as expected, are there any errors?
 
 Several of the challenges described in the previous section raise the
-possibility that there are realistic scenarios where an attacker may falsely
-identify their target is present when it is not (False Positive), or falsely
-identify their target is not present when it is (False Negative). Determining
-how often these errors happen in practice requires a field study. Fortunately,
-BLE devices constantly beacon, and these beacons contain an anonymous identifier that is stable for 15-minutes. We leverage these properties of BLE to perform a
-large-scale uncontrolled field study of how severely
-misidentification errors manifest in real-world environments.
-
+possibility that there are realistic scenarios where an attacker may not be successful in identifying their target device. 
+%
+Determining
+how often these errors happen in practice requires us to do a field study in real-world locations. 
+%
+Fortunately,
+BLE devices constantly beacon, and these beacons contain an anonymous identifier that is stable for 15-minutes. 
+%
+We leverage these properties of BLE to perform a
+large-scale uncontrolled field study of how likely is it for an attacker to be confused when searching for a target device.
 
 To begin with, we assess how well our BLE tracking toolkit works, even though devices
 may not have unique fingerprints, and their fingerprint can be affected by
-temperature variations. We end with two case studies describing how well the
-end-to-end attack works in the field over multiple days. To the best of our
+temperature variations.
+%
+We then provide a multi-day uncontrolled field study that shows the uniqueness of CFO and \iq offset for mobile devices when observing several hundreds of mobile devices.
+%
+To the best of our
 knowledge, this is the first uncontrolled experiment to evaluate the
 effectiveness of a physical-layer tracking attack in practice.
 
 \subsection*{Data Collection}
 
+\begin{comment}
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{bletracking/plots/accuracy_esp_train2.pdf}
     \caption{Identification accuracy with different training sizes}
     \label{fig:esp_train}
 \end{figure}
+\end{comment}
 
 We collected two datasets of BLE beacons from uncontrolled mobile devices.
 %that happened to be transmitting BLE beacons at the time of data collection.
@@ -101,15 +108,22 @@ In this section, we present insights about the distinguishability of the devices
 % \end{figure}
 
 \subsection*{Data Analysis}
-
-
  
 We fingerprint and identify devices using our BLE tracking toolkit
 described in Section~\ref{sec:methodology}.
 %
-To apply this methodology on field-collected datasets, we first had to determine how many packets an
-attacker needs to receive from each device to accurately 
-fingerprint and identify it. We
+We first determined how many packets from one device are needed in order to obtain the fingerprint and then identification.
+%
+To do this, we performed controlled experiments using off-the-shelf ESP32 devices at different SNR values and different number of packets observed.
+%
+The observation was that to establish a fingerprint the attacker need only 50 packets from the target BLE device, and this is sufficient even at low SNR values.
+%
+We also observed that once the fingerprint is established, a device can be identified or tracked by observing only 10 packets.
+%
+Considering that most mobile devices transmit several hundreds of BLE beacon packets per minute, an attacker doesn't need a lot of time to perform high-precision identification.
+
+\if 0
+We
 found this threshold by performing a controlled experiment using 
 20 ESP32 BLE chipsets. We tested in varying SNR conditions from 10
 to 30~dB---exactly what an attacker would typically see in the field---to
@@ -160,7 +174,7 @@ to 50 per device).
 Across the tested SNRs, an attacker only needs 10 packets to accurately identify a device.
 For the rest of the field study, we use 50 packets to fingerprint a device, and
 10 packets to identify a device.
-
+\fi
 %For the evaluations presented in the next section, we did not need to filter
 %out such MAC addresses.
 
@@ -176,13 +190,6 @@ For the rest of the field study, we use 50 packets to fingerprint a device, and
 
 \subsection{False Positives and False Negatives}
 \label{sec:results:field}
-
-\begin{figure}
-    \centering
-    \includegraphics[width = \linewidth]{bletracking/plots/fpr_cdf2.pdf} 
-    \caption{Dist. of FPR a device when comparing with all others}
-    \label{fig:fpr_cdf}
-\end{figure}
 
 
 %To gain insights about the distinguishability of the devices in the wild, we collected BLE beacons from hundreds of devices in public areas such as five coffee shops and a library on January 2020 as described in previous section. 
@@ -216,6 +223,15 @@ This filtering left us with 162 devices to use for our false positive and false 
 
 %First we select a threshold for the positive target identification based on the
 %Mahalanobis distance metric in our classifier.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width = 0.6\textwidth]{bletracking/plots/fpr_cdf2.pdf} 
+    \caption{Dist. of FPR a device when comparing with all others}
+    \label{fig:fpr_cdf}
+\end{figure}
+
+
 
 We consider every device (MAC address) $i \in \{1,2,3,...,162\}$ as a target,
 and we train our classifier to find that device's fingerprint
@@ -251,7 +267,7 @@ a small fraction of devices had an FPR as high as 10\%.
 %    \label{fig:fnr_cdf}
 %\end{figure}
 
-
+\if 0
 \subsubsection{How imperfections contribute to identification}
 
 Next, we evaluate how each of the imperfections contribute to
@@ -291,20 +307,7 @@ the target when it experiences temperature changes.
     \caption{Hardware imperfection-specific FPR and FNR.}
     \label{tab:ablation}
 \end{table}
-
-\begin{table}
-    \centering
-    \begin{tabular}{|l|c|c|}
-    \hline
-    Devices Compared & FPR & FNR \\ \hline
-    Only Apple Products & 1.91\% & 2.40\%\\ 
-    Only other Products & 1.15\% & 2.94\%\\ 
-    Apple vs other & 0.15\% & --- \\ 
-    \textbf{All Devices} & \textbf{1.21\%} & \textbf{2.53\%}\\ \hline
-    \end{tabular}
-    \caption{Manufacturer-specific FPR and FNR.}
-    \label{tab:apple_table}
-\end{table}
+\fi
 
 \subsubsection{Effect of device model}
 
@@ -317,6 +320,22 @@ because Apple enables their BLE-based device handoff service by default on many 
 %After COVID-19, while Apple product are still the majority of devices that beacon, we expect
 %to see a much greater share of other devices (e.g. Android phones) as many
 %contact tracing apps make the phones beacon BLE signals. 
+\begin{table}[!h]
+    \centering
+    \captionsetup{justification=centering}
+    \caption{Manufacturer-specific FPR and FNR.}
+    \begin{tabular}{|l|c|c|}
+    \hline
+    Devices Compared & FPR & FNR \\ \hline
+    Only Apple Products & 1.91\% & 2.40\%\\ 
+    Only other Products & 1.15\% & 2.94\%\\ 
+    Apple vs other & 0.15\% & --- \\ 
+    \textbf{All Devices} & \textbf{1.21\%} & \textbf{2.53\%}\\ \hline
+    \end{tabular}
+    \label{tab:apple_table}
+\end{table}
+
+
 
 Table~\ref{tab:apple_table} shows the FPR and FNR of Apple products compared
 with other products. As expected, the FPR when comparing Apple devices with other Apple devices (1.91\%) is greater than
@@ -344,18 +363,11 @@ This appears to confirm our hypothesis that devices from the same manufacturer a
 
 
 
-
 \subsubsection{Effect of temperature} %{{{
 \label{sec:temp}
 
 %, for a high quality and a low quality crystal oscillator. The CFO of a low quality crystal with 8 minute cutting accuracy is significantly changed by temperature, resulting a drastic increase in FPR; while the same change in temperature has much less impact on a high quality crystal
 
-\begin{figure}
-    \centering
-    \includegraphics[width = \linewidth]{bletracking/plots/fpr_temp_thresh_new.pdf} 
-    \caption{How oscillator temperature changes affect FPR.}
-    \label{fig:fpr_temp}
-\end{figure}
 
 %As mentioned earlier, most devices that beacon BLE packets, randomize their MAC address about every 15 minutes. Consequently, as the only way to label the devices in the wild is their MAC address, we at most have 15 minutes of data with the same label for most devices in the field. 
 
@@ -374,7 +386,16 @@ is $\Delta f$ away from the fingerprinted CFO of the target. The consequence
 of increasing the range of acceptable CFO values is that it increases the chance of
 observing a device whose CFO falls in the acceptable range, resulting in an
 increase in FPR.
- 
+
+\begin{figure}[!h]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width = 0.6\textwidth]{bletracking/plots/fpr_temp_thresh_new.pdf} 
+    \caption{How oscillator temperature changes affect FPR.}
+    \label{fig:fpr_temp}
+\end{figure}
+
+
 Figure~\ref{fig:fpr_temp} presents the FPR as the change in temperature increases. We
 present the results for both high-quality and low-quality crystals (i.e.,
 different cutting accuracies), as the type of crystal depends on the specific
@@ -389,13 +410,6 @@ and IQ imbalance. In summary, temperature changes can severely limit an attacker
 %}}}
 
 \subsection{Uniqueness of imperfections}
-
-\begin{figure}
-    \centering
-    \includegraphics[width = \linewidth]{bletracking/plots/heatmap_hallway.pdf} 
-    \caption{Histogram of imperfections across 647 BLE devices.}
-    \label{fig:heatmap_hallway}
-\end{figure}
 
 Recall that across the 162 devices observed in our first field evaluation dataset,
 we found $\sim$40\% of the devices to be uniquely identifiable. % Therefore,
@@ -416,6 +430,16 @@ we observed in the beacons. The mean hardware imperfections are representative o
 device with two or more different MAC addresses, we filtered out devices
 which were observed for a duration longer than three minutes\footnote{Apple rotates addresses every 15~mins and Android every 10~mins.}. 
 
+
+\begin{figure}[!h]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width = 0.8\linewidth]{bletracking/plots/heatmap_hallway.pdf} 
+    \caption{Histogram of imperfections across 647 BLE devices.}
+    \label{fig:heatmap_hallway}
+\end{figure}
+
+
 We observed 647 unique MAC addresses 
 across the two 20 hours of data collection.
 Figure~\ref{fig:heatmap_hallway} shows the 2-Dimensional histogram of the fingerprints of these devices, namely their CFO and \iq offset magnitude.
@@ -435,7 +459,7 @@ in a larger data set, $\sim$40\% of devices are uniquely distinguishable. We als
 overlap with many other devices. For instance, 15\% (97) of the
 devices had similar imperfections with only one other device. 
 
-
+\iffalse
 \subsection{Case Study 1: Temporal tracking of many targets}
 \label{sec:results:case1}
 
@@ -574,7 +598,7 @@ falsely detects the presence of the target for 50 seconds, even though it had
 not yet actually returned.
 
 %Next, we repeat the same experiment when the volunteer is carrying a pixel 5 phone. This time, we also reduce the power level threshold that our sniffer captures the signals. As shown in Figure~\ref{fig:android_no}, we capture signals from more devices in a wider range from the sniffer. Figure~\ref{fig:android} shows the groundtruth time when the person was present and the time which [name] detected the presence of the person. This time, we mistakenly think our target was present for about 50 seconds while they were not. This confusion happened for a single MAC address and was resolved when the MAC address disappeared. As we have increased the range that our receiver can receive, this device most likely belonged to a person passing by around the house. In both scenarios, we demonstrated that one can deploy the RF fingerprinting attack in a real-world scenario with high accuracy, threatening the privacy of the device owner.
-
+\fi
 \begin{comment}
 \subsection{Case Study 3: Uniqueness of BLE devices at scale}
 \label{sec:results:case3}

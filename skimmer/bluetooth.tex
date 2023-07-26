@@ -53,7 +53,6 @@ course of the study, and two skimmers were still installed six months after we i
 \subsection{What Do Skimmers Look Like in Scans?} %{{{
 \label{sec:bluetooth:skimmers}
 
-
 We begin by presenting how skimmers we observed appear in Bluetooth scans.
 %
 We describe the properties of two sets of skimmers: \totalskimmers~skimmers that we detected in the field
@@ -99,15 +98,7 @@ used the default ``Uncategorized'' device class.
 
 \subsubsection*{MAC prefixes are often manufacturer defaults}
 
-\begin{table}
-    \centering\small
-    \input{skimmer/tabs/skimmer-data-overview}
-    \caption{Bluetooth scan properties of skimmers observed during our study.
-    %
-    The exact Device Names are not shown, instead we describe the names we found.
-    }
-    \label{tab:skimmer-data-overview}
-\end{table}
+
 
 Bluetooth module manufacturers burn a MAC address into the module's EEPROM.
 %
@@ -119,7 +110,18 @@ manufacturer of the device.
 %
 %Several applications use this
 %as the primary way of detecting skimmers~\cite{scaifeoakland}.
- 
+\begin{table}[!h]
+    \centering
+    \captionsetup{justification=centering}
+    \caption{Bluetooth scan properties of skimmers observed during our study.
+    %
+    The exact Device Names are not shown, instead we describe the names we found.
+    }
+    \input{skimmer/tabs/skimmer-data-overview}
+
+    \label{tab:skimmer-data-overview}
+\end{table}
+
 Although MAC address prefixes are often assigned by IEEE (e.g., all of the RN Bluetooth modules have the same manufacturer MAC prefix) the HC modules have a wide
 %
 variety of MAC prefixes.
@@ -188,7 +190,7 @@ This is expected because the device sends its MAC and Class-of-Device in the fir
 
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{skimmer/plots/cdf_skim_discover_time.pdf}
+\includegraphics[width=0.6\linewidth]{skimmer/plots/cdf_skim_discover_time.pdf}
 \caption{
 \label{fig:skim_discover_time}
  Skimmers are detected within a minute of passing near a gas station.
@@ -226,10 +228,12 @@ This result indicates that inspectors can quickly stop at gas stations to check 
 
 \begin{table}
     \centering
-    \input{skimmer/tabs/data-overview}
+    \captionsetup{justification=centering}
     \caption{On average there are two Classic Bluetooth devices seen at each gas
     station; infrequently, there are skimmers.
     }
+    \input{skimmer/tabs/data-overview}
+
     \label{tab:data-overview}
 \end{table}
 
@@ -329,7 +333,7 @@ visits to gas stations, so they are not included in this analysis.
 
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{skimmer/plots/hist_device_class.pdf}
+\includegraphics[width=0.6\linewidth]{skimmer/plots/hist_device_class.pdf}
 \caption{
 \label{fig:hist_device_class}
 Skimmers appear in the third most common class of Bluetooth devices.
@@ -360,7 +364,7 @@ Although, out of the \visitedgasstations~gas stations that Bluetana users visite
 
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{skimmer/plots/uncat_hist_device_OUI.pdf}
+\includegraphics[width=0.6\linewidth]{skimmer/plots/uncat_hist_device_OUI.pdf}
 \caption{
 \label{fig:hist_device_OUI}
 Many other devices appear to be using the same Bluetooth modules as skimmers.
@@ -476,7 +480,7 @@ devices that it detected.
 
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{skimmer/plots/uncat_visit_hist_device_name.pdf}
+    \includegraphics[width=0.6\linewidth]{skimmer/plots/uncat_visit_hist_device_name.pdf}
     \caption{
     \label{fig:hist_device_name}
     Default and custom names distinguish skimmers from legitimate devices.

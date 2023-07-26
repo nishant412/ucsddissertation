@@ -34,30 +34,38 @@ Offset). Physical-layer fingerprints can reliably differentiate many
 kinds of wireless chipsets~\cite{rfidphysical_danev,Brik_radiometric,transientBT_Hall,suskitransient,tximperfections_polak,femtocell_kennedy,adsb,subgrfid}, including a recent attempt to
 distinguish 10,000 WiFi~\cite{kaushik10000wifi} chipsets.
 
-To the best of our knowledge, no prior work has evaluated the
+However, no prior work has evaluated the
 practicality of such physical-layer identification attacks in a real-world
-environment. Indeed, prior to BLE tracking beacons, no mobile device wireless
+environment. 
+%
+Indeed, prior to BLE tracking beacons, no mobile device wireless
 protocol transmitted frequently enough---especially when idle---to make
-such an attack feasible. Additionally, there is no existing BLE fingerprinting tool that can measure 
-the physical-layer imperfections in BLE transmissions (i.e., CFO and I/Q offset) accurately.  
+such an attack feasible. 
 %
-Prior techniques for fingerprinting either provide low precision fingerprints because they use short duration (e.g., transient) signal features, or provide high precision fingerprints but require long duration signal features which exist only in protocols like WiFi but not in BLE.
+In contrast, today it is common to find tens and hundreds of personal devices transmitting these BLE beacons at all public locations -- office buildings, public library, coffee shops and others.
 %
-Our first
-contribution is a tool that uses a novel method to recover these imperfections by iteratively adding imperfections to a re-encoded clean copy of a received packet,
-until they match the imperfections of the received packet over the air (Section~\ref{sec:methodology}).
+For an attacker, even with a precise fingerprint, locating one target device in such public locations is a needle in a haystack problem --- we don't know the limitations to uniquely differentiating one BLE device in this "noise" of several other BLE devices.
+%
 
-Our next contribution is an evaluation of how practical it is for an attacker to
-track BLE-beaconing devices using their RF fingerprint. Namely, using lab-bench
-experiments, we identify four primary challenges to identifying BLE devices in
-the field: (1) BLE devices have a variety of chipsets that have different
+In this chapter, we take an empirical measurement approach to understanding the practicality of this tracking threat. 
+%
+We develop a technique to estimate high precision fingerprints from BLE beacons.
+%
+We then perform BLE beacon data collection in lab on devices that we control, and also uncontrolled data collection of BLE beacons from mobile devices seen at a variety of public locations.
+%
+Using our fingerprint technique, we analyze these beacons from real-world devices to understand the scope of this privacy threat, and how likely is an attacker at being successful in locating their target. 
+%
+In particular the contributions of our work are as below:
+
+\begin{enumerate}
+\item Using lab-bench experiments on BLE devices we own, we identify four primary challenges to identifying BLE devices in the field: (1) BLE devices have a variety of chipsets that have different
 hardware implementations, (2) applications can configure the BLE transmit
 power level, resulting in some devices having lower SNR BLE transmissions,
 (3) the temperature range that mobile devices encounter in the field
 can introduce significant changes to physical-layer impairments, and (4) the low-cost
 receivers that an attacker can use in the wild for RF fingerprinting may be significantly less accurate than the tools used in prior studies~\cite{Brik_radiometric}.
  
-Our final contribution is a set of field experiments to evaluate how
+\item We perform an empirical study through a set of field experiments to evaluate how
 significantly these challenges diminish an attacker's ability to identify
 mobile devices in the field. We leverage the fact that BLE tracking beacons are
 already used on many mobile devices to perform an uncontrolled field study
@@ -66,18 +74,20 @@ are operating in public spaces where there are hundreds of other nearby devices.
  To the best of our knowledge, our work is
 the first to evaluate the feasibility of an RF fingerprinting attack in
 real-world scenarios.
+\end{enumerate}
 
-We show that even when there are hundreds of devices we encountered in the field, it is still feasible to track
-a specific mobile device by its physical-layer fingerprint. However, we also
+Through these empirical studies, we show that even when there are hundreds of devices we encountered in the field, it is still feasible to uniquely identify 
+a specific mobile device by its physical-layer fingerprint. 
+%
+However, we also
 observe that certain devices have similar fingerprints to others, and temperature
-variations can change a device's metrics. Both of these issues can lead to significant
-misidentification rates. In summary, we find that physical layer tracking of
+variations can change a device's metrics. 
+%
+Both of these issues can lead to significant confusion in distinguishing mobile devices.
+%
+In summary, we find that physical layer tracking of
 BLE devices is indeed feasible, but it is only
 reliable under limited conditions, and for specific devices with extremely
 unique fingerprints, and when the target device has a relatively stable
-temperature. The dataset and code that we used to perform this evaluation
-can be found at:
-\begin{center}
-    \url{https://github.com/ucsdsysnet/blephytracking.git}
-\end{center}
+temperature. 
 

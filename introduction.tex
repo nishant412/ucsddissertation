@@ -1,26 +1,70 @@
-Urban society relies upon the safe and secure operation of wireless communication links that are part of all modern electronic systems. From personal devices like smartphones, smartwatches, laptops to public infrastructure like grid equipment, lighting, fuel and transportation systems, wireless ad-hoc links (e.g. Bluetooth and WiFi) have given users within wireless range a capability to remotely monitor and access the electronic equipment safely and conveniently. 
+Modern urban society relies upon the safe and secure operation of wireless communication links that are part of all modern electronic systems. 
+%
+From personal devices like smartphones, smartwatches, laptops to public infrastructure like grid equipment, lighting, fuel and transportation systems, wireless ad-hoc links (e.g. Bluetooth and WiFi) are used in a myriad of applications, distributed across metropolitan areas.
+%
+These links are diverse in not only their applications, but also in their manufacturing -- they use wireless chipsets, circuit boards, and other components from hundreds of different manufacturers.
+%
+These ad-hoc links allow users within wireless range ability to remotely access and passively monitoring these electronic systems, safely and conveniently at a distance.
+%
+For example, a maintenance worker need not spend time physically accessing a circuit breaker on a dangerous high voltage line; they can remotely connect to a Bluetooth interface and run diagnostics at a safe distance [cite].
+%
+Information about exposure to COVID-19 and its spread need not be obtained manually; continuously transmitting BLE beacons enable smartphones to alert users of potential exposure even when at a distance from an infected individual, indoors or outdoors.
+%
 
-However, this convenience comes at a cost as these wireless links expose our modern electronic systems to a whole new set of security and privacy attacks; these can have disastrous consequences to our public health and safety, economy and even national security. 
-Unfortunately, we lack the empirical data to audit these wireless links and understand the security threats, and even lack effective tools to collect this empirical data for doing comprehensive wireless audits in the first place. Today we have millions of these wireless ad-hoc links in deployment, but don’t have visibility into their security and privacy problems. Even worse, for a lot of cases we don’t even know what wireless links are depl
+Unfortunately, this convenience has come at the cost of security and privacy.
+%
+This "network" of non-Internet connected wireless links has opened up a new threat vector --- attackers can gain unauthorized access or remotely track our electronic devices using these links, covertly from a distance without risk of being caught.
+%
+For example, researchers have demonstrated remotely accessing and controlling urban infrastructure such as traffic lights at intersections[cite], and circuit breakers on power lines[cite].
+%
+Several examples of surreptitious tracking of individuals using BLE beacons from smartphones exist in literature[cite] and the real-world.
+%
+Worse, these links are so convenient that even attackers are implanting their own wireless links to gain illegitimate access to critical infrastructure and track people.
+%
+For instance, criminals have been installing Bluetooth radios in payment terminals at gas stations and ATMs to commit millions of dollars in fraud.
+%
+Stalkers have been covertly placing AirTags onto unsuspecting victims, to follow and track them.
+%
+Securing these wireless links is therefore important to our public health and safety, economy and even national security.
 
-Unfortunately, we lack the toolkits, datasets and even empirical methods necessary to comprehensively audit and secure this important “network” of non-Internet connected wireless links. Indeed, the design of effective security methodology is complicated by the diverse (in manufacturers, end uses, physical hardware variations) and distributed (over large geographic area) nature of this “network”.
+Protecting these wireless access links is important but complicated.
+%
+These wireless links are distributed over entire metropolitan areas, supporting a diverse set of applications using a wide variety of hardware.
+%
+We don't have empirical knowledge of future exploitable security issues of these wireless links, or even an insight into what legitimate wireless links are under attack and any illegitimate wireless links that are carrying out attacks.
+%
+For example, we know there are Bluetooth skimmers out there at several gas stations, but no understanding of how many or where and even if we can find them.
+%
+Several wireless ad-hoc links across urban areas provide remote access to grid circuit breakers, aviation fuel trucks, speed limit signs; a lot of them are retrofitted into legacy equipment, and therefore are undocumented open interfaces we know nothing about.
 
-There are several examples today that reveal the tension between convenience of wireless links and their security. Continuously transmitting BLE beacons allow our smartphones to effectively locate other personal devices like other smartphones, smartwatches, laptops [cite,cite] both indoors and outdoors. This feature enabled convenient smartphone based contact tracing, and was crucial to public health and safety during the recent COVID-19 crisis. Unfortunately, this feature also converts our personal devices into homing beacons, causing an invasion of personal privacy. Attackers can covertly and passively listen to these beacons and use the link and physical layer features to uniquely identify and track our location, making it a convenient tool for stalkers.
+We need urban scale empirical studies to comprehensively audit these wireless links.
+%
+Auditing can be performed through wireless scanning.
+%
+Wireless scans provide link layer information such as device names, MAC addresses, device type on discoverable/visible devices.
+%
+Additionally, the wireless signals (of the scan packets) received from the wireless devices can be analyzed to extract transmitter hardware properties at the physical layer.
+%
 
-These wireless links also provide a safe and efficient way for operators to access urban infrastructure equipment. For example, a maintenance worker need not spend time physically accessing a circuit breaker on a dangerous high voltage line; they can remotely connect over Bluetooth and run diagnostics at a safe distance [cite]. Today, there are thousands of such links deployed in infrastructure equipment such as traffic lights, speed signs, reclosers, transformers, fuel equipment all across the US, protecting urban operators from hazardous situations. However, this wireless link can be misused by an attacker to covertly gain unauthorized access to the infrastructure equipment[cite circuit breaker, traffic light], allowing them to change configurations causing outages or damage to the equipment. Even worse, attackers may even bypass physical security on these equipment and retrofit their own wireless links to gain illegitimate access. For instance, criminals have been installing Bluetooth based skimmers in payment card terminals to commit billions of dollars in fraud each year [cite].
+Unfortunately, there is no prior empirical analysis that actually shows the feasibility of such scanning in real-world locations with tens of hundreds of other similar devices.
+%
+We don't have knowledge if the wireless scan information or even wireless signal properties are sufficient to uniquely identify a particular device in a sea of several devices.
+%
+As an example, even when our WiGLE scan data contained the Bluetooth skimmer, it was hard to differentiate from the tens of other Bluetooth devices at the gas station, because other infrastructure used the same Bluetooth devices.
+%
+Indeed, understanding the extent to which individual wireless links are distinguishable in real-world locations helps us quantify not only our ability to audit these links, but also understand whether an attacker can actually find these links to attacks.
 
-To protect this “network” of non-Internet connected wireless links against attackers, we need to design tools and datasets to build an empirical understanding of potential attack surfaces, and then secure them using defenses. To build the empirical knowledge, we need to perform urban scale measurement campaigns using wireless scanning across this entire “network” of ad-hoc links. These wireless auditing campaigns utilize the information obtained from device discovery scanning to enumerate wireless links, using either fixed or mobile scanners. These scans let us enumerate what wireless links are present in different electronic systems and what they are in use for. This consequently lets us develop an empirical understanding of how and what legitimate links can be attacked, and what illegitimate links are being implanted by attackers. Indeed, even attackers run these wireless scans to identify a “target” wireless link, and therefore an empirical measurement campaign truly gives us an insight into what weak links the attackers can even identify and choose to target.
+Additionally, we also lack the tools to perform this wireless scanning over entire metro areas; existing scanners are too slow to reliably discover all wireless links using wardriving.
+%
+As a result, while we have public wireless scan datasets[cite wigle], they often miss devices and therefore don't provide a complete picture for wireless auditing.
+%
+For instance, I observed that a Bluetooth skimmer was recovered at a gas station on a particular day, and yet WiGle scan data from the same day missed that Bluetooth device. 
+%
 
-In this dissertation, I explore the key research question to be addressed for performing these wireless scanning based measurement – identification. In particular,
 
-Put it another way, these wireless links are obfuscated or hidden among the tens of wireless
-Our success at auditing using wireless scanning really 
-How accurately can we identify (distinguish) a particular target wireless link in real-world environments using wireless scans, especially in the presence of several other wireless links? Answering this question requires us to develop tools to find these wireless links, and also develop an empirical understanding of the real-world limitations
 
-when there are several An empirical understanding not only helps us design better auditing tools, but also helps us understand the practical limitations
 
-The key question to answer with regards to a wireless audit is really whether we can use wireless scans to find a particular wireless link to target. This indeed is a hard problem to answer, because in any real world scenario there are tens or even hundreds of wireless links at a time, and therefore any one wireless link is effectively hidden or obfuscated in the noise. It really de
-
+\begin{comment}
 \section{Challenges}
 Existing techniques are insufficient to audit the security and privacy threats of these wireless ad-hoc links, because of their inherent distributed and diverse nature. Indeed, these properties also complicate the design of new empirical methods and tools to achieve our goals of accurate and fast identification of wireless links.
 
@@ -45,8 +89,49 @@ hardware variations across two same devices very similar so hard to differentiat
 we dont get the spatial context which can only be gotten by doing wardriving
 
 Existing techniques for wireless device auditing,
-
+\end{comment}
 
 \section{Thesis}
-\section{Insights}
-\section{Contributions}
+In order to secure this "network" of non-Internet connected wireless ad-hoc links, we need to empirically understand if auditing using wireless scanning is indeed a feasible approach in real-world situations.
+%
+In this dissertation, I perform large scale empirical studies and design tools to quantitatively and qualitatively analyze the feasibility of performing wireless link auditing in real-world urban environments.
+%
+I perform wireless auditing measurement studies to analyze the effectiveness of auditing both from an attacker and a defensive perspective.
+%
+I then present the design of a tool to perform practical faster scanning of wireless links for wardriving applications
+%
+I argue that we can distinguish individual target wireless links even in the presence of several other links around, even with the limited information revealed by wireless scans.
+
+Wireless access links found in urban areas use various types of communication protocols --- WiFi, Bluetooth, Zigbee and others
+%
+For this dissertation, I focus on empirical studies and tool design for Bluetooth-based links --- both Bluetooth Low Energy and Bluetooth Classic.
+%
+Indeed, Bluetooth is the most ubiquitous wireless ad-hoc  technology in use today, across personal devices, and public facing infrastructure.
+%
+In fact, its ubiquity and ease-of-use is what even prompted criminals to use it in gas pump skimmers.
+%
+While the empirical studies I present focus on Bluetooth scanning, wireless scanning is a fundamental feature of all wireless protocols, and scan information is very similar across protocols.
+%
+Thus, the lessons from my dissertation are universal, and apply to any type of wireless link.
+
+In summary, I defend the following thesis statement:
+
+\textit{It is feasible to uniquely audit a particular wireless access link in a real-world location surrounded by several such links by : 1) using wireless scan information collected through smartphone based scanning 2) using wireless signal information collected through commodity SDRs and 3) by designing a low-cost multi-channel scanning tool for fast wireless auditing}
+
+
+
+\section{Contributions and Organization}
+The remainder of this dissertation is organized as follows. 
+%
+
+Chapter 2 describes a large scale empirical study I performed over multiple states in the US, to understand the effectiveness of Bluetooth scanning from a smartphone for detection of Bluetooth credit card skimmers at a gas station. I find that Bluetooth characteristics of certain types of gas pump skimmers can be distinguished from other Bluetooth devices commonly seen at gas stations. In fact in a lot of cases Bluetooth scanning was then only source of information for investigators. Therefore, Bluetooth scanning is indeed an effective way to detect Bluetooth-based skimmers.
+%
+
+Chapter 3 describes an empirical study I performed over multiple real-world public locations, to evaluate an attacker's ability to track the location of a mobile device user by using the physical-layer imperfections of the Bluetooth transmitter. I observed that attackers can indeed use low-cost SDRs to obtain a physical-layer fingerprint and track a particular mobile device. However, in public locations I observed that certain mobile devices have very distinguishing physical-layer properties, whereas others have common fingerprints and are likely to be misidentified. Therefore, an attacker can track using physical layer properties, but their ability to do is a matter of luck. 
+%
+
+Chapter 4 describes a contribution to a larger project where I present the design of a low-cost portable SDR based fast classic Bluetooth scanning tool. This scanner improves Bluetooth scanning speed by a factor of 7x, significantly improving our coverage of Bluetooth devices when doing wardriving based wireless audits.
+
+Chapter 3, in part, is a reprint of the material as it appears in \textit{Usenix Security Symposium 2019}. Nishant Bhaskar, Maxwell Bland, Kirill Levchenko, and Aaron Schulman. The dissertation author was the primary investigator and author of this paper.
+
+Chapter 4, in part, is a reprint of the material as it appears in \textit{IEEE Symposium on Security and Privacy 2022}. Hadi Givehchian, Nishant Bhaskar, Eliana Rodriguez Herrera, Hector Rodrigo Lopez Soto, Christian Dameff, Dinesh Bharadia, Aaron Schulman. The dissertation author was a collaborator and contributor to the paper.

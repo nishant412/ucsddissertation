@@ -1,6 +1,31 @@
 \begin{dissertationabstract}
-    Securing networked computing devices requires us to comprehensively inventory all devices connected onto an organizational network. Such an inventory or identification helps us identify vulnerabilities in legitimate network connected devices, as well as any illegitimate devices on the network. However, there is a new class of networked computing devices based on short range peer-to-peer wireless links  that are extremely hard to inventory. These wireless links utilize commodity Bluetooth and WiFi radios, and present limited identifying information. In recent times, these wireless links have been widely utilized in critical urban infrastructure such as power grid equipment, street lights, traffic cameras, highway signs etc. While these short range links make it easier for maintenance personnel to run diagnostics and change configurations, they present several challenges to identification at an urban scale. They are inaccessible remotely through a centralized network, spread over large geographic areas and are practically invisible to scanning due to wireless noise of consumer Bluetooth and WiFi devices in the field. This challenge of inventory due to lack of visibility has not only opened up several potential attack surfaces in our critical infrastructure, but has also encouraged criminals to install some of their own wireless radios to gain unauthorized access to infrastructure.
-
-    In this dissertation I tackle the problem of metropolitan scale inventory of urban infrastructure utilizing short range peer-to-peer wireless devices using wireless scan data collected from wardriving efforts. Firstly, I present a project in which I show that it is possible to uniquely identify illegal short range peer-to-peer wireless devices in fuel infrastructure based on Bluetooth scan information. Next, I present an ongoing project in which we analyze signal information to see if we can derive unique persistent identifiers for identification of such wireless radios in the field. Finally, I propose a project to perform large scale inventory of urban infrastructure based on scan data of short range wireless links they utilize, across multiple counties in the US. I discuss the technical and logistical challenges associated with such an effort, proposed ideas to tackle those challenges, and open research questions that I hope to answer.
+    Modern urban society relies upon the safe and secure operation of wireless communication links that are part of all modern electronic systems. 
+    %
+    From personal devices like smartphones to public infrastructure like grid equipment, wireless ad-hoc links using Bluetooth and WiFi radios, enable users to remotely access and passively monitor these electronic equipment, conveniently and safely at a distance.
+    %
     
+    Unfortunately, these non-Internet connected links have exposed a new threat vector.
+    %
+    Attackers can gain unauthorized access or remotely track our electronic devices using these links, from a distance with minimal risk of getting caught.
+    %
+    Securing these link requires us to perform a comprehensive auditing or identification using wireless scanning across urban areas.
+    %
+    This is complicated because these links are spread over entire metro areas, and are hard to identify as any one link is "hidden in the noise" of surrounding hundreds of links.
+    %
+    We need to empirically understand if auditing using wireless scanning is even a feasible approach in these urban area real-world situations.
+    %
+    Unfortunately, there is no prior empirical analysis that actually shows the feasibility of such scanning in real-world locations with tens of hundreds of other similar devices.
+    %
+    We also lack the tools to perform this wireless scanning over entire metro areas without missing devices.
+    %
+
+    In this dissertation, I perform large scale empirical studies and design tools to quantitatively and qualitatively analyze the feasibility of performing wireless link auditing in real-world urban environments.
+%
+I perform wireless auditing measurement studies to analyze the effectiveness of auditing both from an attacker and a defensive perspective.
+%
+I then present the design of a tool to perform practical faster scanning of wireless links for wardriving applications
+%
+I argue that we can distinguish individual target wireless links even in the presence of several other links around, even with the limited information revealed by wireless scans.
+
+
 \end{dissertationabstract}

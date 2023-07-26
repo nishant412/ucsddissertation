@@ -2,28 +2,35 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-In this work, we evaluated the feasibility of physical-layer tracking attacks
-on BLE-enabled mobile devices. We found that many popular mobile devices are
+In this chapter, we empirically evaluated the feasibility of physical-layer tracking attacks
+on BLE-enabled mobile devices. 
+%
+We found that many popular mobile devices are
 essentially operating as tracking beacons for their users, transmitting
 hundreds of BLE beacons per second. We discovered that it is indeed feasible to
 get fingerprints of the transmitters of BLE devices, even though their signal
 modulation does not allow for discovering of these imperfections at decoding
-time. We developed a tool that automates recovering these features in
-transmitted packets.
+time. 
 
-Then, we used this tool to determine what challenges an attacker would face in
-using BLE to track a target in the wild. We found that attackers can use
+We then performed a series of lab experiments  to determine what challenges an attacker would face in
+using BLE to track a target in the wild. 
+%
+We found that attackers can use
 low-cost SDRs to capture physical-layer fingerprints, but those identities may
 not be easy to capture due to differences in devices' transmission power, they
 may not be stable due to temperate variations, and they may be similar to other
-devices of the same make and model. Or, they may not even have certain
+devices of the same make and model. 
+%
+Or, they may not even have certain
 identifying features if they are developed with low power radio architectures.
 By evaluating the practicality of this attack in the field, particularly in
 busy settings such as coffee shops, we found that certain devices have unique
 fingerprints, and therefore are particularly vulnerable to tracking attacks,
-others have common fingerprints, they will often be misidentified. Overall, we
+others have common fingerprints, they will often be misidentified. 
+%
+Overall, we
 found that BLE does present a location tracking threat for mobile devices.
-However, an attackers ability to track a particular target is essentially a
+However, an attacker's ability to track a particular target is essentially a
 matter of luck.
 
 \begin{comment}
