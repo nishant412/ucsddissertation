@@ -1,0 +1,76 @@
+\section{Introduction}
+\label{sec:hyperscanner:intro}
+Classic Bluetooth ad-hoc links are distributed throughout large urban areas. 
+%
+Performing a comprehensive security audit of this "network" of non-Internet connected links requires us to perform wireless scanning over large geographic areas.
+%
+Wardriving wireless scanning can help solve this problem.
+%
+Indeed, as we have seen in the chapter on Bluetooth skimming, investigators were able to detect Bluetooth skimmers when performing wardriving based data collection.
+%
+In fact, they were even able to find skimmers when driving past the gas station.
+%
+Furthermore, this style of wardriving based enumeration of devices has been used in the past by companies such as Google to build databases of nearby WiFi access points.
+
+Unfortunately conventional classic Bluetooth scanning is a slow process
+%
+Bluetooth scanning requires us to sequentially send device discovery (inquiry) packets on certain frequency channels and then wait for responses in a time slotted ALOHA manner. 
+%
+This process has to be done for 32 inquiry request/response channels spread across a bandwidth of 76 MHz in the 2.4 GHz ISM band.
+%
+Additionally, Bluetooth devices turn on their receivers for only short durations periodically (10 ms every 1.24 sec) to save power.
+%
+This requires that the scanning must be sequentially repeated several times across all the 32 channels, to ensure that every device sends a response.
+%
+Consequently, it takes at least 10.24 seconds to scan for every classic Bluetooth device within wireless range. 
+%
+In noisy environments, this duration can get even longer (upto 40.96 seconds).
+%
+
+The slow speed of single-channel Bluetooth scanning makes existing scanning tools like smartphones infeasible for wardriving data collection across entire urban areas. 
+%
+For example, at a driving speed of 50 mph, scanning for Bluetooth devices within a typical urban range of 100 meters requires us to finish the scan in less than 4 seconds.
+%
+Since current single-channel scanners need \~10 seconds to finish a scan, they will likely end up missing devices.
+%
+Consequently, we are left with an impossible choice -- we cover an entire metro area while continuously wardriving but miss Bluetooth devices, or we discover all Bluetooth devices in a smaller geographic area by doing stop-and-go scanning.
+%
+Either scenario significantly limits a comprehensive security audit of this distributed "network" of wireless links.
+%
+
+Modern software-defined radios can be used to design faster Bluetooth scanning tools, but they are limited by their cost and portability.
+%
+Indeed, a portable low-cost scanning tool lets us deploy hundreds of them to cover an entire urban area.
+%
+SDRs speed up the scan process by transmitting inquiry requests and receiving responses in parallel across multiple narrowband classic Bluetooth channels.
+%
+The received raw response signals can be backhauled to the host computer, where they can be decoded to retrieve the information about the devices being queried.
+%
+There also exist several low-cost portable SDR options such as PlutoSDR that provide an on-board processor and don't need a separate host computer.
+
+%
+Unfortunately, the bandwidth requirements of a parallel multi-channel Bluetooth scanning limit the choice of SDR hardware.
+%
+Classic Bluetooth scanning requires us to send multiple inquiry requests and receive inquiry responses across channels spread over an analog bandwidth of 76 MHz in the 2.4 GHz band. 
+%
+This further requires a network backhaul rate of $\sim$2.5 Gbps, which can only be supported using a 10G ethernet link.
+%
+This makes low-cost SDR options such as PlutoSDR unsuitable for a parallel multi-channel Bluetooth scanning application
+%
+Higher end SDRs can be used for this purpose, but they are often neither portable nor low-cost.
+
+In this chapter, we present an initial exploration into the design of a low-cost multi-channel Bluetooth scanning tool, aimed at performing fast wireless audits across urban areas.
+%
+The key insight that helps us in the design of this tool is that Bluetooth uses separate request and response channels.
+%
+There are 32 inquiry request channels, and corresponding one-to-one mapped (but different) 32 response channels.
+%
+We can therefore send inquiry packets rapidly across all channels, and responses will arrive at defined independent response frequencies after a Bluetooth protocol defined time period (time slot).
+%
+The specific contributions of this work are:
+\begin{enumerate}
+    \item We present a Bluetooth-protocol compliant multi-channel scan algorithm to reduce the scan time to under 10 seconds.
+    \item We present a novel technique for enabling low analog bandwidth SDRs (61.44 MHz) to access Bluetooth channels outside of their receive bandwidth
+\end{enumerate}
+
+The rest of the chapter is organized as follows: Section~\ref{sec:hyperscanner:bkgd} provides a background on the Bluetooth device discovery process, and prior work in speeding up Bluetooth scans. Section ~\ref{sec:hyperscanner:design} presents the design of the multi-channel scan algorithm, resolving hardware issues with multi-channel scan, and enabling out-of-band channel access for low-cost PlutoSDR. Section ~\ref{sec:hyperscanner:eval} provides initial testing results on the speed-up provided by the new scanning algorithm, and we conclude in Section~\ref{sec:hyperscanner:concl}.

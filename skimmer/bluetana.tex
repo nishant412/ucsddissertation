@@ -1,17 +1,5 @@
 %!TEX root = paper.tex
 
-\begin{figure*}
-\centering
-\includegraphics[width=\linewidth]{skimmer/fig/bluetana-flagging-flow}
-\caption{
-The procedure Bluetana uses for highlighting suspicious devices.
-%The MAC address of the device is first checked against a
-%hitlist of known skimming devices. Is this check succeeds, the Class-of-Device and
-%device name of the device are checked for innocuity. If these checks fail, the device
-%is flagged as a potential skimmer.
-\label{fig:bluetana-flagging-flow}
-}
-\end{figure*}
 
 \section{Data Collection Methodology}
 \label{sec:bluetana}
@@ -63,6 +51,7 @@ duties. Primarily, they were Weights and Measures inspectors.
 
 \begin{figure}
 \centering
+\captionsetup{justification=centering}
 \includegraphics[width=0.8\linewidth]{skimmer/fig/bluetana_screenshot}
 \caption{
 \label{fig:bluetana}
@@ -106,14 +95,7 @@ Class-of-Device) of these modules are as follows:
 %
 %Therefore, we include exceptions for 
 
-\begin{figure*}
-    \centering
-    \includegraphics[width=\textwidth,height=3cm]{skimmer/fig/arizona_driveby_anecdote.png}
-    \caption{
-    \label{fig:arizona_driveby}
- 	Bluetooth scanning helps inspectors find more skimmers because they detect skimmers when driving by a gas station.
-    }
-\end{figure*}
+
 
 Bluetana chooses a highlight color via a three-step decision process, depicted in Figure~\ref{fig:bluetana-flagging-flow}.
 %
@@ -132,6 +114,21 @@ Next, if the device name matches a common product using the same MAC prefix, the
 If all three fields (MAC prefix, Class-of-Device, and Device Name) indicate the device is likely to be a skimmer, Bluetana highlights the record in red.
 %
 The highlighting procedure is the result of a year of refinements based on our experience finding skimmers in the field, and Bluetana includes a remote update procedure to account for these incremental changes.
+
+\begin{figure}[!h]
+  \centering
+  \captionsetup{justification=centering}
+  \includegraphics[width=\linewidth]{skimmer/fig/bluetana-flagging-flow}
+  \caption{
+  The procedure Bluetana uses for highlighting suspicious devices.
+  %The MAC address of the device is first checked against a
+  %hitlist of known skimming devices. Is this check succeeds, the Class-of-Device and
+  %device name of the device are checked for innocuity. If these checks fail, the device
+  %is flagged as a potential skimmer.
+  \label{fig:bluetana-flagging-flow}
+  }
+  \end{figure}
+  
 
 This simple highlighting proved to be vital to our data collection.
 %
@@ -152,6 +149,16 @@ In one instance, an Arizona Weights and Measures inspector was driving by a gas 
 He made an unscheduled stop at the gas station, performed a skimmer inspection, and discovered two skimmers.
 %
 Figure~\ref{fig:arizona_driveby} shows a portion of the official Arizona inspection report documenting this incident.
+
+\begin{figure}[!h]
+  \centering
+  \captionsetup{justification=centering}
+  \includegraphics[width=\textwidth,height=3cm]{skimmer/fig/arizona_driveby_anecdote.png}
+  \caption{
+  \label{fig:arizona_driveby}
+ Bluetooth scanning helps inspectors find more skimmers because they detect skimmers when driving by a gas station.
+  }
+\end{figure}
 
 Bluetana's highlighting procedure is more comprehensive than other skimmer detection apps on the Play Store.
 %
@@ -176,10 +183,11 @@ of the scan response packet (e.g. the MAC prefix).
 
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{skimmer/fig/rssi_motivation.pdf}
+\captionsetup{justification=centering}
+\includegraphics[width=0.8\linewidth]{skimmer/fig/rssi_motivation.pdf}
 \caption{
 \label{fig:rssi}
-  Combining RSSI data with satellite imagery reveals if a device is located in the pump area of a gas station.
+  RSSI data overlaid on satellite view of a gas pump. Device on left has high RSSI near the gas pump and is likely a skimmer, device on the right is not. 
 }
 \end{figure}
 

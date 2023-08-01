@@ -1,6 +1,15 @@
 %!TEX root = paper.tex
-\section{Introduction}
+%\section{Introduction}
 \label{sec:intro}
+
+The ubiquity of wireless access links has made it easier for attackers to attack public infrastructure. Today, criminals are implanting illicit wireless links to gain covert unauthorized access to gas pumps~\cite{arizona-2018,florida-2018}.
+%
+These illicit wireless links are "hidden in the noise" of tens of others such links at public locations.
+%
+In this chapter, I describe the results of a 19-month metropolitan scale field measurement study to understand the feasibility of using link-layer information from smartphone Bluetooth scans to identify these illicit links.
+%
+In particular, this field study was aimed at defending against a type of illicit link --- Bluetooth-based payment card skimmers.
+%
 
 % The story is can we augment slow and methodical with fast and maybe less good
 % to save lots of money. Officers, NOT consumers.
@@ -40,8 +49,7 @@ pumps, it also could be an opportunity to make it easier to detect skimmers.
 % === Our solution: Study Bluetooth ==== 
 
 %that allow for operation from a safe distance
-In this chapter, we evaluate the effectiveness of detecting skimmers with 
-Bluetooth scanning from a smartphone.
+In this measurement study, we evaluate the effectiveness of using Bluetooth scans from a smartphone to detect these payment card skimmers.
 %
 Indeed, if a skimmer can be detected with 
 a smartphone, then authorities can discover and remove
@@ -58,7 +66,7 @@ the Android Bluetooth APIs.
 We equipped \numvolunteers~volunteers in six U.S. states with smartphones
 running Bluetana. 
 %
-Our volunteers have collected scans at \visitedgasstations~gas stations, where
+Our volunteers have collected wireless scans at \visitedgasstations~gas stations, where
 %
 they observed a total of \totalbtobserved~Bluetooth devices.
 %
@@ -93,17 +101,18 @@ that led law enforcement to find \totalskimmersBluetana~skimmers.
 %well-hidden skimmers.
 
 % === Results ===
-
-The primary result of this study is the first comprehensive look at how 
+Our study is the first comprehensive look at how 
 skimmers can appear in Bluetooth scans.
 %
 Namely, we observe that it is feasible to differentiate skimmers from other
 common Bluetooth devices that appear in Bluetooth scans at gas stations (e.g.,
 vehicle telemetry collectors).
 %
-The main differentiating factor for the skimmers we observed, is that the
-Bluetooth Class-of-Device---a parameter not collected by any consumer Bluetooth
-scanning applications that we are aware of---is ``Uncategorized''.
+Using a combination of Bluetooth scan link-layer information fields such as Class-of-device, MAC address and Device name, we were able to uniquely identify skimmers at gas stations.
+%
+%The main differentiating factor for the skimmers we observed, is that the
+%Bluetooth Class-of-Device---a parameter not collected by any consumer Bluetooth
+%scanning applications that we are aware of---is ``Uncategorized''.
 %for all of
 %the skimmers we observed \noteby{JC}{for all of the skimmers}.
 %
@@ -121,6 +130,8 @@ device is located near a gas pump, and thus could be a skimmer.
 %the Bluetooth signals from skimmers is today; and how effective it
 %will be in the future.
  
+
+
 Our study reveals several problems with consumer Bluetooth-based skimmer
 detection applications~\cite{scaifeoakland,sparkfunapp,skimplus}:
 %

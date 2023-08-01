@@ -71,6 +71,18 @@ We now analyze the following properties: Class-of-Device, MAC prefix, and Device
 %In this analysis, we added an additional \totalskimmersLE~skimmers beyond the \totalskimmers~that
 %Bluetana detected, and were provided to us directly by law enforcement.
 
+\begin{table}[!h]
+    \centering
+    \captionsetup{justification=centering}
+    \caption{Bluetooth scan properties of skimmers observed during our study.
+    %
+    The exact Device Names are not shown, instead we describe the names we found.
+    }
+    \input{skimmer/tabs/skimmer-data-overview}
+
+    \label{tab:skimmer-data-overview}
+\end{table}
+
 \subsubsection*{All of the skimmers are ``Uncategorized'' Class-of-Device}
 
 Class-of-Device 
@@ -110,17 +122,7 @@ manufacturer of the device.
 %
 %Several applications use this
 %as the primary way of detecting skimmers~\cite{scaifeoakland}.
-\begin{table}[!h]
-    \centering
-    \captionsetup{justification=centering}
-    \caption{Bluetooth scan properties of skimmers observed during our study.
-    %
-    The exact Device Names are not shown, instead we describe the names we found.
-    }
-    \input{skimmer/tabs/skimmer-data-overview}
 
-    \label{tab:skimmer-data-overview}
-\end{table}
 
 Although MAC address prefixes are often assigned by IEEE (e.g., all of the RN Bluetooth modules have the same manufacturer MAC prefix) the HC modules have a wide
 %
@@ -190,6 +192,7 @@ This is expected because the device sends its MAC and Class-of-Device in the fir
 
 \begin{figure}
 \centering
+\captionsetup{justification=centering}
 \includegraphics[width=0.6\linewidth]{skimmer/plots/cdf_skim_discover_time.pdf}
 \caption{
 \label{fig:skim_discover_time}
@@ -329,16 +332,16 @@ visits to gas stations, so they are not included in this analysis.
 
 %}}}
 
-\subsubsection*{Skimmers are Uncategorized, but so are other devices} %{{{
-
-\begin{figure}
-\centering
-\includegraphics[width=0.6\linewidth]{skimmer/plots/hist_device_class.pdf}
-\caption{
-\label{fig:hist_device_class}
-Skimmers appear in the third most common class of Bluetooth devices.
-}
+\begin{figure}[!h]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.6\linewidth]{skimmer/plots/hist_device_class.pdf}
+    \caption{
+    \label{fig:hist_device_class}
+    Skimmers appear in the third most common class of Bluetooth devices.
+    }
 \end{figure}
+\subsubsection*{Skimmers are Uncategorized, but so are other devices} %{{{
 
 The only Bluetooth property that is common among all skimmers we observed is
 that they have an Uncategorized Class-of-Device.
@@ -349,6 +352,9 @@ Uncategorized devices are the third most common Class-of-Device found by Bluetan
 %
 Although, out of the \visitedgasstations~gas stations that Bluetana users visited, Uncategorized devices were only observed at \totaluncatstation~gas stations (12.1\%).
 %}}}
+
+
+
 
 \subsubsection*{Other devices use the same modules as skimmers} %{{{
 
@@ -362,14 +368,7 @@ Although, out of the \visitedgasstations~gas stations that Bluetana users visite
 %}
 %\end{figure}
 
-\begin{figure}
-\centering
-\includegraphics[width=0.6\linewidth]{skimmer/plots/uncat_hist_device_OUI.pdf}
-\caption{
-\label{fig:hist_device_OUI}
-Many other devices appear to be using the same Bluetooth modules as skimmers.
-}
-\end{figure}
+
 
 Within the set of Uncategorized devices, we next look at the distribution of
 their MAC prefixes (Figure~\ref{fig:hist_device_OUI}).
@@ -395,6 +394,15 @@ SkimPlus~\cite{skimplus}, only flags skimmers based on a hitlist of MAC
 prefixes~\cite{scaifeoakland}; it may incorrectly flag legitimate devices as
 skimmers.
 
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.6\linewidth]{skimmer/plots/uncat_hist_device_OUI.pdf}
+    \caption{
+    \label{fig:hist_device_OUI}
+    Many other devices appear to be using the same Bluetooth modules as skimmers.
+    }
+\end{figure}
+
 The devices observed with MAC prefixes that were in the \texttt{YY:YY:MM:DD}
 format (likely HC modules) were mostly skimmers.
 %
@@ -415,6 +423,8 @@ Bluetana-observed skimmers.
 This reduces the number of stations where Bluetana detected skimmers to
 \visitedstationsMACCoDfiltered~out of the~\totaluncatstation~stations where it found
 Uncategorized devices.
+
+
 
 %
 %It was discovered that this MAC address was questionable after another HC-05
@@ -442,6 +452,16 @@ masquerading as phones. We did see devices with no registered manufacturer. Some
 of these were simply odd devices, others were skimmers.
 \fi
 %}}}
+\begin{figure}[!h]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.6\linewidth]{skimmer/plots/uncat_visit_hist_device_name.pdf}
+    \caption{
+    \label{fig:hist_device_name}
+    Default and custom names distinguish skimmers from legitimate devices.
+    }
+\end{figure}
+
 
 \subsubsection*{Default- and custom-named modules are often skimmers} %{{{
 
@@ -478,14 +498,7 @@ devices that it detected.
 %
 
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.6\linewidth]{skimmer/plots/uncat_visit_hist_device_name.pdf}
-    \caption{
-    \label{fig:hist_device_name}
-    Default and custom names distinguish skimmers from legitimate devices.
-    }
-\end{figure}
+
 
 
 %

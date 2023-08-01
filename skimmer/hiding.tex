@@ -21,6 +21,7 @@ the ratio of Classic to BLE approximately 1:4.
 
 \begin{figure}
     \centering
+    \captionsetup{justification=centering}
     \includegraphics[width=0.6\linewidth]{skimmer/plots/cdf_num_devices_seen.pdf}
     \caption{BLE devices are more common than Classic.}
     \label{fig:classic-v-ble}
@@ -119,7 +120,7 @@ be detected using a Software-Defined Radio.% including a low-cost (\$10) RTL-SDR
 
 \subsection{Attacker Bottlenecks}
 The attacker (skimmer installer) has several practical ways to evade detection using Bluetana. Each of these, however
-, has an additional cost to the attacker in terms of effort, risk exposure, or expertise. We do not yet have a strong
+, has an additional cost in terms of effort, risk exposure, or expertise. We do not yet have a strong
 understanding to which of these costs attackers are most sensitive. Indeed, the very low price of stolen credit card
 numbers, compared to their potential cash out value (Table~\ref{tab:cardval}) suggests that the bottleneck in the
 carding value chain is \emph{not} getting card information but cashing out cards. Thus, while Bluetana may raise the

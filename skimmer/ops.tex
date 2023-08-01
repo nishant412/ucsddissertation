@@ -25,7 +25,7 @@ These officials located all four skimmers.
 %
 The evidence provided by Bluetana forced them to continue the inspection, instead of abandoning it and leaving the devices in the field.
 
-\begin{figure}
+\begin{figure}[!h]
     \centering
     \captionsetup{justification=centering}
     \includegraphics[width=0.6\textwidth]{skimmer/plots/rssi_jump.pdf}
@@ -46,20 +46,22 @@ prompting inspectors to look carefully for the skimmer in that pump.
 \subsection{MAC Addresses May Indicate the Source}
 \label{sec:ops:macs}
 
-\begin{table}
-\centering
-\captionsetup{justification=centering}
-\caption{Several geographically separated skimmers had similar MAC addresses.}
-\input{skimmer/tabs/mac_closeness}
 
-\label{tab:mac_closeness}
-\end{table}
 
 Network equipment vendors (e.g., Bluetooth module manufacturers) tend to allocate MAC addresses sequentially by production time~\cite{wifi-macs}.
 %
 Therefore, if two devices have similar MAC addresses, they are likely part of the same batch of devices sold.
 %
 This information can be used to associate skimmer Bluetooth modules to the same board designer or crew.
+
+\begin{table}[!h]
+  \centering
+  \captionsetup{justification=centering}
+  \caption{Several geographically separated skimmers had similar MAC addresses.}
+  \input{skimmer/tabs/mac_closeness}
+  
+  \label{tab:mac_closeness}
+  \end{table}
 
 We group the skimmers found by Bluetana with the same first 5 bytes of MAC address.
 %
